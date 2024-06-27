@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>Booking List</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/global.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/adminAnnouncementModule/adminCreateAnnouncement/adminCreateAnnouncement.css"
+    />
+    <script
+      defer
+      src="/adminAnnouncementModule/adminCreateAnnouncement/adminCreateAnnouncement.js"
+    ></script>
+  </head>
+  <body>
+    <div class="title">CREATE ANNOUNCEMENT</div>
+    <hr class="solid" />
+    <form>
+      <div>Title</div>
+      <input placeholder="text" />
+      <div>Description</div>
+      <input placeholder="text" />
+      <div>Set Announcement Date & Time</div>
+      <div class="datetime-container">
+        <div class="date-container">
+          <div>Date</div>
+          <input type="date" />
+        </div>
+        <div class="time-container">
+          <div>Time</div>
+          <input type="time" />
+        </div>
+      </div>
+      <button id="post">POST ANNOUNCEMENT</button>
+    </form>
+  </body>
+</html>

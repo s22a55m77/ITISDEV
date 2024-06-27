@@ -3,6 +3,8 @@ const e = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
+const { adminAnnouncementModuleController } = require('./controllers/index.js')
+
 const app = e()
 
 app.use(bodyParser.json())
@@ -11,6 +13,8 @@ app.use(cookieParser())
 app.use(e.static('public'))
 
 app.set('view engine', 'ejs')
+
+app.use('/admin/announcement', adminAnnouncementModuleController)
 
 app.get('/', (req, res) => {
   res.send('Hello World')
