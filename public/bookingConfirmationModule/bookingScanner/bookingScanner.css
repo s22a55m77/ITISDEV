@@ -1,0 +1,61 @@
+body {
+  background-color: #868F93;
+}
+
+.header {
+  margin-top: 45px;
+  display: flex;
+}
+
+.header-arrow {
+  position: absolute;
+  left: 20;
+}
+
+.header-text {
+  margin: 0 auto;
+  color: white;
+  font-size: 20px;
+}
+
+.qr-container {
+  width: 80%;
+  height: 602px;
+  margin: 30px auto;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.qr-instruction {
+  display: inline-block;
+  margin: 30px auto;
+  width: 100%;
+  font-size: 13px;
+  text-align: center;
+}
+
+#scanner {
+  margin: 0 auto;
+  margin-top: 70px;
+  width: 80%;
+  min-height: 250px;
+}
+
+#result {
+  text-align: center;
+}
+
+.qr-button-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+#qr-button {
+  width: 80%;
+  height: 59px;
+  border-radius: 20px;
+  background: #61A9DE;
+  border: none;
+  color: white;
+}
