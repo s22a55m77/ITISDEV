@@ -1,5 +1,5 @@
 const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-  cnsole.log(decodedText)
+  console.log(decodedText)
 }
 const fullconfig = {
   formatsToSupport: [
