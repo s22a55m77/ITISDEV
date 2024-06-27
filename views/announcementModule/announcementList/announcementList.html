@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Booking List</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../global.css" />
+    <link rel="stylesheet" type="text/css" href="./announcementList.css" />
+  </head>
+  <body>
+    <div class="bg-head"></div>
+    <div class="announcementlist-title">
+      ANNOUNCEMENTS
+    </div>
+    <div class="announcement-container">
+      <div class="create-container">
+        <button id="createBtn" onclick="create()">Create Btn</button>
+      </div>
+      <hr class="solid">
+      <div class="announcement-list-container">
+        <div class="announcement">
+          <div>ICON</div>
+          <div>announcement text</div>
+          <div class="popup-container" onclick="popup()">...
+            <div class="popup" id="popup">
+              <span onclick="editAnnouncement()">Edit</span>
+              <hr class="popup-solid">
+              <span onclick="deleteAnnouncement()">Delete</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./announcementList.js"></script>
+</html>
