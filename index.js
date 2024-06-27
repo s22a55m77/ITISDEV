@@ -6,6 +6,8 @@ const { initializeApp, cert } = require('firebase-admin/app')
 
 require('dotenv').config()
 
+const { bookingConfirmationModule } = require('./controllers/index.js')
+
 initializeApp({
   credential: cert({
     type: 'service_account',
@@ -30,6 +32,8 @@ app.use(cookieParser())
 app.use(e.static('public'))
 
 app.set('view engine', 'ejs')
+
+app.use('/admin/booking', bookingConfirmationModule)
 
 app.get('/', (req, res) => {
   res.send('Hello World')
