@@ -15,30 +15,49 @@ registrationModuleController.post('/signin', async (req, res) => {
 
   if (!decodedToken.email.endsWith('@dlsu.edu.ph')) {
     await getAuth().deleteUser(uid)
-    res.redirect('/auth/error?error=invalid-email-domain')
+    res.send({
+      success: false,
+      message: 'Invalid email domain',
+    })
+    return
   }
 
   const user = await userModel.findOne({ email: decodedToken.email })
 
   if (!user) {
-    res.redirect('/auth/confirm/create')
+    res.send({
+      success: true,
+      nextUrl: '/auth/confirm/create',
+    })
+
+    return
   }
-  res.redirect('/auth/confirm')
+
+  res.send({
+    success: true,
+    nextUrl: '/auth/confirm',
+  })
 })
 
 registrationModuleController.get('/confirm', (req, res) => {
-  res.render('registrationModule/confirm.ejs')
+  res.render('registrationModule/confirmAcc.ejs')
 })
 
 registrationModuleController.get('/success', async (req, res) => {
-  const type = req.query.type
+  const { type, idToken } = req.query
 
-  const sessionCookie = await getAuth().createSessionCookie(req.body.idToken, {
-    expiresIn: 60 * 60 * 24 * 30,
-  })
+  const sessionCookie = await getAuth()
+    .createSessionCookie(idToken, {
+      expiresIn: 60 * 60 * 24 * 14 * 1000 - 1000,
+    })
+    .catch((error) => {
+      console.error(error)
+      res.redirect('/auth/signin')
+      return
+    })
 
   res.cookie('session', sessionCookie, {
-    maxAge: 60 * 60 * 24 * 30 * 1000,
+    maxAge: 60 * 60 * 24 * 14 * 1000 - 1000,
   })
 
   res.render('registrationModule/success.ejs', { type })
