@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const { initializeApp, cert } = require('firebase-admin/app')
 
+const { registrationModuleController } = require('./controllers/index.js')
+
 require('dotenv').config()
 
 initializeApp({
@@ -34,6 +36,8 @@ app.set('view engine', 'ejs')
 app.get('/', (req, res) => {
   res.send('Hello World')
 })
+
+app.use('/auth', registrationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
