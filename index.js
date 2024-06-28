@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const { initializeApp, cert } = require('firebase-admin/app')
 
+const print = require('./utils/printRoute')
+
 require('dotenv').config()
 
 initializeApp({
@@ -37,4 +39,5 @@ app.get('/', (req, res) => {
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
+  app._router.stack.forEach(print.bind(null, []))
 })
