@@ -5,7 +5,7 @@ const { userModel } = require('../models/index.js')
 const registrationModuleController = e.Router()
 
 registrationModuleController.get('/signin', (req, res) => {
-  res.render('registrationModule/signin.ejs')
+  res.render('registrationModule/signIn.ejs')
 })
 
 registrationModuleController.post('/signin', async (req, res) => {
