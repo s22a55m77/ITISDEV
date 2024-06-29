@@ -18,7 +18,7 @@ async function isSSU(req, res, next) {
     const user = await userModel.findOne({ email: decodedToken.email })
 
     if (user.role !== 'ssu') {
-      res.redirect('/403')
+      res.redirect('/403.html')
       return next()
     }
 
