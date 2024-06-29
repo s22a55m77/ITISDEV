@@ -7,7 +7,10 @@ const httpContext = require('express-http-context')
 
 const { initializeApp, cert } = require('firebase-admin/app')
 
-const { registrationModuleController } = require('./controllers/index.js')
+const {
+  registrationModuleController,
+  landingController,
+} = require('./controllers/index.js')
 const { profileModuleController } = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
@@ -46,10 +49,7 @@ app.set('view engine', 'ejs')
 
 app.use('/auth', registrationModuleController)
 app.use('/profile', profileModuleController)
-
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+app.use('/', landingController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
