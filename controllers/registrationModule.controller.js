@@ -73,4 +73,11 @@ registrationModuleController.get('/create', (req, res) => {
   res.render('registrationModule/create.ejs')
 })
 
+registrationModuleController.post('/create', (req, res) => {
+  console.log(req.body)
+  console.log(req.files.eaf.name)
+
+  res.redirect('/auth/success?type=signin&idToken=' + req.body.idToken)
+})
+
 module.exports = registrationModuleController
