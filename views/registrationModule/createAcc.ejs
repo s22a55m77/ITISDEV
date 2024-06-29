@@ -1,14 +1,12 @@
 <%- include('../common/headers.ejs') %>
-<script>
-  // get idToken from query
-  const urlParams = new URLSearchParams(window.location.search)
-  const idToken = urlParams.get('idToken')
+<link rel="stylesheet" href="/registrationModule/createAcc/createAcc.css" />
+<script defer src="/registrationModule/createAcc/createAcc.js"></script>
 
-  // set idToken in hidden input
-  $(document).ready(() => {
-    $('input[name="idToken"]').val(idToken)
-  })
-</script>
+<div>
+  <div class="header-title">
+    Create your account
+  </div>
+</div>
 
 <form method="post" action="/auth/create" enctype="multipart/form-data">
   <input type="hidden" name="idToken" />
