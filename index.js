@@ -11,12 +11,14 @@ const print = require('./utils/printRoute')
 
 require('dotenv').config()
 
+const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY)
+
 initializeApp({
   credential: cert({
     type: 'service_account',
     projectId: 'itisdev',
     privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY,
+    privateKey: privateKey,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     clientId: process.env.FIREBASE_CLIENT_ID,
     authUri: 'https://accounts.google.com/o/oauth2/auth',
