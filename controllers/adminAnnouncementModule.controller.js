@@ -42,10 +42,53 @@ adminAnnouncementModuleController.post('/create', async (req, res) => {
   }
 })
 
-adminAnnouncementModuleController.get('/edit/:id', (req, res) => {
+adminAnnouncementModuleController.get('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
-  res.render('adminAnnouncementModule/adminEditAnnouncement.ejs')
+  const { title, description } = await announcementModel.findById(id)
+
+  res.render('adminAnnouncementModule/adminEditAnnouncement.ejs', {
+    id,
+    title,
+    description,
+  })
 })
+
+adminAnnouncementModuleController.post('/edit/:id', isSSU, async (req, res) => {
+  const id = req.params.id
+  const { title, description } = req.body
+
+  try {
+    await announcementModel.findByIdAndUpdate(id, {
+      title,
+      description,
+    })
+
+    res.redirect('/admin/announcement?success=edited')
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect('/admin/announcement/edit/' + id + '?error=edit-failed')
+    return
+  }
+})
+
+adminAnnouncementModuleController.get(
+  '/delete/:id',
+  isSSU,
+  async (req, res) => {
+    const id = req.params.id
+
+    try {
+      await announcementModel.findByIdAndDelete(id)
+      res.redirect('/admin/announcement?success=deleted')
+      return
+    } catch (error) {
+      console.error(error)
+      res.redirect('/admin/announcement?error=delete-failed')
+      return
+    }
+  }
+)
 
 module.exports = adminAnnouncementModuleController

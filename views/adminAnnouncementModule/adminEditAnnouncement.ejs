@@ -17,25 +17,28 @@
   <body>
     <div class="title">EDIT ANNOUNCEMENT</div>
     <hr class="solid" />
-    <form>
-      <div>Title</div>
-      <input placeholder="text" />
-      <div>Description</div>
-      <input placeholder="text" />
-      <div>Set Announcement Date & Time</div>
-      <div class="datetime-container">
-        <div class="date-container">
-          <div>Date</div>
-          <input type="date" />
-        </div>
-        <div class="time-container">
-          <div>Time</div>
-          <input type="time" />
-        </div>
-      </div>
+    <form method="post" action="/admin/announcement/edit/<%= id %>">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        placeholder="text"
+        type="text"
+        name="title"
+        value="<%= title %>"
+      />
+      <label for="description">Description</label>
+      <input
+        id="description"
+        placeholder="text"
+        type="text"
+        name="description"
+        value="<%= description %>"
+      />
       <div class="action-container">
-        <button id="cancel">SAVE</button>
-        <button id="save">SAVE</button>
+        <a href="/admin/announcement" style="display: contents">
+          <button id="cancel">CANCEL</button>
+        </a>
+        <button id="save" type="submit">SAVE</button>
       </div>
     </form>
   </body>
