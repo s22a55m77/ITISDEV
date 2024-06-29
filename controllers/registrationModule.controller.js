@@ -125,10 +125,6 @@ registrationModuleController.post('/create', async (req, res) => {
     )
     return
   }
-
-  res.redirect(
-    '/auth/create?idToken=' + req.body.idToken + '&error=unknown-error'
-  )
 })
 
 module.exports = registrationModuleController
