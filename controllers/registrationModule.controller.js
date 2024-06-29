@@ -146,7 +146,7 @@ registrationModuleController.post('/create', async (req, res) => {
 
     await user.save()
 
-    res.redirect('/auth/success?type=signin&idToken=' + req.body.idToken)
+    res.redirect('/auth/success?type=create&idToken=' + req.body.idToken)
     return
   } catch (error) {
     console.error(error)
