@@ -31,3 +31,13 @@ input[type="file"] {
 .item-container:nth-of-type(n+2) {
   margin-top: 20px;
 }
+
+#alert {
+  margin: 20px auto;
+  display: none;
+  width: 80%;
+  padding: 5px 10px;
+  text-align: center;
+  color: white;
+  border-radius: 10px;
+}
