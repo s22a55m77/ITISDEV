@@ -6,3 +6,7 @@ const idToken = urlParams.get('idToken')
 $(document).ready(() => {
   $('input[name="idToken"]').val(idToken)
 })
+
+$('#back').click(() => {
+  history.back()
+})
