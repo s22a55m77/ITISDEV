@@ -1,12 +1,4 @@
-<script defer>
-  // get idToken from query
-  const urlParams = new URLSearchParams(window.location.search)
-  const idToken = urlParams.get('idToken')
-
-  function toCreateAccount() {
-    window.location.href = `/auth/create?idToken=${idToken}`
-  }
-</script>
+<script src="/registrationModule/confirmCreateAcc/confirmCreateAcc.js"></script>
 <img src="<%- picture %>" alt="photo" />
 <span><%= name %></span>
 <span><%= email %></span>
