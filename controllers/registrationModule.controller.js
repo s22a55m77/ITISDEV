@@ -65,6 +65,17 @@ registrationModuleController.get('/confirm', async (req, res) => {
 registrationModuleController.get('/success', async (req, res) => {
   const { type, idToken } = req.query
 
+  // check if user really create their account
+  const decodedToken = await getAuth().verifyIdToken(idToken)
+  const user = await userModel.findOne({ email: decodedToken.email })
+
+  if (!user) {
+    // this only happens if the user tries to access the success page without creating an account
+    // let user know that they need to create an account
+    res.redirect('/auth/signin?error=invalid-process')
+    return
+  }
+
   let sessionCookie
 
   try {
