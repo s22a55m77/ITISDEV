@@ -1,4 +1,5 @@
 const { getAuth } = require('firebase-admin/auth')
+const httpContext = require('express-http-context')
 
 function isAuthorized(req, res, next) {
   const sessionCookie = req.cookies.session
@@ -10,7 +11,8 @@ function isAuthorized(req, res, next) {
 
   getAuth()
     .verifySessionCookie(sessionCookie, true)
-    .then(() => {
+    .then(async (decodedToken) => {
+      httpContext.set('userEmail', decodedToken.email)
       return next()
     })
     .catch(() => {
