@@ -54,7 +54,7 @@ registrationModuleController.get('/success', async (req, res) => {
     })
   } catch (error) {
     console.error(error)
-    res.redirect('/auth/signin')
+    res.redirect('/auth/signin?error=invalid-token')
     return
   }
 
