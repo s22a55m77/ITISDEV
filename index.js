@@ -2,6 +2,8 @@ const e = require('express')
 
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload')
+
 const { initializeApp, cert } = require('firebase-admin/app')
 
 const { registrationModuleController } = require('./controllers/index.js')
@@ -29,6 +31,7 @@ const app = e()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use(fileUpload())
 
 app.use(e.static('public'))
 
