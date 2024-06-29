@@ -12,6 +12,7 @@ const {
   profileModuleController,
   announcementModuleController,
   adminAnnouncementModuleController,
+  landingController,
 } = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
