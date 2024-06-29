@@ -46,15 +46,17 @@ registrationModuleController.get('/confirm', (req, res) => {
 registrationModuleController.get('/success', async (req, res) => {
   const { type, idToken } = req.query
 
-  const sessionCookie = await getAuth()
-    .createSessionCookie(idToken, {
+  let sessionCookie
+
+  try {
+    sessionCookie = await getAuth().createSessionCookie(idToken, {
       expiresIn: 60 * 60 * 24 * 14 * 1000 - 1000,
     })
-    .catch((error) => {
-      console.error(error)
-      res.redirect('/auth/signin')
-      return
-    })
+  } catch (error) {
+    console.error(error)
+    res.redirect('/auth/signin')
+    return
+  }
 
   res.cookie('session', sessionCookie, {
     maxAge: 60 * 60 * 24 * 14 * 1000 - 1000,
