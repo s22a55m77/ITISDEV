@@ -2,8 +2,15 @@
 <link rel="stylesheet" href="/registrationModule/createAcc/createAcc.css" />
 <script defer src="/registrationModule/createAcc/createAcc.js"></script>
 
-<div>
-  <div class="header-title">Create your account</div>
+<div class="header-container">
+  <div class="header-title">
+    Create your account
+  </div>
+  <div class="step-container">
+    <div class="step-1"></div>
+    <div class="step-2"></div>
+  </div>
+  <div>Some details about you</div>
 </div>
 
 <form method="post" action="/auth/create" enctype="multipart/form-data">
@@ -25,9 +32,21 @@
     <option value="manila">Manila</option>
     <option value="laguna">Laguna</option>
   </select>
-  <label for="eaf">EAF</label>
-  <input id="eaf" type="file" name="eaf" />
-  <label for="vaccinationRecord">VACCINATION RECORD</label>
-  <input id="vaccinationRecord" type="file" name="vaccinationRecord" />
-  <button type="submit">Submit</button>
+  <label for="eaf" style="margin-top: 20px; margin-bottom: 0px;">EAF</label>
+  <div class="file-upload-container">
+    <div id="eaf-filename">No file uploaded</div>
+    <label for="eaf" class="file-upload">Upload file</label>
+    <input id="eaf" type="file" name="eaf" />
+  </div>
+  <label for="vaccinationRecord" style="margin-top: 20px; margin-bottom: 0px;">VACCINATION RECORD</label>
+  <div class="file-upload-container">
+    <div id="vacinnation-filename">No file uploaded</div>
+    <label for="vaccinationRecord" class="file-upload">Upload file</label>
+    <input id="vaccinationRecord" type="file" name="vaccinationRecord" />
+  </div>
+
+  <div class="action-container">
+    <button id="back" type="button">← BACK</button>
+    <button type="submit">REGISTER</button>
+  </div>
 </form>
