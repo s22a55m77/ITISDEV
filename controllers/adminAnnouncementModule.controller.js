@@ -12,23 +12,29 @@ adminAnnouncementModuleController.get('/', isSSU, async (req, res) => {
   })
 })
 
-adminAnnouncementModuleController.get('/detail/:id', async (req, res) => {
-  const id = req.params.id
+adminAnnouncementModuleController.get(
+  '/detail/:id',
+  isSSU,
+  async (req, res) => {
+    const id = req.params.id
 
-  const { description, title, createdAt } = await announcementModel.findById(id)
+    const { description, title, createdAt } = await announcementModel.findById(
+      id
+    )
 
-  res.render('adminAnnouncementModule/adminAnnouncementDetail.ejs', {
-    title,
-    description,
-    createdAt,
-  })
-})
+    res.render('adminAnnouncementModule/adminAnnouncementDetail.ejs', {
+      title,
+      description,
+      createdAt,
+    })
+  }
+)
 
-adminAnnouncementModuleController.get('/create', (req, res) => {
+adminAnnouncementModuleController.get('/create', isSSU, (req, res) => {
   res.render('adminAnnouncementModule/adminCreateAnnouncement.ejs')
 })
 
-adminAnnouncementModuleController.post('/create', async (req, res) => {
+adminAnnouncementModuleController.post('/create', isSSU, async (req, res) => {
   const { title, description } = req.body
 
   try {
