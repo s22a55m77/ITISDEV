@@ -29,7 +29,11 @@
 
         <div class="announcement">
           <div>ICON</div>
-          <div><%= announcement.description %></div>
+          <div>
+            <a href="/admin/announcement/detail/<%= announcement._id %>"
+              ><%= announcement.description %></a
+            >
+          </div>
           <div class="popup-container" onclick="popup()">
             ...
             <div class="popup" id="popup">

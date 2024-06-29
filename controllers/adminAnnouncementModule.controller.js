@@ -12,10 +12,16 @@ adminAnnouncementModuleController.get('/', isSSU, async (req, res) => {
   })
 })
 
-adminAnnouncementModuleController.get('/detail/:id', (req, res) => {
+adminAnnouncementModuleController.get('/detail/:id', async (req, res) => {
   const id = req.params.id
 
-  res.render('adminAnnouncementModule/adminAnnouncementDetail.ejs')
+  const { description, title, createdAt } = await announcementModel.findById(id)
+
+  res.render('adminAnnouncementModule/adminAnnouncementDetail.ejs', {
+    title,
+    description,
+    createdAt,
+  })
 })
 
 adminAnnouncementModuleController.get('/create', (req, res) => {
