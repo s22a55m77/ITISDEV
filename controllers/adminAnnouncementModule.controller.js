@@ -4,8 +4,12 @@ const { announcementModel } = require('../models/index.js')
 
 const adminAnnouncementModuleController = e.Router()
 
-adminAnnouncementModuleController.get('/', isSSU, (req, res) => {
-  res.render('adminAnnouncementModule/adminAnnouncementList.ejs')
+adminAnnouncementModuleController.get('/', isSSU, async (req, res) => {
+  const announcements = await announcementModel.find()
+
+  res.render('adminAnnouncementModule/adminAnnouncementList.ejs', {
+    announcements,
+  })
 })
 
 adminAnnouncementModuleController.get('/detail/:id', (req, res) => {

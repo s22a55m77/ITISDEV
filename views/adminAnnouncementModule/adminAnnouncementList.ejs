@@ -19,22 +19,32 @@
     <div class="announcementlist-title">ANNOUNCEMENTS</div>
     <div class="announcement-container">
       <div class="create-container">
-        <button id="createBtn" onclick="create()">Create Btn</button>
+        <a href="/admin/announcement/create">
+          <button id="createBtn">Create Btn</button>
+        </a>
       </div>
       <hr class="solid" />
       <div class="announcement-list-container">
+        <% for(const announcement of announcements) { %>
+
         <div class="announcement">
           <div>ICON</div>
-          <div>announcement text</div>
+          <div><%= announcement.description %></div>
           <div class="popup-container" onclick="popup()">
             ...
             <div class="popup" id="popup">
-              <span onclick="editAnnouncement()">Edit</span>
+              <a href="/admin/announcement/edit/<%= announcement._id %>"
+                >Edit</a
+              >
               <hr class="popup-solid" />
-              <span onclick="deleteAnnouncement()">Delete</span>
+              <a href="/admin/announcement/delete/<%= announcement._id %>"
+                >Delete</a
+              >
             </div>
           </div>
         </div>
+
+        <% } %>
       </div>
     </div>
   </body>
