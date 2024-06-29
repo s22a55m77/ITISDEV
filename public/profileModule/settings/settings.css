@@ -1,0 +1,33 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.upload-container {
+  margin-top: 40px;
+}
+
+.item-container {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  align-items: center;
+}
+
+.eaf-container>div{
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.item-container:nth-of-type(n+2) {
+  margin-top: 20px;
+}
