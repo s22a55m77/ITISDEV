@@ -39,22 +39,54 @@ registrationModuleController.post('/signin', async (req, res) => {
   })
 })
 
-registrationModuleController.get('/confirm', (req, res) => {
-  res.render('registrationModule/confirmAcc.ejs')
+registrationModuleController.get('/confirm', async (req, res) => {
+  const { idToken } = req.query
+
+  if (!idToken) {
+    res.redirect('/auth/signin')
+    return
+  }
+
+  try {
+    const { email, name, picture } = await getAuth().verifyIdToken(idToken)
+    res.render('registrationModule/confirmAcc.ejs', {
+      email,
+      name,
+      picture,
+    })
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect('/auth/signin?error=invalid-token')
+    return
+  }
 })
 
 registrationModuleController.get('/success', async (req, res) => {
   const { type, idToken } = req.query
 
-  const sessionCookie = await getAuth()
-    .createSessionCookie(idToken, {
+  // check if user really create their account
+  const decodedToken = await getAuth().verifyIdToken(idToken)
+  const user = await userModel.findOne({ email: decodedToken.email })
+
+  if (!user) {
+    // this only happens if the user tries to access the success page without creating an account
+    // let user know that they need to create an account
+    res.redirect('/auth/signin?error=invalid-process')
+    return
+  }
+
+  let sessionCookie
+
+  try {
+    sessionCookie = await getAuth().createSessionCookie(idToken, {
       expiresIn: 60 * 60 * 24 * 14 * 1000 - 1000,
     })
-    .catch((error) => {
-      console.error(error)
-      res.redirect('/auth/signin')
-      return
-    })
+  } catch (error) {
+    console.error(error)
+    res.redirect('/auth/signin?error=invalid-token')
+    return
+  }
 
   res.cookie('session', sessionCookie, {
     maxAge: 60 * 60 * 24 * 14 * 1000 - 1000,
@@ -63,12 +95,66 @@ registrationModuleController.get('/success', async (req, res) => {
   res.render('registrationModule/success.ejs', { type })
 })
 
-registrationModuleController.get('/confirm/create', (req, res) => {
-  res.render('registrationModule/confirmCreateAcc.ejs')
+registrationModuleController.get('/confirm/create', async (req, res) => {
+  const { idToken } = req.query
+
+  if (!idToken) {
+    res.redirect('/auth/signin')
+    return
+  }
+
+  try {
+    const { email, name, picture } = await getAuth().verifyIdToken(idToken)
+    res.render('registrationModule/confirmCreateAcc.ejs', {
+      email,
+      name,
+      picture,
+    })
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect('/auth/signin?error=invalid-token')
+  }
+
+  res.redirect('/auth/signin?error=unknown-error')
 })
 
 registrationModuleController.get('/create', (req, res) => {
-  res.render('registrationModule/create.ejs')
+  res.render('registrationModule/createAcc.ejs')
+})
+
+registrationModuleController.post('/create', async (req, res) => {
+  console.log(req.body)
+  console.log(req.files.eaf.data)
+
+  try {
+    const { email, name, picture } = await getAuth().verifyIdToken(
+      req.body.idToken
+    )
+
+    const user = new userModel({
+      email,
+      name,
+      designation: req.body.designation,
+      idNumber: req.body.idNumber,
+      collegeOrDepartment: req.body.collegeOrDepartment,
+      campus: req.body.campus,
+      eaf: req.files.eaf.data,
+      vaccinationRecord: req.files.vaccinationRecord.data,
+      picture: picture,
+    })
+
+    await user.save()
+
+    res.redirect('/auth/success?type=signin&idToken=' + req.body.idToken)
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect(
+      '/auth/create?idToken=' + req.body.idToken + '&error=create-account-error'
+    )
+    return
+  }
 })
 
 module.exports = registrationModuleController
