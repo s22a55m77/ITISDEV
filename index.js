@@ -2,12 +2,7 @@ const e = require('express')
 
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const fileUpload = require('express-fileupload')
-
 const { initializeApp, cert } = require('firebase-admin/app')
-
-const { registrationModuleController } = require('./controllers/index.js')
-const print = require('./utils/printRoute')
 
 const print = require('./utils/printRoute')
 
@@ -32,9 +27,7 @@ initializeApp({
 const app = e()
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(fileUpload())
 
 app.use(e.static('public'))
 
@@ -43,8 +36,6 @@ app.set('view engine', 'ejs')
 app.get('/', (req, res) => {
   res.send('Hello World')
 })
-
-app.use('/auth', registrationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
