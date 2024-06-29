@@ -9,8 +9,6 @@ const { initializeApp, cert } = require('firebase-admin/app')
 const { registrationModuleController } = require('./controllers/index.js')
 const print = require('./utils/printRoute')
 
-const print = require('./utils/printRoute')
-
 require('dotenv').config()
 
 initializeApp({
