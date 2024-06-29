@@ -7,9 +7,12 @@ const httpContext = require('express-http-context')
 
 const { initializeApp, cert } = require('firebase-admin/app')
 
-const { registrationModuleController } = require('./controllers/index.js')
-const { profileModuleController } = require('./controllers/index.js')
-const { announcementModuleController } = require('./controllers/index.js')
+const {
+  registrationModuleController,
+  profileModuleController,
+  announcementModuleController,
+  adminAnnouncementModuleController,
+} = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
 
@@ -32,8 +35,6 @@ initializeApp({
     universe_domain: 'googleapis.com',
   }),
 })
-
-const { adminAnnouncementModuleController } = require('./controllers/index.js')
 
 const app = e()
 
