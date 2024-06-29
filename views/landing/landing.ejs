@@ -1,12 +1,9 @@
 <%- include('../common/headers.ejs') %>
 <link rel="stylesheet" href="landing/landing.css" />
 
-
 <div class="main-container">
-  <div class="header">
-    Hello, Name!
-  </div>
-  <a class="item">Announcemnt</a>
+  <div class="header">Hello, Name!</div>
+  <a class="item" href="/announcement">Announcement</a>
   <a class="item">Reserve Trip</a>
   <a class="item">My Trips</a>
   <a class="item">History</a>
@@ -15,6 +12,11 @@
 <div class="tab">
   <div>Home</div>
   <div>Calendar</div>
-  <div id="notification-badge" data-count="1">Notification</div>
+  <% if(unRead) { %>
+  <div id="notification-badge" data-count="<%= unRead %>">Notification</div>
+  <% } else { %>
+  <div>Notification</div>
+  <% } %>
+
   <div>Account</div>
 </div>
