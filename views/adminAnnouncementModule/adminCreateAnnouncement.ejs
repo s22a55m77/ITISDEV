@@ -2,8 +2,7 @@
   <head>
     <title>Booking List</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/global.css" />
+    <%- include('../common/headers.ejs') %>
     <link
       rel="stylesheet"
       type="text/css"
@@ -17,6 +16,8 @@
   <body>
     <div class="title">CREATE ANNOUNCEMENT</div>
     <hr class="solid" />
+    <div id="alert">
+    </div>
     <form method="post" action="/admin/announcement/create">
       <label for="title">Title</label>
       <input id="title" placeholder="text" type="text" name="title" />

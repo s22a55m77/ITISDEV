@@ -1,3 +1,8 @@
+a {
+  color: black;
+  text-decoration: none;
+}
+
 .announcementlist-title {
   position: absolute;
   left: 50%;
@@ -98,4 +103,16 @@ hr.solid {
 
 hr.popup-solid {
   border-top: 1px solid #A39C9C;
+}
+
+#alert {
+  display: none;
+  margin: 10px auto;
+  width: 80%;
+  text-align: center;
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  z-index: 100;
 }

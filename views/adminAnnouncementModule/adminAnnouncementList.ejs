@@ -2,8 +2,7 @@
   <head>
     <title>Booking List</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="/global.css" />
+    <%- include('../common/headers.ejs') %>
     <link
       rel="stylesheet"
       type="text/css"
@@ -17,7 +16,11 @@
   <body>
     <div class="bg-head"></div>
     <div class="announcementlist-title">ANNOUNCEMENTS</div>
+    
+    
     <div class="announcement-container">
+      <div id="alert">
+      </div>
       <div class="create-container">
         <a href="/admin/announcement/create">
           <button id="createBtn">Create Btn</button>
