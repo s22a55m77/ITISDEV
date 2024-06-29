@@ -1,0 +1,26 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+.header, .header-2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-2 {
+  margin-top: 25px;
+}
+
+.announcement-container {
+  margin-top: 25px;
+  min-height: 574px;
+  padding: 30px 25px;
+  border-radius: 20px;
+  border: 1px solid #000;
+}
+
+.announcement-item {
+  display: flex;
+  justify-content: space-around;
+}
