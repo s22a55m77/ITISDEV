@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload')
 const { initializeApp, cert } = require('firebase-admin/app')
 
 const { registrationModuleController } = require('./controllers/index.js')
+const print = require('./utils/printRoute')
 
 require('dotenv').config()
 
@@ -45,4 +46,5 @@ app.use('/auth', registrationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
+  app._router.stack.forEach(print.bind(null, []))
 })
