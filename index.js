@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const { initializeApp, cert } = require('firebase-admin/app')
 
 const print = require('./utils/printRoute')
+const { profileModuleController } = require('./controllers/index.js')
 
 require('dotenv').config()
 
@@ -32,6 +33,8 @@ app.use(cookieParser())
 app.use(e.static('public'))
 
 app.set('view engine', 'ejs')
+
+app.use('/profile', profileModuleController)
 
 app.get('/', (req, res) => {
   res.send('Hello World')
