@@ -3,6 +3,7 @@ const e = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const fileUpload = require('express-fileupload')
+const httpContext = require('express-http-context')
 
 const { initializeApp, cert } = require('firebase-admin/app')
 
@@ -35,6 +36,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(fileUpload())
+app.use(httpContext.middleware)
 
 app.use(e.static('public'))
 
