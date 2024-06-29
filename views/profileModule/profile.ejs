@@ -1,0 +1,39 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/profileModule/profile/profile.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer src="/profileModule/profile/profile.js"></script>
+
+<title>Profile</title>
+
+<div class="header">
+  <svg id="setting" xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38" fill="none">
+    <g clip-path="url(#clip0_141_566)">
+    <path d="M30.305 20.4881C30.3683 20.0131 30.4 19.5223 30.4 18.9998C30.4 18.4931 30.3683 17.9865 30.2892 17.5115L33.5033 15.0098C33.7883 14.7881 33.8675 14.3606 33.6933 14.044L30.6533 8.7873C30.4633 8.43897 30.0675 8.32814 29.7192 8.43897L25.935 9.95897C25.1433 9.3573 24.3042 8.85064 23.37 8.47064L22.8 4.44897C22.7367 4.06897 22.42 3.7998 22.04 3.7998H15.96C15.58 3.7998 15.2792 4.06897 15.2158 4.44897L14.6458 8.47064C13.7117 8.85064 12.8567 9.37314 12.0808 9.95897L8.29668 8.43897C7.94834 8.3123 7.55251 8.43897 7.36251 8.7873L4.33834 14.044C4.14834 14.3765 4.21168 14.7881 4.52834 15.0098L7.74251 17.5115C7.66334 17.9865 7.60001 18.509 7.60001 18.9998C7.60001 19.4906 7.63168 20.0131 7.71084 20.4881L4.49668 22.9898C4.21168 23.2115 4.13251 23.639 4.30668 23.9556L7.34668 29.2123C7.53668 29.5606 7.93251 29.6715 8.28084 29.5606L12.065 28.0406C12.8567 28.6423 13.6958 29.149 14.63 29.529L15.2 33.5506C15.2792 33.9306 15.58 34.1998 15.96 34.1998H22.04C22.42 34.1998 22.7367 33.9306 22.7842 33.5506L23.3542 29.529C24.2883 29.149 25.1433 28.6423 25.9192 28.0406L29.7033 29.5606C30.0517 29.6873 30.4475 29.5606 30.6375 29.2123L33.6775 23.9556C33.8675 23.6073 33.7883 23.2115 33.4875 22.9898L30.305 20.4881ZM19 24.6998C15.865 24.6998 13.3 22.1348 13.3 18.9998C13.3 15.8648 15.865 13.2998 19 13.2998C22.135 13.2998 24.7 15.8648 24.7 18.9998C24.7 22.1348 22.135 24.6998 19 24.6998Z" fill="black"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_141_566">
+    <rect width="38" height="38" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
+</div>
+
+<div class="information-container">
+  <img id="profile-picture" src="<%- picture %>" />
+  <div class="verify-container">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM6.4 12L2.4 8L3.528 6.872L6.4 9.736L12.472 3.664L13.6 4.8L6.4 12Z" fill="black"/>
+      </svg>
+    <div>Verified</div>
+  </div>
+  <span id="name"><%= name %></span>
+  <span id="designation"><%= designation %></span>
+  <span id="idNumber"><%= idNumber %></span>
+</div>
+
+<script>
+  const idNumber = "<%= idNumber %>";
+</script>
+<div id="qr">
+
+</div>
