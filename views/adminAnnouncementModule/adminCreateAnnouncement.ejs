@@ -17,22 +17,16 @@
   <body>
     <div class="title">CREATE ANNOUNCEMENT</div>
     <hr class="solid" />
-    <form>
-      <div>Title</div>
-      <input placeholder="text" />
-      <div>Description</div>
-      <input placeholder="text" />
-      <div>Set Announcement Date & Time</div>
-      <div class="datetime-container">
-        <div class="date-container">
-          <div>Date</div>
-          <input type="date" />
-        </div>
-        <div class="time-container">
-          <div>Time</div>
-          <input type="time" />
-        </div>
-      </div>
+    <form method="post" action="/admin/announcement/create">
+      <label for="title">Title</label>
+      <input id="title" placeholder="text" type="text" name="title" />
+      <label for="description">Description</label>
+      <input
+        id="description"
+        placeholder="text"
+        type="text"
+        name="description"
+      />
       <button id="post">POST ANNOUNCEMENT</button>
     </form>
   </body>

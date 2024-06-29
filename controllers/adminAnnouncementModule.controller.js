@@ -1,8 +1,10 @@
 const e = require('express')
+const isSSU = require('../utils/isSSU.js')
+const { announcementModel } = require('../models/index.js')
 
 const adminAnnouncementModuleController = e.Router()
 
-adminAnnouncementModuleController.get('/', (req, res) => {
+adminAnnouncementModuleController.get('/', isSSU, (req, res) => {
   res.render('adminAnnouncementModule/adminAnnouncementList.ejs')
 })
 
@@ -14,6 +16,26 @@ adminAnnouncementModuleController.get('/detail/:id', (req, res) => {
 
 adminAnnouncementModuleController.get('/create', (req, res) => {
   res.render('adminAnnouncementModule/adminCreateAnnouncement.ejs')
+})
+
+adminAnnouncementModuleController.post('/create', async (req, res) => {
+  const { title, description } = req.body
+
+  try {
+    const announcement = new announcementModel({
+      title,
+      description,
+    })
+
+    await announcement.save()
+
+    res.redirect('/admin/announcement?success=created')
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect('/admin/announcement/create?error=create-failed')
+    return
+  }
 })
 
 adminAnnouncementModuleController.get('/edit/:id', (req, res) => {
