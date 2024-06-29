@@ -1,0 +1,80 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.step-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.step-1 {
+  width: 100%;
+  height: 8px;
+  background: #000;
+}
+
+.step-2 {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.information-container {
+  margin: 0 auto;
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+#name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+#email {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+#next {
+  margin-top: 50px;
+  width: 100%;
+  padding: 16px 0px;
+  border: 1px solid #FFF;
+  background: #000;
+  color: #FFF;
+}
+
+.footer-container {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#sign-on {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  border: 0.5px solid #000;
+  background-color: #FFF;
+}
