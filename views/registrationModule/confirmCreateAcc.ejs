@@ -1,6 +1,17 @@
-<script>
+<script defer>
   // get idToken from query
   const urlParams = new URLSearchParams(window.location.search)
   const idToken = urlParams.get('idToken')
+
+  function toCreateAccount() {
+    window.location.href = `/auth/create?idToken=${idToken}`
+  }
 </script>
+<img src="<%- picture %>" alt="photo" />
+<span><%= name %></span>
+<span><%= email %></span>
+<button onclick="toCreateAccount()">NEXT</button>
+<button onclick="window.location.href='/auth/signin'">
+  Sign on with a different Google account
+</button>
 Confirm Create Acc

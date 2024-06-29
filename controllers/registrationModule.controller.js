@@ -65,12 +65,32 @@ registrationModuleController.get('/success', async (req, res) => {
   res.render('registrationModule/success.ejs', { type })
 })
 
-registrationModuleController.get('/confirm/create', (req, res) => {
-  res.render('registrationModule/confirmCreateAcc.ejs')
+registrationModuleController.get('/confirm/create', async (req, res) => {
+  const { idToken } = req.query
+
+  if (!idToken) {
+    res.redirect('/auth/signin')
+    return
+  }
+
+  try {
+    const { email, name, picture } = await getAuth().verifyIdToken(idToken)
+    res.render('registrationModule/confirmCreateAcc.ejs', {
+      email,
+      name,
+      picture,
+    })
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect('/auth/signin?error=invalid-token')
+  }
+
+  res.redirect('/auth/signin?error=unknown-error')
 })
 
 registrationModuleController.get('/create', (req, res) => {
-  res.render('registrationModule/create.ejs')
+  res.render('registrationModule/createAcc.ejs')
 })
 
 registrationModuleController.post('/create', (req, res) => {
