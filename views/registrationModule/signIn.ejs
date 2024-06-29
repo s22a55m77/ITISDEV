@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <%- include('../common/headers.ejs') %>
 
     <!-- Loads the login UI elements-->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -14,6 +15,9 @@
       rel="stylesheet"
       href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css"
     />
+    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="/registrationModule/signIn/signIn.css" />
+    <script defer src="/registrationModule/signIn/signIn.js"></script>
   </head>
   <body>
     <script>
@@ -76,6 +80,18 @@
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig)
     </script>
+    <div class="header-container">
+      <div class="header-title">
+        Sign In
+      </div>
+      <div class="step-container">
+        <div class="step-1"></div>
+        <div class="step-2"></div>
+      </div>
+      <div>Single sign-on with Google</div>
+    </div>
+    <div id="error">Error</div>
+    <div class="logo-container">Logo</div>
     <div id="firebaseui-auth-container"></div>
   </body>
 </html>
