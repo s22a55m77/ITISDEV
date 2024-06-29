@@ -9,7 +9,7 @@ const userSchema = new Schema(
     collegeOrDepartment: { type: String },
     campus: { type: String },
     eaf: { type: Buffer },
-    vaccinationCard: { type: Buffer },
+    vaccinationRecord: { type: Buffer },
     picture: { type: Buffer },
     role: {
       type: String,
