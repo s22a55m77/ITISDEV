@@ -1,4 +1,5 @@
 const e = require('express')
+const moment = require('moment-timezone')
 const { getAuth } = require('firebase-admin/auth')
 const { userModel } = require('../models/index.js')
 
@@ -140,7 +141,9 @@ registrationModuleController.post('/create', async (req, res) => {
       collegeOrDepartment: req.body.collegeOrDepartment,
       campus: req.body.campus,
       eaf: req.files.eaf.data,
+      eafUpdatedAt: moment().tz('Asia/Manila').format(),
       vaccinationRecord: req.files.vaccinationRecord.data,
+      vaccinationRecordUpdatedAt: moment().tz('Asia/Manila').format(),
       picture: picture,
     })
 
