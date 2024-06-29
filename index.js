@@ -35,6 +35,8 @@ initializeApp({
   }),
 })
 
+const { adminAnnouncementModuleController } = require('./controllers/index.js')
+
 const app = e()
 
 app.use(bodyParser.json())
@@ -49,6 +51,7 @@ app.set('view engine', 'ejs')
 
 app.use('/auth', registrationModuleController)
 app.use('/profile', profileModuleController)
+app.use('/admin/announcement', adminAnnouncementModuleController)
 app.use('/', landingController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
