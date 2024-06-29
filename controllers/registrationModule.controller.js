@@ -39,8 +39,27 @@ registrationModuleController.post('/signin', async (req, res) => {
   })
 })
 
-registrationModuleController.get('/confirm', (req, res) => {
-  res.render('registrationModule/confirmAcc.ejs')
+registrationModuleController.get('/confirm', async (req, res) => {
+  const { idToken } = req.query
+
+  if (!idToken) {
+    res.redirect('/auth/signin')
+    return
+  }
+
+  try {
+    const { email, name, picture } = await getAuth().verifyIdToken(idToken)
+    res.render('registrationModule/confirmAcc.ejs', {
+      email,
+      name,
+      picture,
+    })
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect('/auth/signin?error=invalid-token')
+    return
+  }
 })
 
 registrationModuleController.get('/success', async (req, res) => {

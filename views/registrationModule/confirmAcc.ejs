@@ -1,6 +1,9 @@
-<script>
-    // get idToken from query
-    const urlParams = new URLSearchParams(window.location.search)
-    const idToken = urlParams.get('idToken')
-  </script>
-  Confirm Acc
+<script src="/registrationModule/confirmAcc/confirmAcc.js"></script>
+<img src="<%- picture %>" alt="photo" />
+<span><%= name %></span>
+<span><%= email %></span>
+<button onclick="toSuccess()">NEXT</button>
+<button onclick="window.location.href='/auth/signin'">
+  Sign on with a different Google account
+</button>
+Confirm Acc
