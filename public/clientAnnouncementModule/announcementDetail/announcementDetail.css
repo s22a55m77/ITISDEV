@@ -11,3 +11,11 @@ body {
 .announcement-title {
   margin-top: 25px;
 }
+
+.announcement-container {
+  margin-top: 25px;
+  min-height: 574px;
+  padding: 30px 25px;
+  border-radius: 20px;
+  border: 1px solid #000;
+}
