@@ -93,11 +93,42 @@ registrationModuleController.get('/create', (req, res) => {
   res.render('registrationModule/createAcc.ejs')
 })
 
-registrationModuleController.post('/create', (req, res) => {
+registrationModuleController.post('/create', async (req, res) => {
   console.log(req.body)
-  console.log(req.files.eaf.name)
+  console.log(req.files.eaf.data)
 
-  res.redirect('/auth/success?type=signin&idToken=' + req.body.idToken)
+  try {
+    const { email, name, picture } = await getAuth().verifyIdToken(
+      req.body.idToken
+    )
+
+    const user = new userModel({
+      email,
+      name,
+      designation: req.body.designation,
+      idNumber: req.body.idNumber,
+      collegeOrDepartment: req.body.collegeOrDepartment,
+      campus: req.body.campus,
+      eaf: req.files.eaf.data,
+      vaccinationRecord: req.files.vaccinationRecord.data,
+      picture: picture,
+    })
+
+    await user.save()
+
+    res.redirect('/auth/success?type=signin&idToken=' + req.body.idToken)
+    return
+  } catch (error) {
+    console.error(error)
+    res.redirect(
+      '/auth/create?idToken=' + req.body.idToken + '&error=create-account-error'
+    )
+    return
+  }
+
+  res.redirect(
+    '/auth/create?idToken=' + req.body.idToken + '&error=unknown-error'
+  )
 })
 
 module.exports = registrationModuleController
