@@ -9,6 +9,7 @@ const { initializeApp, cert } = require('firebase-admin/app')
 
 const { registrationModuleController } = require('./controllers/index.js')
 const { profileModuleController } = require('./controllers/index.js')
+const { clientAnnouncementModuleController } = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
 
@@ -46,6 +47,7 @@ app.set('view engine', 'ejs')
 
 app.use('/auth', registrationModuleController)
 app.use('/profile', profileModuleController)
+app.use('/announcement', clientAnnouncementModuleController)
 
 app.get('/', (req, res) => {
   res.send('Hello World')
