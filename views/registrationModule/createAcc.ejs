@@ -1,10 +1,13 @@
+<%- include('../common/headers.ejs') %>
 <script>
   // get idToken from query
   const urlParams = new URLSearchParams(window.location.search)
   const idToken = urlParams.get('idToken')
 
   // set idToken in hidden input
-  document.querySelector('input[name="idToken"]').value = idToken
+  $(document).ready(() => {
+    $('input[name="idToken"]').val(idToken)
+  })
 </script>
 
 <form method="post" action="/auth/create" enctype="multipart/form-data">
