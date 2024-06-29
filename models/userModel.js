@@ -10,7 +10,7 @@ const userSchema = new Schema(
     campus: { type: String },
     eaf: { type: Buffer },
     vaccinationRecord: { type: Buffer },
-    picture: { type: Buffer },
+    picture: { type: String },
     role: {
       type: String,
       required: true,
