@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>Booking List</title>
+    <meta charset="UTF-8" />
+    <%- include('../common/headers.ejs') %>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/adminAnnouncementModule/adminEditAnnouncement/adminEditAnnouncement.css"
+    />
+    <script
+      defer
+      src="/adminAnnouncementModule/adminEditAnnouncement/adminEditAnnouncement.js"
+    ></script>
+  </head>
+  <body>
+    <div class="title">EDIT ANNOUNCEMENT</div>
+    <hr class="solid" />
+    <div id="alert">
+    </div>
+    <form method="post" action="/admin/announcement/edit/<%= id %>">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        placeholder="text"
+        type="text"
+        name="title"
+        value="<%= title %>"
+      />
+      <label for="description">Description</label>
+      <input
+        id="description"
+        placeholder="text"
+        type="text"
+        name="description"
+        value="<%= description %>"
+      />
+      <div class="action-container">
+        <a href="/admin/announcement" style="display: contents">
+          <button id="cancel">CANCEL</button>
+        </a>
+        <button id="save" type="submit">SAVE</button>
+      </div>
+    </form>
+  </body>
+</html>

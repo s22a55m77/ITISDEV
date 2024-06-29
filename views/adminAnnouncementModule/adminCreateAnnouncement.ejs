@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>Booking List</title>
+    <meta charset="UTF-8" />
+    <%- include('../common/headers.ejs') %>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/adminAnnouncementModule/adminCreateAnnouncement/adminCreateAnnouncement.css"
+    />
+    <script
+      defer
+      src="/adminAnnouncementModule/adminCreateAnnouncement/adminCreateAnnouncement.js"
+    ></script>
+  </head>
+  <body>
+    <div class="title">CREATE ANNOUNCEMENT</div>
+    <hr class="solid" />
+    <div id="alert">
+    </div>
+    <form method="post" action="/admin/announcement/create">
+      <label for="title">Title</label>
+      <input id="title" placeholder="text" type="text" name="title" />
+      <label for="description">Description</label>
+      <input
+        id="description"
+        placeholder="text"
+        type="text"
+        name="description"
+      />
+      <button id="post">POST ANNOUNCEMENT</button>
+    </form>
+  </body>
+</html>
