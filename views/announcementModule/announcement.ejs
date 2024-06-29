@@ -1,20 +1,21 @@
 <%- include('../common/headers.ejs') %>
-<link rel="stylesheet" href="/clientAnnouncementModule/announcement/announcement.css">
+<link
+  rel="stylesheet"
+  href="/clientAnnouncementModule/announcement/announcement.css"
+/>
 
-<div class="header">
-  &lt; Back
-</div>
+<div class="header">&lt; Back</div>
 
-<div class="header-2">
-  Announcements
-</div>
+<div class="header-2">Announcements</div>
 
 <div class="announcement-container">
-  <div class="announcement-item">
-    <div>ICON</div>
-    <div>Announcement Title</div>
-    <div>
-      >
+  <% for(const announcement of announcements) { %>
+  <a href="/announcement/<%= announcement._id %>" style="display: contents">
+    <div class="announcement-item">
+      <div>ICON</div>
+      <div><%= announcement.title %></div>
+      <div>></div>
     </div>
-  </div>
+  </a>
+  <% } %>
 </div>

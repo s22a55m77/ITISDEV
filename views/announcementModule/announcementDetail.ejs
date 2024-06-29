@@ -1,15 +1,11 @@
 <%- include('../common/headers.ejs') %>
-<link rel="stylesheet" href="/clientAnnouncementModule/announcementDetail/announcementDetail.css">
+<link
+  rel="stylesheet"
+  href="/clientAnnouncementModule/announcementDetail/announcementDetail.css"
+/>
 
-<div class="header">
-  &lt; Back
-</div>
+<a href="/announcement"><div class="header">&lt; Back</div></a>
 
-<div class="announcement-title"> 
-  Announcement Title
-</div>
+<div class="announcement-title"><%= title %></div>
 
-
-<div class="announcement-container">
-  Announcement Content
-</div>
+<div class="announcement-container"><%= description %></div>
