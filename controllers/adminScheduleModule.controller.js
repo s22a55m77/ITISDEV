@@ -6,6 +6,7 @@ const {
   getWeekdays,
   getSaturdays,
   mergeDateAndTime,
+  getDateChanges,
 } = require('../utils/dateUtil.js')
 
 const adminScheduleModuleController = e.Router()
@@ -83,7 +84,6 @@ adminScheduleModuleController.get('/edit/:id', async (req, res) => {
     'YYYY-MM-DD'
   )
 
-  
   const map = new Map()
 
   schedule.details.forEach((detail) => {
@@ -95,11 +95,15 @@ adminScheduleModuleController.get('/edit/:id', async (req, res) => {
 
   for (const [key, value] of map) {
     const times = value.map((detail) => {
-      return moment(detail.time).tz('Asia/Manila').format('HH:mm')
+      return moment(detail.time).tz('Asia/Manila').format()
     })
 
-    const weekdays = times.filter((time) => moment(time, 'HH:mm').day() !== 6)
-    const saturdays = times.filter((time) => moment(time, 'HH:mm').day() === 6)
+    const weekdays = times
+      .filter((time) => moment(time).day() !== 6)
+      .map((time) => moment(time).format('HH:mm'))
+    const saturdays = times
+      .filter((time) => moment(time).day() === 6)
+      .map((time) => moment(time).format('HH:mm'))
 
     schedules.push({
       from: value[0].from,
@@ -110,13 +114,13 @@ adminScheduleModuleController.get('/edit/:id', async (req, res) => {
   }
 
   res.render('adminScheduleModule/edit.ejs', {
+    id: schedule._id,
     from,
     to,
     line: schedule.line,
     label: schedule.label,
-    schedules,
+    schedules: JSON.stringify(schedules),
   })
-
 })
 
 adminScheduleModuleController.post('/edit/:id', async (req, res) => {
@@ -129,23 +133,115 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
   const toStr = moment(to).tz('Asia/Manila').format('MMM D')
 
   const dateRange = `${fromStr} - ${toStr}`
-  schedule.dateRange = dateRange
-  schedule.label = label
-  schedule.save()
 
   try {
     // if date range is changed
     if (dateRange !== schedule.dateRange) {
       // delete all details out of date range
+      const oldStart = moment(
+        schedule.dateRange.split(' - ')[0],
+        'MMM D'
+      ).format('YYYY-MM-DD')
+      const oldEnd = moment(schedule.dateRange.split(' - ')[1], 'MMM D').format(
+        'YYYY-MM-DD'
+      )
+      const newStart = from
+      const newEnd = to
+
+      const changes = getDateChanges(oldStart, oldEnd, newStart, newEnd)
+
+      changes.forEach(async (change) => {
+        if (change.type === 'add') {
+          const day = moment(change.date).tz('Asia/Manila').day()
+
+          let details
+          if (day === 6) {
+            details = schedule.details.filter(
+              (date) => moment(date.time).day() === 6
+            )
+          } else {
+            details = schedule.details.filter(
+              (date) => moment(date.time).day() < 6
+            )
+          }
+
+          // convert to HH:mm format
+          const times = details.map((detail) =>
+            moment(detail.time).format('HH:mm')
+          )
+          // get unique times
+          const uniqueTimes = [...new Set(times)]
+
+          const newDetails = []
+          uniqueTimes.forEach((time) => {
+            const formattedTime = moment(`${change.date} ${time}`)
+              .tz('Asia/Manila')
+              .format()
+            newDetails.push({
+              from: details[0].from,
+              to: details[0].to,
+              time: formattedTime,
+            })
+            newDetails.push({
+              from: details[0].to,
+              to: details[0].from,
+              time: formattedTime,
+            })
+          })
+          const docs = await scheduleDetailModel.insertMany(newDetails)
+          schedule.details.push(...docs)
+        } else if (change.type === 'delete') {
+          const detailsToDelete = schedule.details.filter((detail) => {
+            const date = moment(detail.time)
+              .tz('Asia/Manila')
+              .format('YYYY-MM-DD')
+            return date === change.date
+          })
+
+          await scheduleDetailModel.deleteMany({
+            _id: { $in: detailsToDelete.map((detail) => detail._id) },
+          })
+
+          schedule.details = schedule.details.filter(
+            (detail) => !detailsToDelete.includes(detail)
+          )
+        }
+      })
+
       const detailsToDelete = schedule.details.filter((detail) => {
         const date = moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
+
         return !moment(date).isBetween(from, to, undefined, '[]')
       })
 
       await scheduleDetailModel.deleteMany({
         _id: { $in: detailsToDelete.map((detail) => detail._id) },
       })
+
+      schedule.details = schedule.details.filter(
+        (detail) => !detailsToDelete.includes(detail)
+      )
+
+      // get weekdays and saturdays time
+      const weekDaysTime = []
+      const saturdaysTime = []
+
+      schedule.details.forEach((detail) => {
+        const time = moment(detail.time).tz('Asia/Manila').format('HH:mm')
+
+        if (moment(detail.time).day() !== 6) {
+          weekDaysTime.push(time)
+        } else {
+          saturdaysTime.push(time)
+        }
+      })
+
+      // get outer date range
     }
+
+    schedule.dateRange = dateRange
+    schedule.label = label
+    schedule.save()
 
     // deletedTime = [{from, to, time, isWeekday}]
     // delete all time in deletedTime
@@ -154,14 +250,16 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
         // time is in different format, deletedTime is in format 'HH:mm'
         // details time is in format 'YYYY-MM-DDTHH:mm:ssZ'
 
-        return deletedTime.some(
-          (time) =>
+        return deletedTime.some((time) => {
+          return (
             time.from === detail.from &&
             time.to === detail.to &&
             time.time ===
               moment(detail.time).tz('Asia/Manila').format('HH:mm') &&
-            !!time.isWeekday === (moment(detail.time).day() !== 6)
-        )
+            (!!time.isWeekday === moment(detail.time).day() < 6 ||
+              (time.isWeekday === 'false' && moment(detail.time).day() === 6))
+          )
+        })
       })
 
       await scheduleDetailModel.deleteMany({

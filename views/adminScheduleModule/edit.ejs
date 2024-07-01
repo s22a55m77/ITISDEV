@@ -1,15 +1,25 @@
 <%- include('../common/headers.ejs') %>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+/>
 <link rel="stylesheet" href="/adminScheduleModule/edit/edit.css" />
 <script defer src="/adminScheduleModule/edit/edit.js"></script>
 
-
-<div>
-  Manage Shuttle Schedules
-</div>
+<div>Manage Shuttle Schedules</div>
 <div class="tab">
   <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
   <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
@@ -18,19 +28,15 @@
   <a href="/admin/schedule/create?line=5">WALTER ↔ DLSU LAG</a>
 </div>
 
-<div onclick="back()">
-  ← BACK
-</div>
+<div onclick="back()">← BACK</div>
 
 <div>
-  <div id="date">
-    May 9 - Aug 7
-  </div>
+  <div id="date"></div>
   <input id="date-range" />
   <div>
     <button onclick="edit()">edit</button>
   </div>
-  <input id="label" type="text" value="<%= label %>"/>
+  <input id="label" type="text" value="<%= label %>" />
 </div>
 
 <div>
@@ -65,13 +71,11 @@
 </div>
 
 <script>
-  const from = "<%= from %>"
-  const to = "<%= to %>"
-  const label = "<%= label %>"
-  const line = "<%= line %>"
-  let scheduleInformation = "<%= schedules %>";
+  const from = '<%= from %>'
+  const to = '<%= to %>'
+  const label = '<%= label %>'
+  const line = '<%= line %>'
+  const id = '<%= id %>'
+  let scheduleInformation = '<%= schedules %>'
 </script>
-<button id="save">
-  SAVE
-</button>
-
+<button id="save">SAVE</button>

@@ -64,4 +64,44 @@ const mergeDateAndTime = (dates, times) => {
   return mergedDates
 }
 
-module.exports = { getSaturdays, getWeekdays, mergeDateAndTime }
+function getDateRange(startDate, endDate) {
+  let dateArray = []
+  let currentDate = moment(startDate)
+  const end = moment(endDate)
+
+  while (currentDate <= end) {
+    dateArray.push(currentDate.format('YYYY-MM-DD'))
+    currentDate = currentDate.add(1, 'days')
+  }
+  return dateArray
+}
+
+function getDateChanges(oldStart, oldEnd, newStart, newEnd) {
+  const oldStartDate = moment(oldStart)
+  const oldEndDate = moment(oldEnd)
+  const newStartDate = moment(newStart)
+  const newEndDate = moment(newEnd)
+
+  const dateObjects = []
+
+  const newDates = getDateRange(newStartDate, newEndDate)
+  const oldDates = getDateRange(oldStartDate, oldEndDate)
+
+  newDates.forEach((date) => {
+    const momentDate = moment(date)
+    if (momentDate.isBefore(oldStartDate) || momentDate.isAfter(oldEndDate)) {
+      dateObjects.push({ type: 'add', date: date })
+    }
+  })
+
+  oldDates.forEach((date) => {
+    const momentDate = moment(date)
+    if (momentDate.isAfter(newEndDate) || momentDate.isBefore(newStartDate)) {
+      dateObjects.push({ type: 'delete', date: date })
+    }
+  })
+
+  return dateObjects
+}
+
+module.exports = { getSaturdays, getWeekdays, mergeDateAndTime, getDateChanges }
