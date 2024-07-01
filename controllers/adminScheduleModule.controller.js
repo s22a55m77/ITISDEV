@@ -93,7 +93,7 @@ adminScheduleModuleController.get('/edit/:id', async (req, res) => {
     to,
     line: schedule.line,
     label: schedule.label,
-    schedules: JSON.parse(schedule.detailsJson).schedules,
+    schedules: schedule.detailsJson,
   })
 })
 

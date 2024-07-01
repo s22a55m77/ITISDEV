@@ -30,7 +30,7 @@
   <div>
     <button onclick="edit()">edit</button>
   </div>
-  <input id="label" type="text" />
+  <input id="label" type="text" value="<%= label %>"/>
 </div>
 
 <div>
@@ -63,6 +63,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  const from = "<%= from %>"
+  const to = "<%= to %>"
+  const label = "<%= label %>"
+  const line = "<%= line %>"
+  let scheduleInformation = "<%= schedules %>";
+</script>
 <button id="save">
   SAVE
 </button>

@@ -26,7 +26,7 @@
       <td><%= schedule.dateRange %></td>
       <td><%= schedule.label %></td>
       <td>
-        <a href="/admin/schedule/edit/<%= schedule._id %>">
+        <a href="/admin/schedule/edit/<%= schedule._id %>?line=<%= schedule.line %>">
           <button>EDIT</button>
         </a>
         <a href="/admin/schedule/delete/<%= schedule._id %>"
