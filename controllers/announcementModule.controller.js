@@ -12,12 +12,10 @@ announcementModuleController.get('/', isAuthorized, async (req, res) => {
 })
 
 announcementModuleController.get('/:id', isAuthorized, async (req, res) => {
-  const email = httpContext.get('userEmail')
+  const user = httpContext.get('user')
 
   const id = req.params.id
   const announcement = await announcementModel.findById(id)
-
-  const user = await userModel.findOne({ email })
 
   if (!announcement.read.includes(user._id)) {
     await announcementModel.findByIdAndUpdate(id, {
