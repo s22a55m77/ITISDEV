@@ -20,10 +20,11 @@ $('#weekdays-container').append(
     return (
       '<div class="date-container">' 
         + monthDiv +
-        '<div class="day" onclick="dateSelect(\'' + weekday.date + '\', \'' + weekday.month + '\')">' + 
+        '<input type="checkbox" id="' + weekday.date + weekday.month + '" />' +
+        '<label for="' + weekday.date + weekday.month + '" class="day">' + 
           '<span>' + weekday.day + '</span>' + 
           weekday.date + 
-        '</div>'+
+        '</label>'+
       '</div>'
     )
   })
@@ -40,15 +41,12 @@ $('#saturdays-container').append(
     return (
       '<div class="date-container">' 
         + monthDiv +
-        '<div class="day" onclick="dateSelect(\'' + weekend.date + '\', \'' + weekend.month + '\')">' + 
+        '<input type="checkbox" id="' + weekend.date + weekend.month + '" />' +
+        '<label for="' + weekend.date + weekend.month + '" class="day">' + 
           '<span>' + weekend.day + '</span>' + 
           weekend.date + 
-        '</div>'+
+        '</label>'+
       '</div>'
     )
   })
 )
-
-function dateSelect(date, month) {
-  console.log('date selected', date, month);
-}

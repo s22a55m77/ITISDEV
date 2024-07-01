@@ -14,3 +14,12 @@ body {
   flex-direction: column;
   border: 1px solid black;
 }
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked + label.day {
+  color: white;
+  background-color: black;
+}
