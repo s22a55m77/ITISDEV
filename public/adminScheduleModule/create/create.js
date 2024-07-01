@@ -78,9 +78,8 @@ $('#date-range').on('apply.daterangepicker', function(ev, picker) {
 });
 
 function deleteTime(from, day, time) {
-  // remove element
-  const id = ('#' + from + time.replace(':', '\\:')).toString();
-  $(id).remove();
+  let id;
+  
 
   // set pointer
   let pointer;
@@ -91,11 +90,15 @@ function deleteTime(from, day, time) {
 
   // remove from scheduleInformation
   if(day === "weekday") {
+    id = ('#' + from + time.replace(':', '\\:') + 'weekday').toString()
     scheduleInformation.schedules[pointer].weekdays = scheduleInformation.schedules[pointer].weekdays.filter(e => e !== time)
   }
   else {
+    id = ('#' + from + time.replace(':', '\\:') + 'saturday').toString()
     scheduleInformation.schedules[pointer].saturdays = scheduleInformation.schedules[pointer].saturdays.filter(e => e !== time)    
   }
+  console.log(id)
+  $(id).remove();
 
 }
 
@@ -111,7 +114,7 @@ $('#weekdays-from-time-container').on('change', '#weekdays-from-time-input', fun
   let time24 = $('#weekdays-from-time-input').val()
   let time12 = moment(time24, 'HH:mm').format('hh:mm A')
   $('#weekdays-from-time-container').append(
-    '<div id="from' + time24 + '">'
+    '<div id="from' + time24 + 'weekday">'
       + time12
       + '<button onclick="deleteTime(\'from\', \'weekday\' , \'' + time24 + '\')">Delete</button>' +
     '</div>'
@@ -132,7 +135,7 @@ $('#weekdays-to-time-container').on('change', '#weekdays-to-time-input', functio
   let time24 = $('#weekdays-to-time-input').val()
   let time12 = moment(time24, 'HH:mm').format('hh:mm A')
   $('#weekdays-to-time-container').append(
-    '<div id="to' + time24 + '">'
+    '<div id="to' + time24 + 'weekday">'
       + time12
       + '<button onclick="deleteTime(\'to\', \'weekday\' , \'' + time24 + '\')">Delete</button>' +
     '</div>'
@@ -153,7 +156,7 @@ $('#saturdays-from-time-container').on('change', '#saturdays-from-time-input', f
   let time24 = $('#saturdays-from-time-input').val()
   let time12 = moment(time24, 'HH:mm').format('hh:mm A')
   $('#saturdays-from-time-container').append(
-    '<div id="from' + time24 + '">'
+    '<div id="from' + time24 + 'saturday">'
       + time12
       + '<button onclick="deleteTime(\'from\', \'saturday\' , \'' + time24 + '\')">Delete</button>' +
     '</div>'
@@ -174,7 +177,7 @@ $('#saturdays-to-time-container').on('change', '#saturdays-to-time-input', funct
   let time24 = $('#saturdays-to-time-input').val()
   let time12 = moment(time24, 'HH:mm').format('hh:mm A')
   $('#saturdays-to-time-container').append(
-    '<div id="to' + time24 + '">'
+    '<div id="to' + time24 + 'saturday">'
       + time12
       + '<button onclick="deleteTime(\'to\', \'saturday\' , \'' + time24 + '\')">Delete</button>' +
     '</div>'
