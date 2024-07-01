@@ -196,4 +196,18 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
   }
 })
 
+adminScheduleModuleController.get('/delete/:id', async (req, res) => {
+  const id = req.params.id
+
+  const schedule = await scheduleModel.findById(id).populate('details')
+
+  await scheduleDetailModel.deleteMany({
+    _id: { $in: schedule.details.map((detail) => detail._id) },
+  })
+
+  await scheduleModel.findByIdAndDelete(id)
+
+  res.redirect('/admin/schedule?success=delete')
+})
+
 module.exports = adminScheduleModuleController
