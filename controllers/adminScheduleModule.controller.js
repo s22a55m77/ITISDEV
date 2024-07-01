@@ -125,69 +125,75 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
   schedule.label = label
   schedule.save()
 
-  // if date range is changed
-  if (dateRange !== schedule.dateRange) {
-    // delete all details out of date range
-    const detailsToDelete = schedule.details.filter((detail) => {
-      const date = moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
-      return !moment(date).isBetween(from, to, undefined, '[]')
-    })
+  try {
+    // if date range is changed
+    if (dateRange !== schedule.dateRange) {
+      // delete all details out of date range
+      const detailsToDelete = schedule.details.filter((detail) => {
+        const date = moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
+        return !moment(date).isBetween(from, to, undefined, '[]')
+      })
 
-    await scheduleDetailModel.deleteMany({
-      _id: { $in: detailsToDelete.map((detail) => detail._id) },
-    })
-  }
+      await scheduleDetailModel.deleteMany({
+        _id: { $in: detailsToDelete.map((detail) => detail._id) },
+      })
+    }
 
-  // deletedTime = [{from, to, time, isWeekday}]
-  // delete all time in deletedTime
-  if (deletedTime) {
-    const detailsToDelete = schedule.details.filter((detail) => {
-      // time is in different format, deletedTime is in format 'HH:mm'
-      // details time is in format 'YYYY-MM-DDTHH:mm:ssZ'
+    // deletedTime = [{from, to, time, isWeekday}]
+    // delete all time in deletedTime
+    if (deletedTime) {
+      const detailsToDelete = schedule.details.filter((detail) => {
+        // time is in different format, deletedTime is in format 'HH:mm'
+        // details time is in format 'YYYY-MM-DDTHH:mm:ssZ'
 
-      return deletedTime.some(
-        (time) =>
-          time.from === detail.from &&
-          time.to === detail.to &&
-          time.time === moment(detail.time).tz('Asia/Manila').format('HH:mm') &&
-          !!time.isWeekday === (moment(detail.time).day() !== 6)
-      )
-    })
+        return deletedTime.some(
+          (time) =>
+            time.from === detail.from &&
+            time.to === detail.to &&
+            time.time ===
+              moment(detail.time).tz('Asia/Manila').format('HH:mm') &&
+            !!time.isWeekday === (moment(detail.time).day() !== 6)
+        )
+      })
 
-    await scheduleDetailModel.deleteMany({
-      _id: { $in: detailsToDelete.map((detail) => detail._id) },
-    })
-  }
+      await scheduleDetailModel.deleteMany({
+        _id: { $in: detailsToDelete.map((detail) => detail._id) },
+      })
+    }
 
-  // addedTime = [{from, to, weekdays, saturdays}]
-  // add all time in addedTime
-  const weekdays = getWeekdays(from, to)
-  const saturdays = getSaturdays(from, to)
+    // addedTime = [{from, to, weekdays, saturdays}]
+    // add all time in addedTime
+    const weekdays = getWeekdays(from, to)
+    const saturdays = getSaturdays(from, to)
 
-  const newSchedules = []
+    const newSchedules = []
 
-  addedTime.forEach((schedule) => {
-    const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
-    const saturdaySchedules = mergeDateAndTime(saturdays, schedule.saturdays)
+    addedTime.forEach((schedule) => {
+      const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
+      const saturdaySchedules = mergeDateAndTime(saturdays, schedule.saturdays)
 
-    const dates = weekdaySchedules.concat(saturdaySchedules)
+      const dates = weekdaySchedules.concat(saturdaySchedules)
 
-    dates.forEach((time) => {
-      newSchedules.push({
-        from: schedule.from,
-        to: schedule.to,
-        time,
+      dates.forEach((time) => {
+        newSchedules.push({
+          from: schedule.from,
+          to: schedule.to,
+          time,
+        })
       })
     })
-  })
 
-  const scheduleDetails = await scheduleDetailModel.insertMany(newSchedules)
+    const scheduleDetails = await scheduleDetailModel.insertMany(newSchedules)
 
-  await scheduleModel.findByIdAndUpdate(id, {
-    $push: { details: scheduleDetails },
-  })
+    await scheduleModel.findByIdAndUpdate(id, {
+      $push: { details: scheduleDetails },
+    })
 
-  res.send({ success: true })
+    res.send({ success: true })
+  } catch (err) {
+    console.error(err)
+    res.send({ success: false, error: err })
+  }
 })
 
 module.exports = adminScheduleModuleController
