@@ -1,0 +1,35 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/adminScheduleModule/schedule/schedule.css" />
+
+<div>
+  Manage Shuttle Schedules
+</div>
+<div class="tab">
+  <a href="/admin/schedule?line=1">DLSU MNL ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=2">PASEO ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=3">CARMONA ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=4">PAVILION ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=5">WALTER ↔ DLSU LAG</a>
+</div>
+
+<div>
+  <button>ADD NEW SCHEDULE</button>
+</div>
+
+<div>
+  <table>
+    <tr>
+      <th>Date Range</th>
+      <th>Label</th>
+      <th>Actions</th>
+    </tr>
+    <tr>
+      <td>May 9 - Aug 7</td>
+      <td>Regular Term 3 AY 2023-2024 Schedule</td>
+      <td>
+        <button>EDIT</button>
+        <button>DELETE</button>
+      </td>
+    </tr>
+  </table>
+</div>
