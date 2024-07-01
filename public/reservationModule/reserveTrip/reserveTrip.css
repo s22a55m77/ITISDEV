@@ -1,0 +1,16 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+#weekdays-container, #saturdays-container {
+  display: flex;
+  overflow: scroll;
+  gap: 5px
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+}

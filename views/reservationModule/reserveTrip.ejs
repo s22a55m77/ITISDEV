@@ -1,1 +1,44 @@
 <%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="./reservationModule/reserveTrip/reserveTrip.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script defer src="./reservationModule/reserveTrip/reserveTrip.js"></script>
+
+<div>
+  Select trip type
+</div>
+<label for="round-trip">Round trip</label>
+<input id="round-trip" type="radio" name="trip-type" value="round-trip" />
+<label for="one-way">One way</label>
+<input id="one-way" type="radio" name="trip-type" value="one-way" />
+
+<div>
+  Select pick-up and drop-off points
+</div>
+<label for="from">From</label>
+<select name="from" id="from">
+  <option value="DLSU MNL">DLSU MNL</option>
+</select>
+<div>i</div>
+<label for="to">To</label>
+<select name="to" id="to">
+  <option value="DLSU MNL">DLSU MNL</option>
+</select>
+<div>i</div>
+
+<div>
+  Select date/s
+</div>
+<div>
+  Weekdays
+</div>
+<div id="weekdays-container">
+
+</div>
+<div>
+  Saturdays
+</div>
+<div id="saturdays-container">
+
+</div>
+
+<button>Next</button>
