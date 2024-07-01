@@ -5,6 +5,7 @@ const scheduleSchema = new Schema(
     line: { type: Number, required: true },
     dateRange: { type: String, required: true },
     label: { type: String, required: true },
+    detailsJson: { type: String, required: true },
     details: [
       {
         type: Schema.Types.ObjectId,

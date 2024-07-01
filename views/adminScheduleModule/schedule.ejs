@@ -1,9 +1,7 @@
 <%- include('../common/headers.ejs') %>
 <link rel="stylesheet" href="/adminScheduleModule/schedule/schedule.css" />
 
-<div>
-  Manage Shuttle Schedules
-</div>
+<div>Manage Shuttle Schedules</div>
 <div class="tab">
   <a href="/admin/schedule?line=1">DLSU MNL ↔ DLSU LAG</a>
   <a href="/admin/schedule?line=2">PASEO ↔ DLSU LAG</a>
@@ -23,13 +21,19 @@
       <th>Label</th>
       <th>Actions</th>
     </tr>
+    <% for(const schedule of schedules) { %>
     <tr>
-      <td>May 9 - Aug 7</td>
-      <td>Regular Term 3 AY 2023-2024 Schedule</td>
+      <td><%= schedule.dateRange %></td>
+      <td><%= schedule.label %></td>
       <td>
-        <button>EDIT</button>
-        <button>DELETE</button>
+        <a href="/admin/schedule/edit/<%= schedule._id %>">
+          <button>EDIT</button>
+        </a>
+        <a href="/admin/schedule/delete/<%= schedule._id %>"
+          ><button>DELETE</button></a
+        >
       </td>
     </tr>
+    <% } %>
   </table>
 </div>

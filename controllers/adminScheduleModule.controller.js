@@ -10,8 +10,10 @@ const {
 
 const adminScheduleModuleController = e.Router()
 
-adminScheduleModuleController.get('/', (req, res) => {
-  res.render('adminScheduleModule/schedule.ejs')
+adminScheduleModuleController.get('/', async (req, res) => {
+  const schedules = await scheduleModel.find()
+
+  res.render('adminScheduleModule/schedule.ejs', { schedules })
 })
 
 adminScheduleModuleController.get('/create', (req, res) => {
@@ -24,7 +26,12 @@ adminScheduleModuleController.post('/create', async (req, res) => {
   const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
   const toStr = moment(to).tz('Asia/Manila').format('MMM D')
   const dateRange = `${fromStr} - ${toStr}`
-  const schedule = new scheduleModel({ line, dateRange, label })
+  const schedule = new scheduleModel({
+    line,
+    dateRange,
+    label,
+    detailsJson: JSON.stringify({ schedules }),
+  })
 
   const weekdays = getWeekdays(from, to)
   const saturdays = getSaturdays(from, to)
@@ -69,10 +76,25 @@ adminScheduleModuleController.post('/create', async (req, res) => {
   }
 })
 
-adminScheduleModuleController.get('/edit/:id', (req, res) => {
+adminScheduleModuleController.get('/edit/:id', async (req, res) => {
   const id = req.params.id
 
-  res.render('adminScheduleModule/edit.ejs')
+  const schedule = await scheduleModel.findById(id).populate('details')
+
+  const from = moment(schedule.dateRange.split(' - ')[0], 'MMM D').format(
+    'YYYY-MM-DD'
+  )
+  const to = moment(schedule.dateRange.split(' - ')[1], 'MMM D').format(
+    'YYYY-MM-DD'
+  )
+
+  res.render('adminScheduleModule/edit.ejs', {
+    from,
+    to,
+    line: schedule.line,
+    label: schedule.label,
+    schedules: JSON.parse(schedule.detailsJson).schedules,
+  })
 })
 
 module.exports = adminScheduleModuleController
