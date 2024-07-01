@@ -1,0 +1,13 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+#date-range {
+  display: none;
+}
+
+.schedule-container {
+  display: flex;
+  gap: 200px
+}
