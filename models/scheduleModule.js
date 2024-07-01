@@ -2,6 +2,7 @@ const { Schema, model } = require('../utils/mongoose.js')
 
 const scheduleSchema = new Schema(
   {
+    line: { type: Number, required: true },
     dateRange: { type: String, required: true },
     label: { type: String, required: true },
     details: [
