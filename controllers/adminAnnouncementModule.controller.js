@@ -1,6 +1,8 @@
 const e = require('express')
 const isSSU = require('../utils/isSSU.js')
-const { announcementModel } = require('../models/index.js')
+const emailTransporter = require('../utils/email.js')
+const { announcementModel, userModel } = require('../models/index.js')
+require('dotenv').config()
 
 const adminAnnouncementModuleController = e.Router()
 
@@ -43,7 +45,24 @@ adminAnnouncementModuleController.post('/create', isSSU, async (req, res) => {
       description,
     })
 
-    await announcement.save()
+    const doc = await announcement.save()
+
+    try {
+      const users = await userModel.find({ role: 'passenger' })
+      const emails = users.map((user) => user.email)
+
+      const url = process.env.WEBSITE_URL + '/announcement/' + doc._id
+
+      await emailTransporter.sendMail({
+        from: process.env.EMAIL_USER,
+        sender: 'Announcement Notification',
+        to: emails,
+        subject: `New Announcement: ${title}`,
+        html: `<center><h1>${title}</h1><div>${description}</div><div>Visit <a href="${url}">website</a> for more details</div></center>`,
+      })
+    } catch (error) {
+      console.error('Error in sending mail' + error)
+    }
 
     res.redirect('/admin/announcement?success=created')
     return
