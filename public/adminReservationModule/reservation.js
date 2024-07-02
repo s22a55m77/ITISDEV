@@ -20,7 +20,11 @@ $('#to-location-name').text(toFrom)
 // Set Time list
 const fromTimeListElement = timeList[0].map((time) => {
   return ` 
-  <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
+  <a id="${
+    time.id
+  }" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${
+    time.id
+  }">
     ${moment(time.time, 'HH:mm').format('hh:mm a')}
     ${time.slot}
   </a>`
@@ -28,7 +32,11 @@ const fromTimeListElement = timeList[0].map((time) => {
 
 const toTimeListElement = timeList[1].map((time) => {
   return `
-    <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
+    <a id="${
+      time.id
+    }" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${
+    time.id
+  }">
       ${moment(time.time, 'HH:mm').format('hh:mm a')}
       ${time.slot}
     </a>
@@ -106,7 +114,6 @@ function renderPassengerList(passengerList) {
     selectedData.id = $(this).find('td').eq(2).text()
     selectedData.designation = $(this).find('td').eq(3).text()
     selectedData.purpose = $(this).find('td').eq(4).text()
-    
   })
 }
 
@@ -155,17 +162,66 @@ $('#rejected').click(function (e) {
 })
 
 // Confirm Reservation
-$('#confirm').click(function () {
-  console.log(selectedData)
+$('#confirm').click(async function () {
+  const id = selectedData._id
+
+  const res = await fetch('/admin/reservation/confirm', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  })
+
+  const json = await res.json()
+
+  if (json.success) {
+    passengerList.find((passenger) => passenger._id === id).status = 'confirmed'
+    renderPassengerList(passengerList)
+  }
 })
 
 // Reject Reservation
-$('#reject').click(function () {
+$('#reject').click(async function () {
   console.log(selectedData)
+  const id = selectedData._id
+
+  const res = await fetch('/admin/reservation/reject', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  })
+
+  const json = await res.json()
+
+  if (json.success) {
+    passengerList.find((passenger) => passenger._id === id).status = 'rejected'
+    renderPassengerList(passengerList)
+  }
 })
 
 // Confirm All
-$('#confirm-all').click(function() {
-  const ids = passengerList.map(item => item._id);
-  console.log(ids);
+$('#confirm-all').click(async function () {
+  const ids = passengerList.map((item) => item._id)
+
+  const res = await fetch('/admin/reservation/confirm/all', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ids }),
+  })
+
+  const json = await res.json()
+
+  if (json.success) {
+    const newPassengerList = passengerList.map((passenger) => {
+      passenger.status = 'confirmed'
+      return passenger
+    })
+
+    renderPassengerList(newPassengerList)
+  }
 })

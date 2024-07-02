@@ -178,8 +178,8 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
         $push: {
           reserve: approval.user,
         },
-        slot: {
-          $inc: -1,
+        $inc: {
+          slot: -1,
         },
       }
     )
@@ -194,9 +194,33 @@ adminReservationModuleController.post('/reject', async (req, res) => {
   const id = req.body.id
 
   try {
-    await reservationApprovalModel.findByIdAndUpdate(id, {
-      status: 'rejected',
-    })
+    const doc = await reservationApprovalModel.findByIdAndUpdate(
+      id,
+      {
+        status: 'rejected',
+      },
+      { new: false }
+    )
+
+    // if from confirm to rejected
+    if (doc.status === 'confirmed') {
+      await scheduleDetailModel.findOneAndUpdate(
+        {
+          approval: {
+            $in: id,
+          },
+        },
+        {
+          $pull: {
+            reserve: doc.user,
+          },
+          $inc: {
+            slot: 1,
+          },
+        }
+      )
+    }
+
     res.send({ success: true })
   } catch (error) {
     console.error(error)
@@ -208,10 +232,19 @@ adminReservationModuleController.post('/confirm/all', async (req, res) => {
   const ids = req.body.ids
 
   try {
-    const approval = await reservationApprovalModel.updateMany(
+    await reservationApprovalModel.updateMany(
       { _id: { $in: ids } },
       { status: 'confirmed' }
     )
+
+    const approval = await reservationApprovalModel.find({
+      _id: { $in: ids },
+      $and: {
+        status: {
+          $ne: 'confirmed',
+        },
+      },
+    })
 
     const users = approval.map((approval) => approval.user)
 
