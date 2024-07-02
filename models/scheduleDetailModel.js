@@ -7,6 +7,7 @@ const scheduleDetailSchema = new Schema(
     time: { type: Date, required: true },
     slot: { type: Number, default: 30 },
     reserve: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    approval: { type: Schema.Types.ObjectId, ref: 'ReservationApproval' },
   },
   { collection: 'ScheduleDetail', timestamps: true }
 )
