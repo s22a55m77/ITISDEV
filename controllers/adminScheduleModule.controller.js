@@ -134,6 +134,7 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
   const toStr = moment(to).tz('Asia/Manila').format('MMM D')
 
   const dateRange = `${fromStr} - ${toStr}`
+  const originalDateRange = schedule.dateRange
 
   schedule.dateRange = dateRange
   schedule.label = label
@@ -142,20 +143,20 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
 
   try {
     // if date range is changed
-    if (dateRange !== schedule.dateRange) {
+    if (dateRange !== originalDateRange) {
       // delete all details out of date range
       const oldStart = moment(
-        schedule.dateRange.split(' - ')[0],
+        originalDateRange.split(' - ')[0],
         'MMM D'
       ).format('YYYY-MM-DD')
-      const oldEnd = moment(schedule.dateRange.split(' - ')[1], 'MMM D').format(
+      const oldEnd = moment(originalDateRange.split(' - ')[1], 'MMM D').format(
         'YYYY-MM-DD'
       )
       const newStart = from
       const newEnd = to
 
       const changes = getDateChanges(oldStart, oldEnd, newStart, newEnd)
-
+      console.log(changes)
       changes.forEach(async (change) => {
         if (change.type === 'add') {
           const day = moment(change.date).tz('Asia/Manila').day()
@@ -221,7 +222,7 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
               })
             }
           })
-
+          console.log(newDetails)
           const docs = await scheduleDetailModel.insertMany(newDetails)
           await scheduleModel.findByIdAndUpdate(id, {
             $push: { details: docs },
