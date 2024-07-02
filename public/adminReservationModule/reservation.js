@@ -14,22 +14,12 @@ if (!line) {
 // set line information
 const fromTo = lineName[line - 1].from + ' -> ' + lineName[line - 1].to
 const toFrom = lineName[line - 1].to + ' -> ' + lineName[line - 1].from
-$('#from-location-name').text(fromTo)
-$('#to-location-name').text(toFrom)
 
 // Set Time list
-const fromTimeListElement = timeList[0].map((time) => {
-  return ` 
-  <a id="${
-    time.id
-  }" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${
-    time.id
-  }">
-    ${moment(time.time, 'HH:mm').format('hh:mm a')}
-    ${time.slot}
-  </a>`
-})
 function fromTimeRender(timeList) {
+  $('#from-location-time-container').empty()
+  $('#from-location-time-container').append('<div id="from-location-name"></div>')
+  $('#from-location-name').text(fromTo)
   const fromTimeListElement = timeList.map((time) => {
     return ` 
     <a id="${
@@ -44,22 +34,10 @@ function fromTimeRender(timeList) {
   $('#from-location-time-container').append(fromTimeListElement)
 }
 
-const toTimeListElement = timeList[1].map((time) => {
-  return `
-    <a id="${
-      time.id
-    }" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${
-    time.id
-  }">
-      ${moment(time.time, 'HH:mm').format('hh:mm a')}
-      ${time.slot}
-    </a>
-  `
-})
-
-$('#from-location-time-container').append(fromTimeListElement)
-$('#to-location-time-container').append(toTimeListElement)
 function toTimeRender(timeList) {
+  $('#to-location-time-container').empty()
+  $('#to-location-time-container').append('<div id="to-location-name"></div>')
+  $('#to-location-name').text(toFrom)
   const toTimeListElement = timeList.map((time) => {
     return `
       <a id="${
