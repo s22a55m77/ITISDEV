@@ -1,11 +1,16 @@
 <%- include('../common/headers.ejs') %>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
 <link rel="stylesheet" href="/adminReservationModule/reservation.css" />
-<script defer type="module" src="/adminReservationModule/reservation.js"></script>
+<script
+  defer
+  type="module"
+  src="/adminReservationModule/reservation.js"
+></script>
 
-<div onclick="">
-  < View Reservations
-</div>
+<div onclick="">< View Reservations</div>
 <div class="tab">
   <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
   <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
@@ -15,13 +20,13 @@
 </div>
 
 <div class="main-container">
-  <div >
+  <div>
     <div class="date-select-container">
-      <div id="prev-date"><-</div> 
+      <div id="prev-date"><-</div>
       <div id="date-list"></div>
       <div id="next-date">-></div>
     </div>
-    
+
     <div class="location-container">
       <div id="from-location-time-container">
         <div id="from-location-name"></div>
@@ -31,29 +36,28 @@
       </div>
     </div>
   </div>
-  
+
   <div>
     <div>
       Passenger List
-      
+
       <div class="popup-container">
         <button onclick="popup()">Filter</button>
         <div class="popup" id="popup">
           <div>
-            <input type="checkbox" id="confirmed" name="confirmed" checked>
-            <label for="confirmed">Confirmed</label><br>
+            <input type="checkbox" id="confirmed" name="confirmed" checked />
+            <label for="confirmed">Confirmed</label><br />
           </div>
           <div>
-            <input type="checkbox" id="rejected" name="rejected" checked>
-            <label for="rejected">Rejected</label><br>
+            <input type="checkbox" id="rejected" name="rejected" checked />
+            <label for="rejected">Rejected</label><br />
           </div>
           <div>
-            <input type="checkbox" id="pending" name="pending" checked>
-            <label for="pending">Pending</label><br>
+            <input type="checkbox" id="pending" name="pending" checked />
+            <label for="pending">Pending</label><br />
           </div>
         </div>
       </div>
-      
     </div>
     <div>
       <table id="passenger-list-table">
@@ -73,3 +77,6 @@
   </div>
 </div>
 
+<script>
+  const dateList = JSON.parse('<%- dateList %>')
+</script>
