@@ -159,4 +159,47 @@ adminReservationModuleController.get('/', async (req, res) => {
   })
 })
 
+adminReservationModuleController.post('/confirm', async (req, res) => {
+  const id = req.body.id
+
+  try {
+    await reservationApprovalModel.findByIdAndUpdate(id, {
+      status: 'confirmed',
+    })
+    res.send({ success: true })
+  } catch (error) {
+    console.error(error)
+    res.send({ success: false, error: error })
+  }
+})
+
+adminReservationModuleController.post('/reject', async (req, res) => {
+  const id = req.body.id
+
+  try {
+    await reservationApprovalModel.findByIdAndUpdate(id, {
+      status: 'rejected',
+    })
+    res.send({ success: true })
+  } catch (error) {
+    console.error(error)
+    res.send({ success: false, error: error })
+  }
+})
+
+adminReservationModuleController.post('/confirm/all', async (req, res) => {
+  const ids = req.body.ids
+
+  try {
+    await reservationApprovalModel.updateMany(
+      { _id: { $in: ids } },
+      { status: 'confirmed' }
+    )
+    res.send({ success: true })
+  } catch (error) {
+    console.error(error)
+    res.send({ success: false, error: error })
+  }
+})
+
 module.exports = adminReservationModuleController
