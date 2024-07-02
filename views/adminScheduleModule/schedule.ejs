@@ -11,7 +11,7 @@
 </div>
 
 <div>
-  <button>ADD NEW SCHEDULE</button>
+  <a href="/admin/schedule/create"><button>ADD NEW SCHEDULE</button></a>
 </div>
 
 <div>
@@ -26,7 +26,9 @@
       <td><%= schedule.dateRange %></td>
       <td><%= schedule.label %></td>
       <td>
-        <a href="/admin/schedule/edit/<%= schedule._id %>?line=<%= schedule.line %>">
+        <a
+          href="/admin/schedule/edit/<%= schedule._id %>?line=<%= schedule.line %>"
+        >
           <button>EDIT</button>
         </a>
         <a href="/admin/schedule/delete/<%= schedule._id %>"
