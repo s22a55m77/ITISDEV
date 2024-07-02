@@ -9,48 +9,6 @@ const { findNearestAndSurrounding } = require('../utils/dateUtil.js')
 
 const adminReservationModuleController = e.Router()
 
-adminReservationModuleController.get('/test', async (req, res) => {
-  const today = moment.tz('Asia/Manila').format('YYYY-MM-DD')
-
-  const schedule = await scheduleModel.aggregate([
-    {
-      $lookup: {
-        from: 'ScheduleDetail',
-        localField: 'details',
-        foreignField: '_id',
-        as: 'details',
-      },
-    },
-    {
-      $match: {
-        line: 1,
-      },
-    },
-    {
-      $project: {
-        details: {
-          _id: true,
-          time: true,
-        },
-      },
-    },
-  ])
-
-  const days = []
-  schedule[0].details.forEach((detail) =>
-    days.push(moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD'))
-  )
-
-  const uniqueDays = [...new Set(days)]
-
-  const nearestAndSurroundingTimes = findNearestAndSurrounding(
-    uniqueDays,
-    today
-  )
-
-  res.json({ schedule, nearestAndSurroundingTimes })
-})
-
 adminReservationModuleController.get('/', async (req, res) => {
   const { selectedDate, selectedTime, line } = req.query
 
@@ -129,7 +87,15 @@ adminReservationModuleController.get('/', async (req, res) => {
   const timeList = []
 
   for (const [key, value] of map.entries()) {
-    timeList.push(value)
+    if (
+      key === 'DLSU MNL' ||
+      key === 'PASEO' ||
+      key === 'CARMONA' ||
+      key === 'PAVILION' ||
+      key === 'WALTER'
+    )
+      timeList[0] = value
+    else timeList[1] = value
   }
 
   let passengerList
@@ -165,24 +131,34 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
   const id = req.body.id
 
   try {
-    const approval = await reservationApprovalModel.findByIdAndUpdate(id, {
-      status: 'confirmed',
-    })
-    const schedule = await scheduleDetailModel.findOneAndUpdate(
+    const approval = await reservationApprovalModel.findByIdAndUpdate(
+      id,
       {
-        approval: {
-          $in: id,
-        },
+        status: 'confirmed',
       },
-      {
-        $push: {
-          reserve: approval.user,
-        },
-        $inc: {
-          slot: -1,
-        },
-      }
+      { new: false }
     )
+    let schedule
+    if (approval.status !== 'confirmed') {
+      schedule = await scheduleDetailModel.findOneAndUpdate(
+        {
+          approval: {
+            $in: id,
+          },
+        },
+        {
+          $push: {
+            reserve: approval.user,
+          },
+          $inc: {
+            slot: -1,
+          },
+        },
+        {
+          new: true,
+        }
+      )
+    }
     res.send({ success: true, id: schedule._id, slot: schedule.slot })
   } catch (error) {
     console.error(error)
@@ -219,6 +195,9 @@ adminReservationModuleController.post('/reject', async (req, res) => {
           $inc: {
             slot: 1,
           },
+        },
+        {
+          new: true,
         }
       )
     }
@@ -234,11 +213,6 @@ adminReservationModuleController.post('/confirm/all', async (req, res) => {
   const ids = req.body.ids
 
   try {
-    await reservationApprovalModel.updateMany(
-      { _id: { $in: ids } },
-      { status: 'confirmed' }
-    )
-
     const approval = await reservationApprovalModel.find({
       _id: { $in: ids },
       $and: {
@@ -247,6 +221,11 @@ adminReservationModuleController.post('/confirm/all', async (req, res) => {
         },
       },
     })
+
+    await reservationApprovalModel.updateMany(
+      { _id: { $in: ids } },
+      { status: 'confirmed' }
+    )
 
     const users = approval.map((approval) => approval.user)
 
@@ -265,6 +244,9 @@ adminReservationModuleController.post('/confirm/all', async (req, res) => {
         $inc: {
           slot: -users.length,
         },
+      },
+      {
+        new: true,
       }
     )
 

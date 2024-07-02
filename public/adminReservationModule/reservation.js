@@ -18,7 +18,9 @@ const toFrom = lineName[line - 1].to + ' -> ' + lineName[line - 1].from
 // Set Time list
 function fromTimeRender(timeList) {
   $('#from-location-time-container').empty()
-  $('#from-location-time-container').append('<div id="from-location-name"></div>')
+  $('#from-location-time-container').append(
+    '<div id="from-location-name"></div>'
+  )
   $('#from-location-name').text(fromTo)
   const fromTimeListElement = timeList.map((time) => {
     return ` 
@@ -187,15 +189,19 @@ $('#confirm').click(async function () {
 
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'confirmed'
-    let time = timeList[0].find((time) => time.id === json.id)
-    if (time) {
-      time.slot = json.slot
-      toTimeRender(timeList[0])
+
+    let index = timeList[0].findIndex((time) => time.id === json.id)
+    if (index != -1) {
+      console.log(1111)
+      timeList[0][index].slot = json.slot
+      fromTimeRender(timeList[0])
     }
-    time = timeList[1].find((time) => time.id === json.id)
-    if (time) {
-      time.slot = json.slot
-      fromTimeRender(timeList[1])
+    index = timeList[1].findIndex((time) => time.id === json.id)
+    if (index != -1) {
+      console.log(222222)
+      timeList[1][index].slot = json.slot
+      console.log(timeList[1])
+      toTimeRender(timeList[1])
     }
     renderPassengerList(passengerList)
   }
@@ -219,15 +225,16 @@ $('#reject').click(async function () {
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'rejected'
 
-    let time = timeList[0].find((time) => time.id === json.id)
-    if (time) {
-      time.slot = json.slot
-      toTimeRender(timeList[0])
+    let index = timeList[0].findIndex((time) => time.id === json.id)
+    if (index != -1) {
+      timeList[0][index].slot = json.slot
+      fromTimeRender(timeList[0])
     }
-    time = timeList[1].find((time) => time.id === json.id)
-    if (time) {
-      time.slot = json.slot
-      fromTimeRender(timeList[1])
+    index = timeList[1].findIndex((time) => time.id === json.id)
+    if (index != -1) {
+      timeList[1][index].slot = json.slot
+      console.log(timeList[1])
+      toTimeRender(timeList[1])
     }
 
     renderPassengerList(passengerList)
@@ -254,15 +261,15 @@ $('#confirm-all').click(async function () {
       return passenger
     })
 
-    let time = timeList[0].find((time) => time.id === json.id)
-    if (time) {
-      time.slot = json.slot
-      toTimeRender(timeList[0])
+    let index = timeList[0].findIndex((time) => time.id === json.id)
+    if (index != -1) {
+      timeList[0][index].slot = json.slot
+      fromTimeRender(timeList[0])
     }
-    time = timeList[1].find((time) => time.id === json.id)
-    if (time) {
-      time.slot = json.slot
-      fromTimeRender(timeList[1])
+    index = timeList[1].findIndex((time) => time.id === json.id)
+    if (index != -1) {
+      timeList[1][index].slot = json.slot
+      toTimeRender(timeList[1])
     }
     renderPassengerList(newPassengerList)
   }
