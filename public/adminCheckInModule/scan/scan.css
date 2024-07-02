@@ -1,0 +1,12 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  padding-top: 100px;
+  text-align: center;
+}
+
+#reader {
+  margin: 0 auto;
+  width: 80%;
+}
