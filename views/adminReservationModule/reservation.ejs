@@ -1,1 +1,75 @@
 <%- include('../common/headers.ejs') %>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<link rel="stylesheet" href="/adminReservationModule/reservation.css" />
+<script defer src="/adminReservationModule/reservation.js"></script>
+
+<div onclick="">
+  < View Reservations
+</div>
+<div class="tab">
+  <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=3">CARMONA ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=4">PAVILION ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=5">WALTER ↔ DLSU LAG</a>
+</div>
+
+<div class="main-container">
+  <div >
+    <div class="date-select-container">
+      <div id="prev-date"><-</div> 
+      <div id="date-list"></div>
+      <div id="next-date">-></div>
+    </div>
+    
+    <div class="location-container">
+      <div id="from-location-time-container">
+        <div id="from-location-name"></div>
+      </div>
+      <div id="to-location-time-container">
+        <div id="to-location-name"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div>
+      Passenger List
+      
+      <div class="popup-container">
+        <button onclick="popup()">Filter</button>
+        <div class="popup" id="popup">
+          <div>
+            <input type="checkbox" id="confirmed" name="confirmed" checked>
+            <label for="confirmed">Confirmed</label><br>
+          </div>
+          <div>
+            <input type="checkbox" id="rejected" name="rejected" checked>
+            <label for="rejected">Rejected</label><br>
+          </div>
+          <div>
+            <input type="checkbox" id="pending" name="pending" checked>
+            <label for="pending">Pending</label><br>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div>
+      <table id="passenger-list-table">
+        <tr>
+          <th>Name</th>
+          <th>ID Number</th>
+          <th>Designation</th>
+          <th>Purpose</th>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <button id="confirm">Confirm Booking</button>
+      <button id="reject">Reject Booking</button>
+      <button>Confirm all passengers</button>
+    </div>
+  </div>
+</div>
+
