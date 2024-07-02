@@ -18,25 +18,31 @@ $('#from-location-name').text(fromTo)
 $('#to-location-name').text(toFrom)
 
 // Set Time list
-const fromTimeListElement = timeList[0].map((time) => {
-  return ` 
-  <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
-    ${moment(time.time, 'HH:mm').format('hh:mm a')}
-    ${time.slot}
-  </a>`
-})
-
-const toTimeListElement = timeList[1].map((time) => {
-  return `
+function fromTimeRender(timeList) {
+  const fromTimeListElement = timeList.map((time) => {
+    return ` 
     <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
       ${moment(time.time, 'HH:mm').format('hh:mm a')}
       ${time.slot}
-    </a>
-  `
-})
+    </a>`
+  })
+  $('#from-location-time-container').append(fromTimeListElement)
+}
 
-$('#from-location-time-container').append(fromTimeListElement)
-$('#to-location-time-container').append(toTimeListElement)
+function toTimeRender(timeList) {
+  const toTimeListElement = timeList.map((time) => {
+    return `
+      <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
+        ${moment(time.time, 'HH:mm').format('hh:mm a')}
+        ${time.slot}
+      </a>
+    `
+  })
+  $('#to-location-time-container').append(toTimeListElement)
+}
+
+fromTimeRender(timeList[0])
+toTimeRender(timeList[1])
 
 // Filter popup
 function popup() {
