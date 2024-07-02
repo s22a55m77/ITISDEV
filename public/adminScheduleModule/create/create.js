@@ -1,31 +1,31 @@
 function back() {
-  history.back();
+  window.location.href = '/admin/schedule'
 }
 
 $('#date-range').daterangepicker({
-  opens: 'left'
-});
+  opens: 'left',
+})
 
 const lineName = [
   {
-    from: "DLSU MNL",
-    to: "DLSU LAG"
+    from: 'DLSU MNL',
+    to: 'DLSU LAG',
   },
   {
-    from: "PASEO",
-    to: "DLSU LAG",
+    from: 'PASEO',
+    to: 'DLSU LAG',
   },
   {
-    from: "CARMONA",
-    to: "DLSU LAG",
+    from: 'CARMONA',
+    to: 'DLSU LAG',
   },
   {
-    from: "PAVILION",
-    to: "DLSU LAG",
+    from: 'PAVILION',
+    to: 'DLSU LAG',
   },
   {
-    from: "WALTER",
-    to: "DLSU LAG",
+    from: 'WALTER',
+    to: 'DLSU LAG',
   },
 ]
 
@@ -46,64 +46,60 @@ const scheduleInformation = {
       to: null,
       weekdays: [],
       saturdays: [],
-    }
-  ]
+    },
+  ],
 }
 
 // get the query
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
-});
-let { line } = params; 
+})
+let { line } = params
 
-if(!line) {
+if (!line) {
   window.location.href = '/admin/schedule/create?line=1'
 }
 
 // set line information
-const fromTo = lineName[line - 1].from + " -> " + lineName[line - 1].to;
-const toFrom = lineName[line - 1].to + " -> " + lineName[line - 1].from;
+const fromTo = lineName[line - 1].from + ' -> ' + lineName[line - 1].to
+const toFrom = lineName[line - 1].to + ' -> ' + lineName[line - 1].from
 $('.from').text(fromTo)
 $('.to').text(toFrom)
 
-scheduleInformation.line = line;
+scheduleInformation.line = line
 
-scheduleInformation.schedules[0].from = lineName[line - 1].from;
-scheduleInformation.schedules[0].to = lineName[line - 1].to;
-scheduleInformation.schedules[1].from = lineName[line - 1].to;
-scheduleInformation.schedules[1].to = lineName[line - 1].from;
-
+scheduleInformation.schedules[0].from = lineName[line - 1].from
+scheduleInformation.schedules[0].to = lineName[line - 1].to
+scheduleInformation.schedules[1].from = lineName[line - 1].to
+scheduleInformation.schedules[1].to = lineName[line - 1].from
 
 // set date information
-$('#date-range').on('apply.daterangepicker', function(ev, picker) {
-  const { startDate, endDate } = picker;
-  scheduleInformation.from = startDate.format('YYYY-MM-DD');
-  scheduleInformation.to = endDate.format('YYYY-MM-DD');
-});
+$('#date-range').on('apply.daterangepicker', function (ev, picker) {
+  const { startDate, endDate } = picker
+  scheduleInformation.from = startDate.format('YYYY-MM-DD')
+  scheduleInformation.to = endDate.format('YYYY-MM-DD')
+})
 
 function deleteTime(from, day, time) {
-  let id;
-  
+  let id
 
   // set pointer
-  let pointer;
-  if (from === "from")
-    pointer = 0
-  else 
-    pointer = 1
+  let pointer
+  if (from === 'from') pointer = 0
+  else pointer = 1
 
   // remove from scheduleInformation
-  if(day === "weekday") {
+  if (day === 'weekday') {
     id = ('#' + from + time.replace(':', '\\:') + 'weekday').toString()
-    scheduleInformation.schedules[pointer].weekdays = scheduleInformation.schedules[pointer].weekdays.filter(e => e !== time)
-  }
-  else {
+    scheduleInformation.schedules[pointer].weekdays =
+      scheduleInformation.schedules[pointer].weekdays.filter((e) => e !== time)
+  } else {
     id = ('#' + from + time.replace(':', '\\:') + 'saturday').toString()
-    scheduleInformation.schedules[pointer].saturdays = scheduleInformation.schedules[pointer].saturdays.filter(e => e !== time)    
+    scheduleInformation.schedules[pointer].saturdays =
+      scheduleInformation.schedules[pointer].saturdays.filter((e) => e !== time)
   }
   console.log(id)
-  $(id).remove();
-
+  $(id).remove()
 }
 
 // Add time week from
@@ -114,18 +110,26 @@ $('#weekdays-from-time-add').click(() => {
   )
 })
 
-$('#weekdays-from-time-container').on('change', '#weekdays-from-time-input', function() {
-  let time24 = $('#weekdays-from-time-input').val()
-  let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-  $('#weekdays-from-time-container').append(
-    '<div id="from' + time24 + 'weekday">'
-      + time12
-      + '<button onclick="deleteTime(\'from\', \'weekday\' , \'' + time24 + '\')">Delete</button>' +
-    '</div>'
-  )
-  $('#weekdays-from-time-input').remove()
-  scheduleInformation.schedules[0].weekdays.push(time24)
-})
+$('#weekdays-from-time-container').on(
+  'change',
+  '#weekdays-from-time-input',
+  function () {
+    let time24 = $('#weekdays-from-time-input').val()
+    let time12 = moment(time24, 'HH:mm').format('hh:mm A')
+    $('#weekdays-from-time-container').append(
+      '<div id="from' +
+        time24 +
+        'weekday">' +
+        time12 +
+        "<button onclick=\"deleteTime('from', 'weekday' , '" +
+        time24 +
+        '\')">Delete</button>' +
+        '</div>'
+    )
+    $('#weekdays-from-time-input').remove()
+    scheduleInformation.schedules[0].weekdays.push(time24)
+  }
+)
 
 // Add time week to
 $('#weekdays-to-time-add').click(() => {
@@ -135,18 +139,26 @@ $('#weekdays-to-time-add').click(() => {
   )
 })
 
-$('#weekdays-to-time-container').on('change', '#weekdays-to-time-input', function() {
-  let time24 = $('#weekdays-to-time-input').val()
-  let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-  $('#weekdays-to-time-container').append(
-    '<div id="to' + time24 + 'weekday">'
-      + time12
-      + '<button onclick="deleteTime(\'to\', \'weekday\' , \'' + time24 + '\')">Delete</button>' +
-    '</div>'
-  )
-  $('#weekdays-to-time-input').remove()
-  scheduleInformation.schedules[1].weekdays.push(time24)
-})
+$('#weekdays-to-time-container').on(
+  'change',
+  '#weekdays-to-time-input',
+  function () {
+    let time24 = $('#weekdays-to-time-input').val()
+    let time12 = moment(time24, 'HH:mm').format('hh:mm A')
+    $('#weekdays-to-time-container').append(
+      '<div id="to' +
+        time24 +
+        'weekday">' +
+        time12 +
+        "<button onclick=\"deleteTime('to', 'weekday' , '" +
+        time24 +
+        '\')">Delete</button>' +
+        '</div>'
+    )
+    $('#weekdays-to-time-input').remove()
+    scheduleInformation.schedules[1].weekdays.push(time24)
+  }
+)
 
 // Add time saturday from
 $('#saturdays-from-time-add').click(() => {
@@ -156,18 +168,26 @@ $('#saturdays-from-time-add').click(() => {
   )
 })
 
-$('#saturdays-from-time-container').on('change', '#saturdays-from-time-input', function() {
-  let time24 = $('#saturdays-from-time-input').val()
-  let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-  $('#saturdays-from-time-container').append(
-    '<div id="from' + time24 + 'saturday">'
-      + time12
-      + '<button onclick="deleteTime(\'from\', \'saturday\' , \'' + time24 + '\')">Delete</button>' +
-    '</div>'
-  )
-  $('#saturdays-from-time-input').remove()
-  scheduleInformation.schedules[0].saturdays.push(time24)
-})
+$('#saturdays-from-time-container').on(
+  'change',
+  '#saturdays-from-time-input',
+  function () {
+    let time24 = $('#saturdays-from-time-input').val()
+    let time12 = moment(time24, 'HH:mm').format('hh:mm A')
+    $('#saturdays-from-time-container').append(
+      '<div id="from' +
+        time24 +
+        'saturday">' +
+        time12 +
+        "<button onclick=\"deleteTime('from', 'saturday' , '" +
+        time24 +
+        '\')">Delete</button>' +
+        '</div>'
+    )
+    $('#saturdays-from-time-input').remove()
+    scheduleInformation.schedules[0].saturdays.push(time24)
+  }
+)
 
 // Add time saturday to
 $('#saturdays-to-time-add').click(() => {
@@ -177,31 +197,54 @@ $('#saturdays-to-time-add').click(() => {
   )
 })
 
-$('#saturdays-to-time-container').on('change', '#saturdays-to-time-input', function() {
-  let time24 = $('#saturdays-to-time-input').val()
-  let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-  $('#saturdays-to-time-container').append(
-    '<div id="to' + time24 + 'saturday">'
-      + time12
-      + '<button onclick="deleteTime(\'to\', \'saturday\' , \'' + time24 + '\')">Delete</button>' +
-    '</div>'
-  )
-  $('#saturdays-to-time-input').remove()
-  scheduleInformation.schedules[1].saturdays.push(time24)
-})
-
+$('#saturdays-to-time-container').on(
+  'change',
+  '#saturdays-to-time-input',
+  function () {
+    let time24 = $('#saturdays-to-time-input').val()
+    let time12 = moment(time24, 'HH:mm').format('hh:mm A')
+    $('#saturdays-to-time-container').append(
+      '<div id="to' +
+        time24 +
+        'saturday">' +
+        time12 +
+        "<button onclick=\"deleteTime('to', 'saturday' , '" +
+        time24 +
+        '\')">Delete</button>' +
+        '</div>'
+    )
+    $('#saturdays-to-time-input').remove()
+    scheduleInformation.schedules[1].saturdays.push(time24)
+  }
+)
 
 // save
-$('#save').on('click', function() {
-  scheduleInformation.label = $('#label').val();
+$('#save').on('click', async function () {
+  scheduleInformation.label = $('#label').val()
 
   // store date from and to
-  let dateRangePicker = $('#date-range').data('daterangepicker');
-  let startDate = dateRangePicker.startDate.format('YYYY-MM-DD');
-  let endDate = dateRangePicker.endDate.format('YYYY-MM-DD');
+  let dateRangePicker = $('#date-range').data('daterangepicker')
+  let startDate = dateRangePicker.startDate.format('YYYY-MM-DD')
+  let endDate = dateRangePicker.endDate.format('YYYY-MM-DD')
 
-  scheduleInformation.from = startDate;
-  scheduleInformation.to = endDate;
+  scheduleInformation.from = startDate
+  scheduleInformation.to = endDate
+
+  const res = await fetch('/admin/schedule/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(scheduleInformation),
+  })
+
+  const json = await res.json()
+
+  if (json.success) {
+    window.location.href = '/admin/schedule?success=create'
+  } else {
+    window.location.href = `/admin/schedule/create?error=create&line=${scheduleInformation.line}`
+  }
 
   console.log(scheduleInformation)
 })
