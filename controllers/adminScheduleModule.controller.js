@@ -134,6 +134,11 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
 
   const dateRange = `${fromStr} - ${toStr}`
 
+  schedule.dateRange = dateRange
+  schedule.label = label
+
+  schedule.save()
+
   try {
     // if date range is changed
     if (dateRange !== schedule.dateRange) {
@@ -165,83 +170,85 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
             )
           }
 
-          // convert to HH:mm format
-          const times = details.map((detail) =>
-            moment(detail.time).format('HH:mm')
-          )
-          // get unique times
-          const uniqueTimes = [...new Set(times)]
+          const lines = details.map((detail) => `${detail.from} - ${detail.to}`)
+          const uniqueLines = [...new Set(lines)]
+
+          const toTime = [
+            ...new Set(
+              details.map((detail) => {
+                const line = `${detail.from} - ${detail.to}`
+                if (line === uniqueLines[0]) {
+                  return moment(detail.time).format('HH:mm')
+                }
+              })
+            ),
+          ]
+          const returnTime = [
+            ...new Set(
+              details.map((detail) => {
+                const line = `${detail.from} - ${detail.to}`
+                if (line === uniqueLines[1]) {
+                  return moment(detail.time).format('HH:mm')
+                }
+              })
+            ),
+          ]
 
           const newDetails = []
-          uniqueTimes.forEach((time) => {
-            const formattedTime = moment(`${change.date} ${time}`)
-              .tz('Asia/Manila')
-              .format()
-            newDetails.push({
-              from: details[0].from,
-              to: details[0].to,
-              time: formattedTime,
-            })
-            newDetails.push({
-              from: details[0].to,
-              to: details[0].from,
-              time: formattedTime,
-            })
+          toTime.forEach((time) => {
+            if (time) {
+              const formattedTime = moment(`${change.date} ${time}`)
+                .tz('Asia/Manila')
+                .format()
+              newDetails.push({
+                from: uniqueLines[0].split(' - ')[0],
+                to: uniqueLines[0].split(' - ')[1],
+                time: formattedTime,
+              })
+            }
           })
+
+          returnTime.forEach((time) => {
+            if (time) {
+              const formattedTime = moment(`${change.date} ${time}`)
+                .tz('Asia/Manila')
+                .format()
+              newDetails.push({
+                from: uniqueLines[1].split(' - ')[0],
+                to: uniqueLines[1].split(' - ')[1],
+                time: formattedTime,
+              })
+            }
+          })
+
           const docs = await scheduleDetailModel.insertMany(newDetails)
-          schedule.details.push(...docs)
-        } else if (change.type === 'delete') {
+          await scheduleModel.findByIdAndUpdate(id, {
+            $push: { details: docs },
+          })
+        }
+        if (change.type === 'delete') {
           const detailsToDelete = schedule.details.filter((detail) => {
             const date = moment(detail.time)
               .tz('Asia/Manila')
               .format('YYYY-MM-DD')
+
             return date === change.date
           })
-
+          const ids = detailsToDelete.map((detail) => detail._id)
           await scheduleDetailModel.deleteMany({
-            _id: { $in: detailsToDelete.map((detail) => detail._id) },
+            _id: { $in: ids },
           })
 
-          schedule.details = schedule.details.filter(
+          const newDetails = schedule.details.filter(
             (detail) => !detailsToDelete.includes(detail)
           )
+
+          await scheduleModel.findByIdAndUpdate(id, {
+            details: newDetails,
+          })
         }
       })
-
-      const detailsToDelete = schedule.details.filter((detail) => {
-        const date = moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
-
-        return !moment(date).isBetween(from, to, undefined, '[]')
-      })
-
-      await scheduleDetailModel.deleteMany({
-        _id: { $in: detailsToDelete.map((detail) => detail._id) },
-      })
-
-      schedule.details = schedule.details.filter(
-        (detail) => !detailsToDelete.includes(detail)
-      )
-
-      // get weekdays and saturdays time
-      const weekDaysTime = []
-      const saturdaysTime = []
-
-      schedule.details.forEach((detail) => {
-        const time = moment(detail.time).tz('Asia/Manila').format('HH:mm')
-
-        if (moment(detail.time).day() !== 6) {
-          weekDaysTime.push(time)
-        } else {
-          saturdaysTime.push(time)
-        }
-      })
-
-      // get outer date range
     }
-
-    schedule.dateRange = dateRange
-    schedule.label = label
-    schedule.save()
 
     // deletedTime = [{from, to, time, isWeekday}]
     // delete all time in deletedTime
@@ -269,32 +276,36 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
 
     // addedTime = [{from, to, weekdays, saturdays}]
     // add all time in addedTime
-    const weekdays = getWeekdays(from, to)
-    const saturdays = getSaturdays(from, to)
+    if (addedTime) {
+      const weekdays = getWeekdays(from, to)
+      const saturdays = getSaturdays(from, to)
 
-    const newSchedules = []
+      const newSchedules = []
 
-    addedTime.forEach((schedule) => {
-      const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
-      const saturdaySchedules = mergeDateAndTime(saturdays, schedule.saturdays)
+      addedTime.forEach((schedule) => {
+        const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
+        const saturdaySchedules = mergeDateAndTime(
+          saturdays,
+          schedule.saturdays
+        )
 
-      const dates = weekdaySchedules.concat(saturdaySchedules)
+        const dates = weekdaySchedules.concat(saturdaySchedules)
 
-      dates.forEach((time) => {
-        newSchedules.push({
-          from: schedule.from,
-          to: schedule.to,
-          time,
+        dates.forEach((time) => {
+          newSchedules.push({
+            from: schedule.from,
+            to: schedule.to,
+            time,
+          })
         })
       })
-    })
 
-    const scheduleDetails = await scheduleDetailModel.insertMany(newSchedules)
+      const scheduleDetails = await scheduleDetailModel.insertMany(newSchedules)
 
-    await scheduleModel.findByIdAndUpdate(id, {
-      $push: { details: scheduleDetails },
-    })
-
+      await scheduleModel.findByIdAndUpdate(id, {
+        $push: { details: scheduleDetails },
+      })
+    }
     res.send({ success: true })
   } catch (err) {
     console.error(err)
