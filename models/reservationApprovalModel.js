@@ -5,6 +5,12 @@ const reservationApprovalSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     designation: { type: String, required: true },
     purpose: { type: String, required: true },
+    status: {
+      type: String,
+      required: true,
+      enum: ['pending', 'confirmed', 'rejected'],
+      default: 'pending',
+    },
   },
   { collection: 'ReservationApproval', timestamps: true }
 )
