@@ -142,6 +142,7 @@ adminReservationModuleController.get('/', async (req, res) => {
       })
     ).approval.map((approval) => {
       return {
+        _id: approval._id,
         name: approval.user.name,
         id: approval.user.idNumber,
         designation: approval.designation,
