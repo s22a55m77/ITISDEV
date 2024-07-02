@@ -1,32 +1,11 @@
+import { lineName } from '../../lineInformation.js'
+
 const dateList = [
   '2024-06-29',
   '2024-06-30',
   '2024-07-01',
   '2024-07-02',
   '2024-07-03',
-]
-
-const lineName = [
-  {
-    from: 'DLSU MNL',
-    to: 'DLSU LAG',
-  },
-  {
-    from: 'PASEO',
-    to: 'DLSU LAG',
-  },
-  {
-    from: 'CARMONA',
-    to: 'DLSU LAG',
-  },
-  {
-    from: 'PAVILION',
-    to: 'DLSU LAG',
-  },
-  {
-    from: 'WALTER',
-    to: 'DLSU LAG',
-  },
 ]
 
 const passengerList = [
