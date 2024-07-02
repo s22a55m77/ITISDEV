@@ -157,7 +157,7 @@ adminReservationModuleController.get('/', async (req, res) => {
   res.render('adminReservationModule/reservation.ejs', {
     dateList: JSON.stringify(nearestAndSurroundingTimes),
     timeList: JSON.stringify(timeList),
-    passengerList: JSON.stringify(passengerList),
+    passengerList: JSON.stringify(passengerList || []),
   })
 })
 

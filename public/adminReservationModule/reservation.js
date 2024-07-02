@@ -1,29 +1,5 @@
 import { lineName } from '../../lineInformation.js'
 
-const passengerList = [
-  {
-    name: 'Parcia, John Ronn',
-    id: '12136859',
-    designation: 'no LAG classes',
-    purpose: 'campus visit',
-    status: 'pending',
-  },
-  {
-    name: 'Parcia, John Ronn',
-    id: '12136859',
-    designation: 'no LAG classes',
-    purpose: 'laboratory visit',
-    status: 'confirmed',
-  },
-  {
-    name: 'Parcia, John Ronn',
-    id: '12136859',
-    designation: 'no LAG classes',
-    purpose: 'laboratory visit',
-    status: 'rejected',
-  },
-]
-
 // get the query
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
@@ -40,6 +16,27 @@ const fromTo = lineName[line - 1].from + ' -> ' + lineName[line - 1].to
 const toFrom = lineName[line - 1].to + ' -> ' + lineName[line - 1].from
 $('#from-location-name').text(fromTo)
 $('#to-location-name').text(toFrom)
+
+// Set Time list
+const fromTimeListElement = timeList[0].map((time) => {
+  return ` 
+  <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
+    ${moment(time.time, 'HH:mm').format('hh:mm a')}
+    ${time.slot}
+  </a>`
+})
+
+const toTimeListElement = timeList[1].map((time) => {
+  return `
+    <a id="${time.id}" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${time.id}">
+      ${moment(time.time, 'HH:mm').format('hh:mm a')}
+      ${time.slot}
+    </a>
+  `
+})
+
+$('#from-location-time-container').append(fromTimeListElement)
+$('#to-location-time-container').append(toTimeListElement)
 
 // Filter popup
 function popup() {
@@ -86,6 +83,7 @@ function renderPassengerList(passengerList) {
   const passengerListElement = passengerList.map((passenger) => {
     return `
         <tr class="${passenger.status}">
+          <td style="display: none">${passenger._id}</td>
           <td>${passenger.name}</td>
           <td>${passenger.id}</td>
           <td>${passenger.designation}</td>
@@ -103,10 +101,12 @@ function renderPassengerList(passengerList) {
 
     $('#passenger-list-table tr').removeClass('selected-row')
     $(this).toggleClass('selected-row')
-    selectedData.name = $(this).find('td').eq(0).text()
-    selectedData.id = $(this).find('td').eq(1).text()
-    selectedData.designation = $(this).find('td').eq(2).text()
-    selectedData.purpose = $(this).find('td').eq(3).text()
+    selectedData._id = $(this).find('td').eq(0).text()
+    selectedData.name = $(this).find('td').eq(1).text()
+    selectedData.id = $(this).find('td').eq(2).text()
+    selectedData.designation = $(this).find('td').eq(3).text()
+    selectedData.purpose = $(this).find('td').eq(4).text()
+    
   })
 }
 
@@ -162,4 +162,10 @@ $('#confirm').click(function () {
 // Reject Reservation
 $('#reject').click(function () {
   console.log(selectedData)
+})
+
+// Confirm All
+$('#confirm-all').click(function() {
+  const ids = passengerList.map(item => item._id);
+  console.log(ids);
 })
