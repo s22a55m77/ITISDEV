@@ -6,35 +6,69 @@ const dateList = [
   '2024-07-03',
 ]
 
-  const passengerList = [
-    {
-      name: 'Parcia, John Ronn',
-      id: '12136859',
-      designation: 'no LAG classes',
-      purpose: 'campus visit',
-      status: 'pending'
-    },
-    {
-      name: 'Parcia, John Ronn',
-      id: '12136859',
-      designation: 'no LAG classes',
-      purpose: 'laboratory visit',
-      status: 'confirmed'
-    },
-    {
-      name: 'Parcia, John Ronn',
-      id: '12136859',
-      designation: 'no LAG classes',
-      purpose: 'laboratory visit',
-      status: 'rejected'
-    },
-  ]
+const lineName = [
+  {
+    from: 'DLSU MNL',
+    to: 'DLSU LAG',
+  },
+  {
+    from: 'PASEO',
+    to: 'DLSU LAG',
+  },
+  {
+    from: 'CARMONA',
+    to: 'DLSU LAG',
+  },
+  {
+    from: 'PAVILION',
+    to: 'DLSU LAG',
+  },
+  {
+    from: 'WALTER',
+    to: 'DLSU LAG',
+  },
+]
+
+const passengerList = [
+  {
+    name: 'Parcia, John Ronn',
+    id: '12136859',
+    designation: 'no LAG classes',
+    purpose: 'campus visit',
+    status: 'pending'
+  },
+  {
+    name: 'Parcia, John Ronn',
+    id: '12136859',
+    designation: 'no LAG classes',
+    purpose: 'laboratory visit',
+    status: 'confirmed'
+  },
+  {
+    name: 'Parcia, John Ronn',
+    id: '12136859',
+    designation: 'no LAG classes',
+    purpose: 'laboratory visit',
+    status: 'rejected'
+  },
+]
 
 // get the query
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams, prop) => searchParams.get(prop),
 });
 let { line, selectedDate, selectedTime } = params; 
+
+// If no line information
+if (!line) {
+  window.location.href = `/admin/reservation?line=1&selectedDate=${selectedDate}&selectedTime=${selectedTime}`
+}
+
+// set line information
+const fromTo = lineName[line - 1].from + ' -> ' + lineName[line - 1].to
+const toFrom = lineName[line - 1].to + ' -> ' + lineName[line - 1].from
+$('#from-location-name').text(fromTo)
+$('#to-location-name').text(toFrom)
 
 // Filter popup
 function popup() {
