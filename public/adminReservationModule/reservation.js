@@ -209,6 +209,16 @@ $('#confirm').click(async function () {
 
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'confirmed'
+    let time = timeList[0].find((time) => time.id === json.id)
+    if (time) {
+      time.slot = json.slot
+      toTimeRender(timeList[0])
+    }
+    time = timeList[1].find((time) => time.id === json.id)
+    if (time) {
+      time.slot = json.slot
+      fromTimeRender(timeList[1])
+    }
     renderPassengerList(passengerList)
   }
 })
@@ -230,6 +240,18 @@ $('#reject').click(async function () {
 
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'rejected'
+
+    let time = timeList[0].find((time) => time.id === json.id)
+    if (time) {
+      time.slot = json.slot
+      toTimeRender(timeList[0])
+    }
+    time = timeList[1].find((time) => time.id === json.id)
+    if (time) {
+      time.slot = json.slot
+      fromTimeRender(timeList[1])
+    }
+
     renderPassengerList(passengerList)
   }
 })
@@ -254,6 +276,16 @@ $('#confirm-all').click(async function () {
       return passenger
     })
 
+    let time = timeList[0].find((time) => time.id === json.id)
+    if (time) {
+      time.slot = json.slot
+      toTimeRender(timeList[0])
+    }
+    time = timeList[1].find((time) => time.id === json.id)
+    if (time) {
+      time.slot = json.slot
+      fromTimeRender(timeList[1])
+    }
     renderPassengerList(newPassengerList)
   }
 })

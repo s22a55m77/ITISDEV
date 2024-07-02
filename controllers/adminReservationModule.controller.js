@@ -65,7 +65,7 @@ adminReservationModuleController.get('/', async (req, res) => {
     },
     {
       $match: {
-        line: 1,
+        line: Number(line) || 1,
       },
     },
     {
@@ -168,7 +168,7 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
     const approval = await reservationApprovalModel.findByIdAndUpdate(id, {
       status: 'confirmed',
     })
-    await scheduleDetailModel.findOneAndUpdate(
+    const schedule = await scheduleDetailModel.findOneAndUpdate(
       {
         approval: {
           $in: id,
@@ -183,7 +183,7 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
         },
       }
     )
-    res.send({ success: true })
+    res.send({ success: true, id: schedule._id, slot: schedule.slot })
   } catch (error) {
     console.error(error)
     res.send({ success: false, error: error })
@@ -202,9 +202,11 @@ adminReservationModuleController.post('/reject', async (req, res) => {
       { new: false }
     )
 
+    let schedule
+
     // if from confirm to rejected
     if (doc.status === 'confirmed') {
-      await scheduleDetailModel.findOneAndUpdate(
+      schedule = await scheduleDetailModel.findOneAndUpdate(
         {
           approval: {
             $in: id,
@@ -221,7 +223,7 @@ adminReservationModuleController.post('/reject', async (req, res) => {
       )
     }
 
-    res.send({ success: true })
+    res.send({ success: true, id: schedule._id, slot: schedule.slot })
   } catch (error) {
     console.error(error)
     res.send({ success: false, error: error })
@@ -248,7 +250,7 @@ adminReservationModuleController.post('/confirm/all', async (req, res) => {
 
     const users = approval.map((approval) => approval.user)
 
-    await scheduleDetailModel.updateMany(
+    const schedule = await scheduleDetailModel.findOneAndUpdate(
       {
         approval: {
           $in: ids,
@@ -266,7 +268,7 @@ adminReservationModuleController.post('/confirm/all', async (req, res) => {
       }
     )
 
-    res.send({ success: true })
+    res.send({ success: true, id: schedule._id, slot: schedule.slot })
   } catch (error) {
     console.error(error)
     res.send({ success: false, error: error })
