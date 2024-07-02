@@ -1,0 +1,81 @@
+<%- include('../common/headers.ejs') %>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+/>
+<link rel="stylesheet" href="/adminScheduleModule/edit/edit.css" />
+<script defer src="/adminScheduleModule/edit/edit.js"></script>
+
+<div>Manage Shuttle Schedules</div>
+<div class="tab">
+  <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=3">CARMONA ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=4">PAVILION ↔ DLSU LAG</a>
+  <a href="/admin/schedule/create?line=5">WALTER ↔ DLSU LAG</a>
+</div>
+
+<div onclick="back()">← BACK</div>
+
+<div>
+  <div id="date"></div>
+  <input id="date-range" />
+  <div>
+    <button onclick="edit()">edit</button>
+  </div>
+  <input id="label" type="text" value="<%= label %>" />
+</div>
+
+<div>
+  Weekdays
+  <div class="schedule-container">
+    <div>
+      <div class="from"></div>
+      <div id="weekdays-from-time-container"></div>
+      <button id="weekdays-from-time-add">ADD +</button>
+    </div>
+    <div>
+      <div class="to"></div>
+      <div id="weekdays-to-time-container"></div>
+      <button id="weekdays-to-time-add">ADD +</button>
+    </div>
+  </div>
+</div>
+<div>
+  Saturdays
+  <div class="schedule-container">
+    <div>
+      <div class="from"></div>
+      <div id="saturdays-from-time-container"></div>
+      <button id="saturdays-from-time-add">ADD +</button>
+    </div>
+    <div>
+      <div class="to"></div>
+      <div id="saturdays-to-time-container"></div>
+      <button id="saturdays-to-time-add">ADD +</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const from = '<%= from %>'
+  const to = '<%= to %>'
+  const label = '<%= label %>'
+  const line = '<%= line %>'
+  const id = '<%= id %>'
+  let scheduleInformation = '<%= schedules %>'
+</script>
+<button id="save">SAVE</button>

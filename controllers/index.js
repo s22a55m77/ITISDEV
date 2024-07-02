@@ -3,6 +3,7 @@ const profileModuleController = require('./profileModule.controller.js')
 const adminAnnouncementModuleController = require('./adminAnnouncementModule.controller.js')
 const announcementModuleController = require('./announcementModule.controller.js')
 const landingController = require('./landing.controller.js')
+const adminScheduleModuleController = require('./adminScheduleModule.controller.js')
 const adminReservationModuleController = require('./adminReservationModule.controller.js')
 
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
   adminAnnouncementModuleController,
   announcementModuleController,
   landingController,
-  adminReservationModuleController
+  adminScheduleModuleController,
+  adminReservationModuleController,
 }
