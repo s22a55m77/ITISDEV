@@ -74,6 +74,7 @@ adminReservationModuleController.get('/', async (req, res) => {
           _id: true,
           from: true,
           to: true,
+          slot: true,
           time: true,
         },
       },
@@ -119,6 +120,7 @@ adminReservationModuleController.get('/', async (req, res) => {
     const existing = map.get(detail.from)
     const obj = {
       id: detail._id,
+      slot: detail.slot,
       time: moment(detail.time).tz('Asia/Manila').format('HH:mm'),
     }
     map.set(detail.from, existing ? existing.concat(obj) : [obj])
