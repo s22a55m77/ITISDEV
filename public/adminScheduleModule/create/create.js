@@ -56,6 +56,10 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 });
 let { line } = params; 
 
+if(!line) {
+  window.location.href = '/admin/schedule/create?line=1'
+}
+
 // set line information
 const fromTo = lineName[line - 1].from + " -> " + lineName[line - 1].to;
 const toFrom = lineName[line - 1].to + " -> " + lineName[line - 1].from;
