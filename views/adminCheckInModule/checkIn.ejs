@@ -1,32 +1,45 @@
 <%- include('../common/headers.ejs') %>
 <link rel="stylesheet" href="/adminCheckInModule/checkIn/checkIn.css"  />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script defer src="/adminCheckInModule/checkIn/checkIn.js"> </script>
 
 <div class="header-container">
-  <div>&lt;</div>
+  <div onclick="changeDate('prev')">&lt;</div>
   <div id="date"></div>
-  <div>&gt;</div>
+  <div onclick="changeDate('next')">&gt;</div>
 </div>
 
 <div class="input-container">
   <div class="trip-container">
     <div>TRIP</div>
-    <select>
+    <select id="from-location">
+      <option disabled selected value>Select Start Location</option>
+      <option>CARMONA</option>
       <option>DLSU MNL</option>
+      <option>DLSU LAG</option>
+      <option>PASEO</option>
+      <option>PAVILION</option>
+      <option>WALTER</option>
     </select>
     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
       <path d="M7.45739 14.3182L5.80966 12.6847L10.1349 8.35938H0V5.95881H10.1349L5.80966 1.64062L7.45739 0L14.6165 7.15909L7.45739 14.3182Z" fill="black"/>
     </svg>
-    <select>
+    <select id="to-location">
+      <option disabled selected value>Select Destination</option>
+      <option>CARMONA</option>
       <option>DLSU MNL</option>
+      <option>DLSU LAG</option>
+      <option>PASEO</option>
+      <option>PAVILION</option>
+      <option>WALTER</option>
     </select>
   </div>
   <div class="time-container">
     <div>
       TIME
     </div>
-    <select>
-      <option>6:00 AM</option>
+    <select id="time-select">
+      <option disabled selected value>Select Time</option>
     </select>
   </div>
   <div class="information-container">
@@ -60,3 +73,25 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Get query
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
+  const { date, from, to, time, error } = params; 
+
+  let passengerList = [];
+  let slotCount = 0;
+  let reservedCount = 0;
+  let presentCount = 0;
+  let walkInCount = 0;
+  if(from && to && time) {
+    slotCount = JSON.parse('<%- JSON.stringify(slotCount) %>');
+    reservedCount = JSON.parse('<%- JSON.stringify(reservedCount) %>');
+    presentCount = JSON.parse('<%- JSON.stringify(presentCount) %>');
+    walkInCount = JSON.parse('<%- JSON.stringify(walkInCount) %>');
+    passengerList = JSON.parse('<%- JSON.stringify(passengerList) %>');
+  }
+  
+</script>

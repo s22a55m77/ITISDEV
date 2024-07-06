@@ -60,3 +60,7 @@ hr .solid {
 .present {
   background-color: #00A14A;
 }
+
+.bold {
+  font-weight: bold;
+}
