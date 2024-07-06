@@ -72,7 +72,7 @@ async function getScheduleDetail(from, to, time, date) {
       },
     },
   ])
-  return schedule[0]
+  return schedule[0] || null
 }
 
 adminCheckInController.get('/', async (req, res) => {
@@ -84,7 +84,7 @@ adminCheckInController.get('/', async (req, res) => {
     res.redirect('/admin/checkin?error=no-schedule')
   }
 
-  const passengerList = schedule[0].reserve.map((passenger) => {
+  const passengerList = schedule.reserve.map((passenger) => {
     return {
       name: passenger.user.name,
       id: passenger.user.idNumber,
@@ -92,9 +92,9 @@ adminCheckInController.get('/', async (req, res) => {
     }
   })
 
-  const slotCount = schedule[0].slot
-  const reservedCount = schedule[0].reserve.length
-  const presentCount = schedule[0].reserve.filter(
+  const slotCount = schedule.slot
+  const reservedCount = schedule.reserve.length
+  const presentCount = schedule.reserve.filter(
     (passenger) => passenger.status === 'present'
   ).length
   const walkInCount = slotCount - presentCount
