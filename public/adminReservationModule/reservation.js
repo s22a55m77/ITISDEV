@@ -22,7 +22,7 @@ function fromTimeRender(timeList) {
     '<div id="from-location-name"></div>'
   )
   $('#from-location-name').text(fromTo)
-  const fromTimeListElement = timeList.map((time) => {
+  const fromTimeListElement = timeList?.map((time) => {
     return ` 
     <a id="${
       time.id
@@ -40,7 +40,7 @@ function toTimeRender(timeList) {
   $('#to-location-time-container').empty()
   $('#to-location-time-container').append('<div id="to-location-name"></div>')
   $('#to-location-name').text(toFrom)
-  const toTimeListElement = timeList.map((time) => {
+  const toTimeListElement = timeList?.map((time) => {
     return `
       <a id="${
         time.id
@@ -81,9 +81,13 @@ const dateListElement = dateList.map((date) => {
     className = 'not-select'
   }
 
-  return `<div class='${className}'>${moment(date)
-    .format('MMM DD')
-    .replace(/^(\D*)0/, '$1')}</div>`
+  if (date) {
+    return `<div class='${className}'>${moment(date)
+      .format('MMM DD')
+      .replace(/^(\D*)0/, '$1')}</div>`
+  } else {
+    return `<div class='${className}'>No Schedule</div>`
+  }
 })
 
 $('#date-list').append(dateListElement)
@@ -272,5 +276,19 @@ $('#confirm-all').click(async function () {
       toTimeRender(timeList[1])
     }
     renderPassengerList(newPassengerList)
+  }
+})
+
+$('#prev-date').click(function () {
+  const prevDate = dateList[dateList.indexOf(selectedDate) - 1]
+  if (prevDate) {
+    window.location.href = `/admin/reservation?line=${line}&selectedDate=${prevDate}`
+  }
+})
+
+$('#next-date').click(function () {
+  const nextDate = dateList[dateList.indexOf(selectedDate) + 1]
+  if (nextDate) {
+    window.location.href = `/admin/reservation?line=${line}&selectedDate=${nextDate}`
   }
 })

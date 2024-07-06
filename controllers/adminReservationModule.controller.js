@@ -12,6 +12,11 @@ const adminReservationModuleController = e.Router()
 adminReservationModuleController.get('/', async (req, res) => {
   const { selectedDate, selectedTime, line } = req.query
 
+  if (!line) {
+    res.redirect('/admin/reservation?line=1')
+    return
+  }
+
   const schedule = await scheduleModel.aggregate([
     {
       $lookup: {
@@ -39,6 +44,15 @@ adminReservationModuleController.get('/', async (req, res) => {
     },
   ])
 
+  if (!schedule[0]) {
+    res.render('adminReservationModule/reservation.ejs', {
+      dateList: [],
+      timeList: [],
+      passengerList: [],
+    })
+    return
+  }
+
   const days = []
   schedule[0].details.forEach((detail) =>
     days.push(moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD'))
@@ -46,7 +60,7 @@ adminReservationModuleController.get('/', async (req, res) => {
 
   const uniqueDays = [...new Set(days)]
 
-  if (!line && !selectedDate) {
+  if (!selectedDate) {
     const today = moment.tz('Asia/Manila').format('YYYY-MM-DD')
 
     const nearestAndSurroundingTimes = findNearestAndSurrounding(
@@ -57,7 +71,7 @@ adminReservationModuleController.get('/', async (req, res) => {
     // const firstDate
 
     res.redirect(
-      `/admin/reservation?line=1&selectedDate=${nearestAndSurroundingTimes[2]}`
+      `/admin/reservation?line=${line}&selectedDate=${nearestAndSurroundingTimes[2]}`
     )
     return
   }

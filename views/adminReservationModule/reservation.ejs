@@ -12,11 +12,11 @@
 
 <div onclick="">< View Reservations</div>
 <div class="tab">
-  <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
-  <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
-  <a href="/admin/schedule/create?line=3">CARMONA ↔ DLSU LAG</a>
-  <a href="/admin/schedule/create?line=4">PAVILION ↔ DLSU LAG</a>
-  <a href="/admin/schedule/create?line=5">WALTER ↔ DLSU LAG</a>
+  <a href="/admin/reservation?line=1">DLSU MNL ↔ DLSU LAG</a>
+  <a href="/admin/reservation?line=2">PASEO ↔ DLSU LAG</a>
+  <a href="/admin/reservation?line=3">CARMONA ↔ DLSU LAG</a>
+  <a href="/admin/reservation?line=4">PAVILION ↔ DLSU LAG</a>
+  <a href="/admin/reservation?line=5">WALTER ↔ DLSU LAG</a>
 </div>
 
 <div class="main-container">
@@ -78,7 +78,14 @@
 </div>
 
 <script>
-  const dateList = JSON.parse('<%- dateList %>')
-  const timeList = JSON.parse('<%- timeList %>')
-  const passengerList = JSON.parse('<%- passengerList %>')
+  const dateListJson =
+    `<%- dateList %>`.trim() === '' ? '[]' : `<%- dateList %>`
+  const timeListJson =
+    `<%- timeList %>`.trim() === '' ? '[]' : `<%- timeList %>`
+  const passengerListJson =
+    `<%- passengerList %>`.trim() === '' ? '[]' : `<%- passengerList %>`
+
+  const dateList = JSON.parse(dateListJson)
+  const timeList = JSON.parse(timeListJson)
+  const passengerList = JSON.parse(passengerListJson)
 </script>
