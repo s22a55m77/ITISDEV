@@ -40,7 +40,10 @@ async function getScheduleDetail(from, to, time, date) {
       },
     },
     {
-      $unwind: '$reserve',
+      $unwind: {
+        path: '$reserve',
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $lookup: {
@@ -51,7 +54,10 @@ async function getScheduleDetail(from, to, time, date) {
       },
     },
     {
-      $unwind: '$reserve.userDetails',
+      $unwind: {
+        path: '$reserve.userDetails',
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $group: {
@@ -87,12 +93,14 @@ adminCheckInController.get('/', async (req, res) => {
     return
   }
 
-  const passengerList = schedule?.reserve.map((passenger) => {
-    return {
-      name: passenger.user.name,
-      id: passenger.user.idNumber,
-      status: passenger.status,
-    }
+  const passengerList = []
+  schedule?.reserve.forEach((passenger) => {
+    if (passenger.user.name)
+      passengerList.push({
+        name: passenger.user.name,
+        id: passenger.user.idNumber,
+        status: passenger.status,
+      })
   })
 
   const reservedCount = schedule?.reserve.length
