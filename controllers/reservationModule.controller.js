@@ -1,5 +1,7 @@
 const e = require('express')
 const { scheduleDetailModel } = require('../models/index.js')
+const httpContext = require('express-http-context')
+const isAuthorized = require('../utils/isAuthorized.js')
 const moment = require('moment-timezone')
 
 const reservationModuleController = e.Router()
@@ -198,6 +200,35 @@ reservationModuleController.post('/return', async (req, res) => {
   const schedules = await getSchedules(to, from, timeList)
 
   res.send({ schedules })
+})
+
+reservationModuleController.post('/success', isAuthorized, async (req, res) => {
+  const { ids } = req.body
+  const user = httpContext.get('user')
+
+  try {
+    await scheduleDetailModel.updateMany(
+      {
+        _id: {
+          $in: ids,
+        },
+      },
+      {
+        $inc: {
+          slot: -1,
+        },
+        $push: {
+          reserve: user,
+        },
+      }
+    )
+    return res.render('reservationModule/success.ejs', { success: true })
+  } catch (error) {
+    console.error(error)
+    return res.render('reservationModule/success.ejs', { success: false })
+  }
+
+  res.send({})
 })
 
 module.exports = reservationModuleController
