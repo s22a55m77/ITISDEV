@@ -2,23 +2,23 @@ const passengerList = [
   {
     name: 'Parcia, John Ronn',
     id: '12136859',
-    type: 'present'
+    status: 'present',
   },
   {
     name: 'Parcia, John Ronn',
     id: '12136859',
-    type: 'absent'
+    status: 'absent',
   },
 ]
 
 const passengerListElement = passengerList.map((passenger) => {
-  return (`
+  return `
     <div class="passenger-item">
-      <div class="${passenger.type}"></div>
+      <div class="${passenger.status}"></div>
       <div>${passenger.name}</div>
       <div>${passenger.id}</div>
     </div>
-  `)
+  `
 })
 
 $('#passenger-list-container').append(passengerListElement)
