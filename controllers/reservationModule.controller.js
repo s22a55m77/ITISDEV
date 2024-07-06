@@ -23,6 +23,7 @@ reservationModuleController.get('/date', async (req, res) => {
           $dateToString: {
             format: '%Y-%m-%d',
             date: '$time',
+            timezone: 'Asia/Manila',
           },
         },
       },
