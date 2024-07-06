@@ -73,7 +73,7 @@ async function getCommonTime(from, to, date) {
   return []
 }
 
-async function getSchedules(from, to, timeList) {
+async function getSchedules(from, to, timeList, date) {
   const schedules = await scheduleDetailModel.aggregate([
     {
       $match: {
@@ -92,12 +92,22 @@ async function getSchedules(from, to, timeList) {
             timezone: 'Asia/Manila',
           },
         },
+        date: {
+          $dateToString: {
+            format: '%Y-%m-%d',
+            date: '$time',
+            timezone: 'Asia/Manila',
+          },
+        },
       },
     },
     {
       $match: {
         time: {
           $in: timeList,
+        },
+        date: {
+          $in: date,
         },
       },
     },
@@ -173,7 +183,7 @@ reservationModuleController.post('/departure', async (req, res) => {
 
   const timeList = await getCommonTime(from, to, date)
 
-  const schedules = await getSchedules(from, to, timeList)
+  const schedules = await getSchedules(from, to, timeList, date)
 
   /**
    * [
@@ -197,7 +207,7 @@ reservationModuleController.post('/return', async (req, res) => {
 
   const timeList = await getCommonTime(to, from, date)
 
-  const schedules = await getSchedules(to, from, timeList)
+  const schedules = await getSchedules(to, from, timeList, date)
 
   res.send({ schedules })
 })
@@ -231,6 +241,11 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
   }
 
   res.send({})
+})
+
+reservationModuleController.post('/confirm', isAuthorized, async (req, res) => {
+  const { date, from, to, departureIds, returnIds, departureTime, returnTime } =
+    req.body
 })
 
 module.exports = reservationModuleController
