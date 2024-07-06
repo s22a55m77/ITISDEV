@@ -193,23 +193,23 @@ reservationModuleController.post('/departure', async (req, res) => {
                 "6688d31e1229e21193bf63c3"
             ],
             "slot": 1,
-            "time": "12:20"
+            "time": "12:20" 
         }
     ]
-   * 
+   *
    */
 
-  res.send({ schedules })
+    res.render('reservationModule/departure.ejs', { schedules, from, to, date })
 })
 
 reservationModuleController.post('/return', async (req, res) => {
-  const { date, from, to } = req.body
+  const { date, from, to, departureIds } = req.body
 
   const timeList = await getCommonTime(to, from, date)
 
   const schedules = await getSchedules(to, from, timeList, date)
 
-  res.send({ schedules })
+  res.render('reservationModule/return.ejs', { schedules, from, to, date, departureIds }) 
 })
 
 reservationModuleController.post('/success', isAuthorized, async (req, res) => {
