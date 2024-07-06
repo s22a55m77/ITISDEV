@@ -111,6 +111,55 @@ adminCheckInController.get('/', async (req, res) => {
   })
 })
 
+adminCheckInController.get('/time', async (req, res) => {
+  const { from, to, date } = req.query
+
+  const schedule = await scheduleDetailModel.aggregate([
+    {
+      $match: {
+        from,
+        to,
+      },
+    },
+    {
+      $project: {
+        date: {
+          $dateToString: {
+            format: '%Y-%m-%d',
+            date: '$time',
+            timezone: 'Asia/Manila',
+          },
+        },
+        time: true,
+      },
+    },
+    {
+      $match: {
+        date,
+      },
+    },
+    {
+      $project: {
+        time: {
+          $dateToString: {
+            format: '%H:%M',
+            date: '$time',
+            timezone: 'Asia/Manila',
+          },
+        },
+      },
+    },
+  ])
+
+  if (schedule.length != 0) {
+    const timeList = schedule.map((detail) => detail.time)
+    res.send({ success: true, timeList })
+    return
+  }
+
+  res.send({ success: false })
+})
+
 adminCheckInController.get('/scan', (req, res) => {
   res.render('adminCheckInModule/scan.ejs')
 })
