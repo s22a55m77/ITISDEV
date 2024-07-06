@@ -199,17 +199,24 @@ reservationModuleController.post('/departure', async (req, res) => {
    *
    */
 
-    res.render('reservationModule/departure.ejs', { schedules, from, to, date })
+  res.render('reservationModule/departure.ejs', { schedules, from, to, date })
 })
 
 reservationModuleController.post('/return', async (req, res) => {
-  const { date, from, to, departureIds } = req.body
+  const { date, from, to, departureIds, departureTime } = req.body
 
   const timeList = await getCommonTime(to, from, date)
 
   const schedules = await getSchedules(to, from, timeList, date)
 
-  res.render('reservationModule/return.ejs', { schedules, from, to, date, departureIds }) 
+  res.render('reservationModule/return.ejs', {
+    schedules,
+    from,
+    to,
+    date,
+    departureIds,
+    departureTime,
+  })
 })
 
 reservationModuleController.post('/success', isAuthorized, async (req, res) => {
@@ -246,6 +253,16 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
 reservationModuleController.post('/confirm', isAuthorized, async (req, res) => {
   const { date, from, to, departureIds, returnIds, departureTime, returnTime } =
     req.body
+
+  res.render('reservationModule/confirm.ejs', {
+    date,
+    from,
+    to,
+    departureIds,
+    returnIds,
+    departureTime,
+    returnTime,
+  })
 })
 
 module.exports = reservationModuleController
