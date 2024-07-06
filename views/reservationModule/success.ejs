@@ -7,14 +7,24 @@
 </div>
 
 <div class="main-container">
-  <svg xmlns="http://www.w3.org/2000/svg" width="145" height="145" viewBox="0 0 145 145" fill="none">
-    <circle cx="72.5" cy="72.5" r="72.5" fill="black"/>
-    <path d="M30.8774 76.2548L57.1226 102.5L113.623 46" stroke="white" stroke-width="10"/>
-  </svg>
-  <div>
-    Trip reserved.
+  <div id="success">
+    <svg xmlns="http://www.w3.org/2000/svg" width="145" height="145" viewBox="0 0 145 145" fill="none">
+      <circle cx="72.5" cy="72.5" r="72.5" fill="black"/>
+      <path d="M30.8774 76.2548L57.1226 102.5L113.623 46" stroke="white" stroke-width="10"/>
+    </svg>
+    <div>
+      Trip reserved.
+    </div>
+    <div>
+      See your trip details at <a>My Trips</a>.
+    </div>
   </div>
-  <div>
-    See your trip details at <a>My Trips</a>.
+  <div id="failed">
+    Failed
   </div>
 </div>
+
+
+<script>
+  const success = "<%- success %>";
+</script>

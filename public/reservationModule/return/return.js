@@ -5,7 +5,7 @@ const timeElement = schedules.map((schedule, index) => {
   const className = schedule.slot > 0 ? 'green' : 'red' 
   return (`
     <label for="${index}" class="time-item">
-      <input ${schedule.slot <= 0 ? 'disabled': ''} type="radio" id="${index}" name="${index}" value=${schedule.time} />
+      <input ${schedule.slot <= 0 ? 'disabled': ''} type="radio" id="${index}" name="time" value=${schedule.time} />
       <span>
         ${moment(schedule.time, 'HH:mm').format('hh:mm A')}
         <span class="${className}">${schedule.slot} SEATS</span>  
@@ -27,5 +27,6 @@ const getSelectedID = () => {
 
 $('#next').click(() => {
   const returnIds = getSelectedID();
-  $.redirect(`/reservation/confirm?type=round`, {from, to, date, departureIds, returnIds}, "POST");
+  const returnTime = $('input[type="radio"]:checked').val()
+  $.redirect(`/reservation/confirm?type=round`, {from, to, date, departureIds, returnIds, departureTime, returnTime}, "POST");
 })
