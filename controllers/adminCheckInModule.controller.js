@@ -75,21 +75,6 @@ async function getScheduleDetail(from, to, time, date) {
   return schedule[0]
 }
 
-adminCheckInController.get('/test', async (req, res) => {
-  const { from, to, time, date } = req.query
-
-  const schedule = await getScheduleDetail(from, to, time, date)
-
-  res.send({
-    schedule,
-    // passengerList,
-    // slotCount,
-    // reservedCount,
-    // presentCount,
-    // walkInCount,
-  })
-})
-
 adminCheckInController.get('/', async (req, res) => {
   const { from, to, time, date } = req.query
 
@@ -125,6 +110,10 @@ adminCheckInController.get('/', async (req, res) => {
 
 adminCheckInController.get('/scan', (req, res) => {
   res.render('adminCheckInModule/scan.ejs')
+})
+
+adminCheckInController.get('/result', (req, res) => {
+  res.render('adminCheckInModule/result.ejs')
 })
 
 module.exports = adminCheckInController
