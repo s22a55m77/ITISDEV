@@ -10,4 +10,8 @@ adminCheckInController.get('/scan', (req, res) => {
   res.render('adminCheckInModule/scan.ejs')
 })
 
+adminCheckInController.get('/result', (req, res) => {
+  res.render('adminCheckInModule/result.ejs')
+})
+
 module.exports = adminCheckInController
