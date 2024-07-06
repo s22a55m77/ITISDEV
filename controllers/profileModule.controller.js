@@ -7,10 +7,8 @@ const httpContext = require('express-http-context')
 const profileModuleController = e.Router()
 
 profileModuleController.get('/', isAuthorized, async (req, res) => {
-  const email = httpContext.get('userEmail')
-  const { name, idNumber, picture, designation } = await userModel.findOne({
-    email: email,
-  })
+  const user = httpContext.get('user')
+  const { name, idNumber, picture, designation } = user
 
   res.render('profileModule/profile.ejs', {
     name,
@@ -21,10 +19,8 @@ profileModuleController.get('/', isAuthorized, async (req, res) => {
 })
 
 profileModuleController.get('/settings', isAuthorized, async (req, res) => {
-  const email = httpContext.get('userEmail')
-  const { eafUpdatedAt, vaccinationRecordUpdatedAt } = await userModel.findOne({
-    email: email,
-  })
+  const user = httpContext.get('user')
+  const { eafUpdatedAt, vaccinationRecordUpdatedAt } = user
 
   res.render('profileModule/settings.ejs', {
     eafUpdatedAt,
@@ -33,13 +29,13 @@ profileModuleController.get('/settings', isAuthorized, async (req, res) => {
 })
 
 profileModuleController.post('/eaf', isAuthorized, async (req, res) => {
-  const email = httpContext.get('userEmail')
+  const user = httpContext.get('user')
 
   try {
     const eafData = req.files.eaf.data
     console.log(req.files.eaf.name)
     await userModel.updateOne(
-      { email: email },
+      { email: user.email },
       { eaf: eafData, eafUpdatedAt: moment().tz('Asia/Manila').format() }
     )
     res.redirect('/profile/settings?success=eaf-uploaded')
@@ -52,12 +48,12 @@ profileModuleController.post('/eaf', isAuthorized, async (req, res) => {
 })
 
 profileModuleController.post('/vaccination', isAuthorized, async (req, res) => {
-  const email = httpContext.get('userEmail')
+  const user = httpContext.get('user')
 
   try {
     const vaccination = req.files.vaccination.data
     await userModel.updateOne(
-      { email: email },
+      { email: user.email },
       {
         vaccinationRecord: vaccination,
         vaccinationRecordUpdatedAt: moment().tz('Asia/Manila').format(),

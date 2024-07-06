@@ -13,6 +13,8 @@ const {
   announcementModuleController,
   adminAnnouncementModuleController,
   landingController,
+  adminScheduleModuleController,
+  adminReservationModuleController,
   reservationModuleController,
 } = require('./controllers/index.js')
 
@@ -56,6 +58,8 @@ app.use('/admin/announcement', adminAnnouncementModuleController)
 app.use('/announcement', announcementModuleController)
 app.use('/reservation', reservationModuleController)
 app.use('/', landingController)
+app.use('/admin/schedule', adminScheduleModuleController)
+app.use('/admin/reservation', adminReservationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))

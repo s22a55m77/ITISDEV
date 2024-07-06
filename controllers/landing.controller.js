@@ -6,9 +6,7 @@ const { announcementModel, userModel } = require('../models/index.js')
 const landingController = e.Router()
 
 landingController.get('/', isAuthorized, async (req, res) => {
-  const email = httpContext.get('userEmail')
-
-  const user = await userModel.findOne({ email })
+  const user = httpContext.get('user')
 
   const unRead = await announcementModel.find({ read: { $ne: user._id } })
 
