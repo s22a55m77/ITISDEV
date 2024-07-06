@@ -95,8 +95,8 @@ adminCheckInController.get('/', async (req, res) => {
     }
   })
 
-  const slotCount = schedule?.slot
   const reservedCount = schedule?.reserve.length
+  const slotCount = schedule?.slot + reservedCount
   const presentCount = schedule?.reserve.filter(
     (passenger) => passenger?.status === 'present'
   ).length
