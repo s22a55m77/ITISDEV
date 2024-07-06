@@ -1,6 +1,6 @@
 const e = require('express')
 const moment = require('moment-timezone')
-const { scheduleDetailModel } = require('../models/index.js')
+const { scheduleDetailModel, userModel } = require('../models/index.js')
 
 const adminCheckInController = e.Router()
 
@@ -115,8 +115,53 @@ adminCheckInController.get('/scan', (req, res) => {
   res.render('adminCheckInModule/scan.ejs')
 })
 
-adminCheckInController.get('/result', (req, res) => {
-  res.render('adminCheckInModule/result.ejs')
+adminCheckInController.get('/result', async (req, res) => {
+  const { from, to, time, date, passengerId } = req.query
+
+  const schedule = await getScheduleDetail(from, to, time, date)
+
+  if (!schedule && from && to && time && date) {
+    res.redirect('/admin/checkin?error=no-schedule')
+    return
+  }
+
+  const passenger = schedule?.reserve.find(
+    (passenger) => passenger.user.idNumber === Number(passengerId)
+  )
+
+  const passengerInfo = await userModel.findOne(
+    { idNumber: passengerId },
+    { designation: true, name: true, idNumber: true, _id: true }
+  )
+
+  if (!passengerInfo) {
+    res.render('adminCheckInModule/result.ejs', { invalid: true })
+    return
+  }
+
+  if (!passenger) {
+    res.render('adminCheckInModule/result.ejs', {
+      reserved: false,
+      passengerInfo,
+    })
+    return
+  }
+
+  const doc = await scheduleDetailModel.findOne({
+    _id: schedule._id,
+    'reserve._id': passengerInfo._id,
+  })
+
+  await scheduleDetailModel.updateOne(
+    { _id: schedule._id, 'reserve._id': passengerInfo._id },
+    {
+      $set: {
+        'reserve.$.status': 'present',
+      },
+    }
+  )
+
+  res.render('adminCheckInModule/result.ejs', { reserve: true, passengerInfo })
 })
 
 module.exports = adminCheckInController
