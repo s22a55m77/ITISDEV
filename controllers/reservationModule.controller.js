@@ -207,6 +207,8 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
 
   try {
+    // TODO get user designation, only with laguna will update schedule detail
+    // other will insert new approvalModel
     await scheduleDetailModel.updateMany(
       {
         _id: {
