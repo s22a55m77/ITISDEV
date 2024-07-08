@@ -83,8 +83,6 @@ function checkLocationIsSelected() {
   return true
 }
 
-
-
 async function handleLocationChange() {
   let weekdays = []
   let saturdays = []
