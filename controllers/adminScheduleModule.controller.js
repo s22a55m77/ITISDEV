@@ -8,6 +8,8 @@ const {
   mergeDateAndTime,
   getDateChanges,
 } = require('../utils/dateUtil.js')
+const emailTransporter = require('../utils/email.js')
+require('dotenv').config()
 
 const adminScheduleModuleController = e.Router()
 
@@ -269,6 +271,34 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
               (time.isWeekday === 'false' && moment(detail.time).day() === 6))
           )
         })
+      })
+
+      const schedules = await scheduleDetailModel
+        .find({
+          _id: { $in: detailsToDelete.map((detail) => detail._id) },
+        })
+        .populate({
+          path: 'reserve',
+          populate: { path: 'user', strictPopulate: false },
+        })
+
+      schedules.forEach((schedule) => {
+        if (schedule.reserve && schedule.reserve.length > 0) {
+          const emails = schedule.reserve.map((user) => user.email)
+
+          const from = schedule.from
+          const to = schedule.to
+          const time = moment(schedule.time)
+            .tz('Asia/Manila')
+            .format('MMM DD HH:mm')
+
+          emailTransporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: emails,
+            subject: 'Reservation Cancelled',
+            text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+          })
+        }
       })
 
       await scheduleDetailModel.deleteMany({
