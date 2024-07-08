@@ -7,7 +7,7 @@ const {
 } = require('../models/index.js')
 const moment = require('moment-timezone')
 const isAuthorized = require('../utils/isAuthorized')
-const { DocumentSnapshot } = require('firebase-admin/firestore')
+const { ObjectId } = require('mongoose').Types
 
 const myTripModuleController = e.Router()
 
@@ -41,7 +41,7 @@ myTripModuleController.get('/', isAuthorized, async (req, res) => {
   if (!histories) {
     return res.render('myTripModule/myTrip.ejs')
   }
-
+  console.log(histories)
   const tripList = histories.map((history) => {
     return {
       id: history.approval._id,
@@ -60,22 +60,11 @@ myTripModuleController.get('/:id', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
   const { id } = req.params
 
-  const schedule = await scheduleModel.aggregate([
-    {
-      $lookup: {
-        from: 'ScheduleDetail',
-        localField: 'scheduleDetail',
-        foreignField: '_id',
-        as: 'scheduleDetail',
-      },
-    },
-    {
-      $unwind: '$scheduleDetail',
-    },
+  const schedule = await scheduleDetailModel.aggregate([
     {
       $lookup: {
         from: 'ReservationApproval',
-        localField: 'scheduleDetail.approval',
+        localField: 'approval',
         foreignField: '_id',
         as: 'approval',
       },
@@ -85,20 +74,28 @@ myTripModuleController.get('/:id', isAuthorized, async (req, res) => {
     },
     {
       $match: {
-        'approval._id': id,
+        'approval._id': new ObjectId(id),
         'approval.user': user._id,
       },
     },
+    {
+      $project:{
+        approval: 1,
+        from: 1,
+        to: 1,
+        time: 1
+      }
+    }
   ])
-
+  console.log(schedule)
   const detail = {
     id: schedule[0].approval._id,
-    from: schedule[0].scheduleDetail.from,
-    to: schedule[0].scheduleDetail.to,
-    departureTime: moment(schedule[0].scheduleDetail.time)
+    from: schedule[0].from,
+    to: schedule[0].to,
+    departureTime: moment(schedule[0].time)
       .tz('Asia/Manila')
       .format('hh:mm'),
-    departureDate: moment(schedule[0].scheduleDetail.time)
+    departureDate: moment(schedule[0].time)
       .tz('Asia/Manila')
       .format('MMM DD'),
     status: schedule[0].approval.status,

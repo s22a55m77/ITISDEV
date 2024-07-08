@@ -1,0 +1,19 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+.information-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.information-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+hr .solid {
+  height: 0.5px;
+  background-color: #000;
+}
