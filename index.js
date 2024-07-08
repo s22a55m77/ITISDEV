@@ -16,6 +16,7 @@ const {
   adminScheduleModuleController,
   adminCheckInController,
   adminReservationModuleController,
+  reservationModuleController,
   myTripModuleController,
 } = require('./controllers/index.js')
 
@@ -57,6 +58,7 @@ app.use('/auth', registrationModuleController)
 app.use('/profile', profileModuleController)
 app.use('/admin/announcement', adminAnnouncementModuleController)
 app.use('/announcement', announcementModuleController)
+app.use('/reservation', reservationModuleController)
 app.use('/trip', myTripModuleController)
 app.use('/', landingController)
 app.use('/admin/schedule', adminScheduleModuleController)
