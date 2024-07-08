@@ -14,6 +14,7 @@ const {
   adminAnnouncementModuleController,
   landingController,
   adminScheduleModuleController,
+  adminCheckInController,
   adminReservationModuleController,
   myTripModuleController,
 } = require('./controllers/index.js')
@@ -59,6 +60,7 @@ app.use('/announcement', announcementModuleController)
 app.use('/trip', myTripModuleController)
 app.use('/', landingController)
 app.use('/admin/schedule', adminScheduleModuleController)
+app.use('/admin/checkin', adminCheckInController)
 app.use('/admin/reservation', adminReservationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {

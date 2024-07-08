@@ -6,7 +6,16 @@ const scheduleDetailSchema = new Schema(
     to: { type: String, required: true },
     time: { type: Date, required: true },
     slot: { type: Number, default: 30 },
-    reserve: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    reserve: [
+      {
+        user: { type: Schema.Types.ObjectId, ref: 'User' },
+        status: {
+          type: String,
+          enum: ['reserved', 'pending', 'absent'],
+          default: 'pending',
+        },
+      },
+    ],
     approval: [{ type: Schema.Types.ObjectId, ref: 'ReservationApproval' }],
   },
   { collection: 'ScheduleDetail', timestamps: true }
