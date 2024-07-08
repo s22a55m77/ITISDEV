@@ -20,11 +20,13 @@ profileModuleController.get('/', isAuthorized, async (req, res) => {
 
 profileModuleController.get('/settings', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
-  const { eafUpdatedAt, vaccinationRecordUpdatedAt } = user
+  const { eafUpdatedAt, vaccinationRecordUpdatedAt, campus, campusUpdatedAt } = user
 
   res.render('profileModule/settings.ejs', {
     eafUpdatedAt,
     vaccinationRecordUpdatedAt,
+    designation: campus,
+    designationUpdatedAt: campusUpdatedAt,
   })
 })
 
@@ -66,6 +68,20 @@ profileModuleController.post('/vaccination', isAuthorized, async (req, res) => {
     res.redirect('/profile/settings?error=vaccination-upload-error')
     return
   }
+})
+
+profileModuleController.post('/designation', isAuthorized, async (req, res) => {
+  const user = httpContext.get('user')
+  const { designation } = req.body
+
+  try {
+    await userModel.findByIdAndUpdate(user._id, { campus: designation, campusUpdatedAt: moment().tz('Asia/Manila').format()})
+    return res.redirect('/profile/settings?success=designation-updated')
+  } catch (error) {
+    console.error(error)
+    return res.redirect('/profile/settings?error=designation-update-error')
+  }
+  
 })
 
 profileModuleController.get('/test', async (req, res) => {

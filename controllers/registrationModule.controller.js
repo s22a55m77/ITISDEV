@@ -140,6 +140,7 @@ registrationModuleController.post('/create', async (req, res) => {
       idNumber: req.body.idNumber,
       collegeOrDepartment: req.body.collegeOrDepartment,
       campus: req.body.campus,
+      campusUpdatedAt: moment().tz('Asia/Manila').format(),
       eaf: req.files.eaf.data,
       eafUpdatedAt: moment().tz('Asia/Manila').format(),
       vaccinationRecord: req.files.vaccinationRecord.data,

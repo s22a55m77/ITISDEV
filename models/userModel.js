@@ -8,6 +8,7 @@ const userSchema = new Schema(
     idNumber: { type: Number },
     collegeOrDepartment: { type: String },
     campus: { type: String },
+    campusUpdatedAt: { type: Date},
     eaf: { type: Buffer },
     eafUpdatedAt: { type: Date },
     vaccinationRecord: { type: Buffer },

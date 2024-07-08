@@ -10,7 +10,7 @@ landingController.get('/', isAuthorized, async (req, res) => {
 
   const unRead = await announcementModel.find({ read: { $ne: user._id } })
 
-  res.render('landing/landing.ejs', { unRead: unRead.length })
+  res.render('landing/landing.ejs', { unRead: unRead.length, name:user.name })
 })
 
 module.exports = landingController
