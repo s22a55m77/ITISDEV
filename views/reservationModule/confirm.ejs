@@ -25,15 +25,18 @@
   </div>
 </div>
 
+Selected dates
 <div id="selected-dates-container">
 </div>
 
 <div class="round-trip-information">
+  Departure
   <div class="departure-container">
     <div id="departure"></div>
     <div id="departure-time"></div>
   </div>
   
+  Return
   <div class="return-container">
     <div id="return"></div>
     <div id="return-time"></div>
@@ -41,12 +44,13 @@
 </div>
 
 <div class="one-way-information-time">
-  <div id="departure-time"></div>
+  Departure time
+  <div id="one-way-departure-time"></div>
 </div>
 
 <div>
   <button onclick="history.back()">← BACK</button>
-  <button>RESERVE TRIP</button>
+  <button id="reserve">RESERVE TRIP</button>
 </div>
 
 <script>
@@ -54,5 +58,14 @@
   const to = JSON.parse('<%- JSON.stringify(to) %>');
   const date = JSON.parse('<%- JSON.stringify(date) %>');
   const departureIds = JSON.parse('<%- JSON.stringify(departureIds) %>');
-  const returnIds = JSON.parse('<%- JSON.stringify(returnIds) %>');
+  const departureTime = JSON.parse('<%- JSON.stringify(departureTime) %>');
+
+  let returnIds = [];
+  let returnTime;
+  try {
+    returnIds = JSON.parse('<%- JSON.stringify(returnIds) %>');
+    returnTime = JSON.parse('<%- JSON.stringify(returnTime) %>');
+  } catch (error) {
+  }
+
 </script>

@@ -83,8 +83,6 @@ function checkLocationIsSelected() {
   return true
 }
 
-
-
 async function handleLocationChange() {
   let weekdays = []
   let saturdays = []
@@ -97,7 +95,6 @@ async function handleLocationChange() {
       saturdays = res.saturdays
     }
 
-    console.log(res)
     renderTimeSlotWeekdays(weekdays)
     renderTimeSlotSaturdays(saturdays)
   }

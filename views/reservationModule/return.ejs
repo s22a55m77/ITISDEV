@@ -26,8 +26,8 @@
   <div id="return-header">(Return trip)</div>
 </div>
 
-<div class="time-container">
-</div>
+<form class="time-container">
+</form>
 
 <div>
   <button id="back" onclick="history.back()">← BACK</button>
@@ -40,4 +40,5 @@
   const date = JSON.parse('<%- JSON.stringify(date) %>');
   const schedules = JSON.parse('<%- JSON.stringify(schedules) %>');
   const departureIds = JSON.parse('<%- JSON.stringify(departureIds) %>');
+  const departureTime = JSON.parse('<%- JSON.stringify(departureTime) %>');
 </script>
