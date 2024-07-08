@@ -21,6 +21,20 @@ const scheduleDetailSchema = new Schema(
   { collection: 'ScheduleDetail', timestamps: true }
 )
 
+scheduleDetailSchema.pre('remove', async (next) => {
+  try {
+    // Get the ReservationApproval model
+    const reservationApproval = this.model('ReservationApproval')
+
+    // Delete all associated approval documents
+    await reservationApproval.deleteMany({ _id: { $in: this.approval } })
+
+    next()
+  } catch (error) {
+    next(error)
+  }
+})
+
 const scheduleDetailModel = model('ScheduleDetail', scheduleDetailSchema)
 
 module.exports = scheduleDetailModel
