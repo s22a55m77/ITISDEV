@@ -1,5 +1,8 @@
 const e = require('express')
-const { scheduleDetailModel } = require('../models/index.js')
+const {
+  scheduleDetailModel,
+  reservationApprovalModel,
+} = require('../models/index.js')
 const httpContext = require('express-http-context')
 const isAuthorized = require('../utils/isAuthorized.js')
 const moment = require('moment-timezone')
@@ -220,27 +223,68 @@ reservationModuleController.post('/return', async (req, res) => {
 })
 
 reservationModuleController.post('/success', isAuthorized, async (req, res) => {
-  const { ids } = req.body
+  const { ids, purpose } = req.body
   const user = httpContext.get('user')
 
   try {
-    // TODO get user designation, only with laguna will update schedule detail
-    // other will insert new approvalModel
-    await scheduleDetailModel.updateMany(
-      {
-        _id: {
-          $in: ids,
-        },
-      },
-      {
-        $inc: {
-          slot: -1,
-        },
-        $push: {
-          reserve: user,
-        },
-      }
-    )
+    // TODO test if this works
+    if (
+      user.designation ===
+        'College - Manila Enrolled without Class/es in Laguna' ||
+      user.designation ===
+        'College - Laguna Enrolled without Class/es in Manila'
+    ) {
+      const approvals = []
+
+      ids.forEach(() => {
+        const approval = new reservationApprovalModel({
+          user,
+          designation: user.designation,
+          purpose,
+          status: 'pending',
+        })
+
+        approvals.push(approval)
+      })
+
+      const docs = await reservationApprovalModel.insertMany(approvals)
+
+      ids.forEach(async (id, index) => {
+        await scheduleDetailModel.findByIdAndUpdate(id, {
+          $push: {
+            approval: docs[index],
+          },
+        })
+      })
+    } else {
+      const approvals = []
+
+      ids.forEach(() => {
+        const approval = new reservationApprovalModel({
+          user,
+          designation: user.designation,
+          purpose,
+          status: 'confirmed',
+        })
+
+        approvals.push(approval)
+      })
+
+      const docs = await reservationApprovalModel.insertMany(approvals)
+
+      ids.forEach(async (id, index) => {
+        await scheduleDetailModel.findByIdAndUpdate(id, {
+          $inc: {
+            slot: -1,
+          },
+          $push: {
+            approval: docs[index],
+            reserve: user,
+          },
+        })
+      })
+    }
+
     return res.render('reservationModule/success.ejs', { success: true })
   } catch (error) {
     console.error(error)
