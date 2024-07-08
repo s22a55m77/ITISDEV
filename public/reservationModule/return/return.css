@@ -1,0 +1,55 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+.time-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 50px;
+  row-gap: 10px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.step-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.step {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.step-active {
+  background: #000;
+}
+
+.time-item {
+  padding: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.50);
+}
+
+input[type="checkbox"]:checked + label {
+  color: white;
+  background-color: black;
+}
+
+.location-container {
+  display: flex;
+}
+
+.green {
+  color: #00A14A;
+}
+
+.red {
+  color: #FF0000;
+}
