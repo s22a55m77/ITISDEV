@@ -1,3 +1,9 @@
+// get query
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+let { time, to, from, date } = params;
+
 function debounce(func, wait) {
   let timeout;
   return function(...args) {
@@ -9,6 +15,7 @@ function debounce(func, wait) {
 
 const qrCodeSuccessCallback = (() => {
   const actualCallback = (decodedText) => {
+    window.location.href = `/admin/checkin/result/?from=${from}&to=${to}&time=${time}&date=${date}&passengerId=${decodedText}`;
     console.log(`Scan result: ${decodedText}`);
   };
 

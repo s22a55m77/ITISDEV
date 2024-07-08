@@ -40,8 +40,8 @@ $('#next').click(() => {
   const departureIds = getSelectedID();
   const departureTime = $('input[type="radio"]:checked').val()
   if(type === 'round') {
-    $.redirect(`/reservation/return`, {from, to, date, departureIds, departureTime}, "POST");
+    $.redirect(`/reservation/return`, {from, to, date, departureIds, departureTime, purpose}, "POST");
   } else {
-    $.redirect(`/reservation/confirm?type=one`, {from, to, date, departureIds, departureTime}, "POST");
+    $.redirect(`/reservation/confirm?type=one`, {from, to, date, departureIds, departureTime, purpose}, "POST");
   }
 })

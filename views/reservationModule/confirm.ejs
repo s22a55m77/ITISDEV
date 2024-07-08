@@ -59,6 +59,9 @@ Selected dates
   const date = JSON.parse('<%- JSON.stringify(date) %>');
   const departureIds = JSON.parse('<%- JSON.stringify(departureIds) %>');
   const departureTime = JSON.parse('<%- JSON.stringify(departureTime) %>');
+  const purpose = '<%- purpose %>';
+
+  console.log(purpose)
 
   let returnIds = [];
   let returnTime;

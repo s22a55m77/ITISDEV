@@ -4,11 +4,11 @@
 
 <div id="status-message"></div>
 
-<div id="name"></div>
-<div id="type"></div>
-<div id="id"></div>
+<div id="name"><%-passengerInfo.name %></div>
+<div id="type"><%-passengerInfo.designation %></div>
+<div id="id"><%-passengerInfo.idNumber %></div>
 
-<button>
+<button id="scan-another">
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
     <rect x="4" y="1" width="22" height="22" rx="3" stroke="white" stroke-width="2"/>
     <path d="M0 5H30V18H0V5Z" fill="black"/>
@@ -16,4 +16,9 @@
   </svg>
   SCAN ANOTHER
 </button>
-<button>BACK TO LIST</button>
+<button id="back-to-list">BACK TO LIST</button>
+
+<script>
+  const result = "<%- reserve %>"
+  const invalid = "<%- invalid %>"
+</script>

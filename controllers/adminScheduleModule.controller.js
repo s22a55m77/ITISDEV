@@ -15,6 +15,10 @@ const adminScheduleModuleController = e.Router()
 
 adminScheduleModuleController.get('/', async (req, res) => {
   const line = req.query.line
+
+  if (!line) {
+    return res.redirect('/admin/schedule?line=1')
+  }
   const schedules = await scheduleModel.find({ line })
 
   res.render('adminScheduleModule/schedule.ejs', { schedules })

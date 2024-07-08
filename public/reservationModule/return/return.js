@@ -28,5 +28,5 @@ const getSelectedID = () => {
 $('#next').click(() => {
   const returnIds = getSelectedID();
   const returnTime = $('input[type="radio"]:checked').val()
-  $.redirect(`/reservation/confirm?type=round`, {from, to, date, departureIds, returnIds, departureTime, returnTime}, "POST");
+  $.redirect(`/reservation/confirm?type=round`, {from, to, date, departureIds, returnIds, departureTime, returnTime, purpose}, "POST");
 })

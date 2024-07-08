@@ -51,7 +51,7 @@ hr .solid {
   border-bottom: 1px solid #00000040;
 }
 
-.present, .absent {
+.present, .pending {
   width: 25px;
   height: 25px;
   border: 1px solid black;

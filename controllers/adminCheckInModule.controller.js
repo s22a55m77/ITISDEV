@@ -48,7 +48,7 @@ async function getScheduleDetail(from, to, time, date) {
     {
       $lookup: {
         from: 'User',
-        localField: 'reserve._id',
+        localField: 'reserve.user',
         foreignField: '_id',
         as: 'reserve.userDetails',
       },
@@ -78,6 +78,7 @@ async function getScheduleDetail(from, to, time, date) {
       },
     },
   ])
+  
   return schedule[0] || null
 }
 
@@ -95,6 +96,7 @@ adminCheckInController.get('/', async (req, res) => {
 
   const passengerList = []
   schedule?.reserve.forEach((passenger) => {
+    console.log(passenger)
     if (passenger.user.name)
       passengerList.push({
         name: passenger.user.name,
@@ -102,7 +104,7 @@ adminCheckInController.get('/', async (req, res) => {
         status: passenger.status,
       })
   })
-
+  
   const reservedCount = passengerList.length
   const slotCount = schedule?.slot + reservedCount
   const presentCount = schedule?.reserve.filter(
@@ -182,8 +184,16 @@ adminCheckInController.get('/result', async (req, res) => {
     return
   }
 
+  let numberPassengerId
+  try {
+    numberPassengerId = Number(passengerId)
+  } catch (error) {
+    console.error(error)
+    return res.render('adminCheckInModule/result.ejs', { invalid: true })
+  }
+
   const passenger = schedule?.reserve.find(
-    (passenger) => passenger.user.idNumber === Number(passengerId)
+    (passenger) => passenger.user.idNumber === numberPassengerId
   )
 
   const passengerInfo = await userModel.findOne(
@@ -192,12 +202,13 @@ adminCheckInController.get('/result', async (req, res) => {
   )
 
   if (!passengerInfo) {
-    res.render('adminCheckInModule/result.ejs', { invalid: true })
+    res.render('adminCheckInModule/result.ejs', { invalid: true, reserve: false, passengerInfo: {} })
     return
   }
 
   if (!passenger) {
     res.render('adminCheckInModule/result.ejs', {
+      invalid: false,
       reserved: false,
       passengerInfo,
     })
@@ -210,7 +221,7 @@ adminCheckInController.get('/result', async (req, res) => {
   })
 
   await scheduleDetailModel.updateOne(
-    { _id: schedule._id, 'reserve._id': passengerInfo._id },
+    { _id: schedule._id, 'reserve.user': passengerInfo._id },
     {
       $set: {
         'reserve.$.status': 'present',
@@ -218,7 +229,7 @@ adminCheckInController.get('/result', async (req, res) => {
     }
   )
 
-  res.render('adminCheckInModule/result.ejs', { reserve: true, passengerInfo })
+  res.render('adminCheckInModule/result.ejs', { invalid: false, reserve: true, passengerInfo })
 })
 
 module.exports = adminCheckInController

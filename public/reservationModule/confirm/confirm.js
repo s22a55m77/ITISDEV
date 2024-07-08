@@ -50,5 +50,5 @@ $('#selected-dates-container').append(
 
 $('#reserve').click(() => {
   const ids = departureIds.concat(returnIds)
-  $.redirect(`/reservation/success`, {ids}, "POST");
+  $.redirect(`/reservation/success`, {ids, purpose}, "POST");
 })

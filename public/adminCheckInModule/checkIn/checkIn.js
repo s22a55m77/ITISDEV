@@ -120,3 +120,7 @@ $('#search').on('keyup', function() {
                                                 || passenger.id.includes($(this).val()))
   renderPassengerList(result)
 })
+
+$('#scan').click(function() {
+  window.location.href = `/admin/checkin/scan?from=${from}&to=${to}&time=${time}&date=${date}`
+})

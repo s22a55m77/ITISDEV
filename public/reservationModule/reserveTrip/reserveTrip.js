@@ -57,7 +57,7 @@ $('#round-trip').prop('checked', true)
 
 // Handle Change trip type
 $('#round-trip').click(() => {
-  if(!$('#one-way').is(':checked')) {
+  if($('#one-way').is(':checked')) {
     $('.step-container').append('<div class="step last"></div>')
     $('#round-trip-arrow').show()
     $('#one-way-arrow').hide()
@@ -65,7 +65,7 @@ $('#round-trip').click(() => {
 })
 
 $('#one-way').click(() => {
-  if(!$('#round-trip').is(':checked')) {
+  if($('#round-trip').is(':checked')) {
     $('.last').remove()
     $('#one-way-arrow').show()
     $('#round-trip-arrow').hide()
@@ -127,10 +127,12 @@ $('#next').click(() => {
   const from = $('#from').val()
   const to = $('#to').val()
   const date = getSelectedDates()
+  const purpose = $('#purpose').val()
+
   if(date.length === 0) {
     alert('Please select a date')
     return
   }
 
-  $.redirect(`/reservation/departure?type=${type}`, {from, to, date}, "POST");
+  $.redirect(`/reservation/departure?type=${type}`, {from, to, date, purpose}, "POST");
 })
