@@ -15,6 +15,7 @@ const {
   landingController,
   adminScheduleModuleController,
   adminReservationModuleController,
+  myTripModuleController,
 } = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
@@ -55,6 +56,7 @@ app.use('/auth', registrationModuleController)
 app.use('/profile', profileModuleController)
 app.use('/admin/announcement', adminAnnouncementModuleController)
 app.use('/announcement', announcementModuleController)
+app.use('/trip', myTripModuleController)
 app.use('/', landingController)
 app.use('/admin/schedule', adminScheduleModuleController)
 app.use('/admin/reservation', adminReservationModuleController)
