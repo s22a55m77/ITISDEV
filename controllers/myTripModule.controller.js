@@ -1,6 +1,7 @@
 const e = require('express')
 const httpContext = require('express-http-context')
 const {
+  scheduleModel,
   scheduleDetailModel,
   reservationApprovalModel,
 } = require('../models/index.js')
@@ -53,6 +54,57 @@ myTripModuleController.get('/', isAuthorized, async (req, res) => {
   })
 
   res.render('myTripModule/myTrip.ejs', { tripList })
+})
+
+myTripModuleController.get('/:id', isAuthorized, async (req, res) => {
+  const user = httpContext.get('user')
+  const { id } = req.params
+
+  const schedule = await scheduleModel.aggregate([
+    {
+      $lookup: {
+        from: 'ScheduleDetail',
+        localField: 'scheduleDetail',
+        foreignField: '_id',
+        as: 'scheduleDetail',
+      },
+    },
+    {
+      $unwind: '$scheduleDetail',
+    },
+    {
+      $lookup: {
+        from: 'ReservationApproval',
+        localField: 'scheduleDetail.approval',
+        foreignField: '_id',
+        as: 'approval',
+      },
+    },
+    {
+      $unwind: '$approval',
+    },
+    {
+      $match: {
+        'approval._id': id,
+        'approval.user': user._id,
+      },
+    },
+  ])
+
+  const detail = {
+    id: schedule[0].approval._id,
+    from: schedule[0].scheduleDetail.from,
+    to: schedule[0].scheduleDetail.to,
+    departureTime: moment(schedule[0].scheduleDetail.time)
+      .tz('Asia/Manila')
+      .format('hh:mm'),
+    departureDate: moment(schedule[0].scheduleDetail.time)
+      .tz('Asia/Manila')
+      .format('MMM DD'),
+    status: schedule[0].approval.status,
+  }
+
+  res.render('myTripModule/tripDetail.ejs', { detail })
 })
 
 myTripModuleController.post('/cancel/:id', isAuthorized, async (req, res) => {
