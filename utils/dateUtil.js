@@ -104,4 +104,40 @@ function getDateChanges(oldStart, oldEnd, newStart, newEnd) {
   return dateObjects
 }
 
-module.exports = { getSaturdays, getWeekdays, mergeDateAndTime, getDateChanges }
+function findNearestAndSurrounding(times, target) {
+  // sort times format 'YYYY-MM-DD'
+  times.sort((a, b) => moment(a).diff(b))
+
+  const result = []
+
+  let minDiff = Infinity
+  let minIndex = -1
+  // get the nearest time
+  for (let i = 0; i < times.length; i++) {
+    // to positive diff
+    const diff =
+      moment(target).diff(times[i]) > 0
+        ? moment(target).diff(times[i])
+        : moment(times[i]).diff(target)
+    if (diff < minDiff) {
+      minDiff = diff
+      minIndex = i
+    }
+  }
+
+  result[0] = times[minIndex - 2]
+  result[1] = times[minIndex - 1]
+  result[2] = times[minIndex]
+  result[3] = times[minIndex + 1]
+  result[4] = times[minIndex + 2]
+
+  return result
+}
+
+module.exports = {
+  getSaturdays,
+  getWeekdays,
+  mergeDateAndTime,
+  getDateChanges,
+  findNearestAndSurrounding,
+}

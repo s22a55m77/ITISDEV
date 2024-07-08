@@ -16,6 +16,7 @@ const scheduleDetailSchema = new Schema(
         },
       },
     ],
+    approval: [{ type: Schema.Types.ObjectId, ref: 'ReservationApproval' }],
   },
   { collection: 'ScheduleDetail', timestamps: true }
 )

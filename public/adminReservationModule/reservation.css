@@ -1,0 +1,82 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+.main-container {
+  display: flex;
+  gap: 20px;
+}
+
+
+.popup-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup-container .popup {
+  visibility: hidden;
+  width: 160px;
+  background-color: #D9D9D9;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+.popup-container .show {
+  visibility: visible;
+}
+
+.location-container {
+  display: flex;
+  gap: 30px;
+}
+
+.date-select-container {
+  display: flex;
+}
+
+#date-list {
+  display: flex;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.main-select {
+  color: black;
+}
+
+.sub-select {
+  color: rgba(0, 0, 0, 0.50);
+}
+
+.not-select {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.confirmed {
+  background-color: rgba(0, 161, 74, 0.50);;
+}
+
+.pending {
+  background-color: rgba(244, 196, 26, 0.50);;
+}
+
+.rejected {
+  background-color: rgba(244, 26, 26, 0.50);;
+}
+
+.selected-row {
+  outline: 2px solid blue;
+}

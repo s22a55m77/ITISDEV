@@ -5,6 +5,9 @@ const announcementModuleController = require('./announcementModule.controller.js
 const landingController = require('./landing.controller.js')
 const adminScheduleModuleController = require('./adminScheduleModule.controller.js')
 const adminCheckInController = require('./adminCheckInModule.controller.js')
+const adminReservationModuleController = require('./adminReservationModule.controller.js')
+const myTripModuleController = require('./myTripModule.controller.js')
+
 
 module.exports = {
   registrationModuleController,
@@ -14,4 +17,6 @@ module.exports = {
   landingController,
   adminScheduleModuleController,
   adminCheckInController,
+  adminReservationModuleController,
+  myTripModuleController,
 }
