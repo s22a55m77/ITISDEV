@@ -1,0 +1,20 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="landing/landing.css" />
+
+<div class="main-container">
+  <div class="header">Hello, <%- name %>!</div>
+  <a class="item" href="/announcement">Announcement</a>
+  <a class="item" href="/reservation">Reserve Trip</a>
+  <a class="item" href="/trip">My Trips</a>
+</div>
+
+<div class="tab">
+  <a href="/">Home</a>
+  <% if(unRead) { %>
+  <div id="notification-badge" data-count="<%= unRead %>">Notification</div>
+  <% } else { %>
+  <div>Notification</div>
+  <% } %>
+
+  <a href="/profile">Account</a>
+</div>

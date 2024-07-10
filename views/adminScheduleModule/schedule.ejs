@@ -1,0 +1,41 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/adminScheduleModule/schedule/schedule.css" />
+
+<div>Manage Shuttle Schedules</div>
+<div class="tab">
+  <a href="/admin/schedule?line=1">DLSU MNL ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=2">PASEO ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=3">CARMONA ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=4">PAVILION ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=5">WALTER ↔ DLSU LAG</a>
+</div>
+
+<div>
+  <a href="/admin/schedule/create"><button>ADD NEW SCHEDULE</button></a>
+</div>
+
+<div>
+  <table>
+    <tr>
+      <th>Date Range</th>
+      <th>Label</th>
+      <th>Actions</th>
+    </tr>
+    <% for(const schedule of schedules) { %>
+    <tr>
+      <td><%= schedule.dateRange %></td>
+      <td><%= schedule.label %></td>
+      <td>
+        <a
+          href="/admin/schedule/edit/<%= schedule._id %>?line=<%= schedule.line %>"
+        >
+          <button>EDIT</button>
+        </a>
+        <a href="/admin/schedule/delete/<%= schedule._id %>"
+          ><button>DELETE</button></a
+        >
+      </td>
+    </tr>
+    <% } %>
+  </table>
+</div>

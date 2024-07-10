@@ -1,0 +1,43 @@
+<%- include('../common/headers.ejs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<link rel="stylesheet" href="/reservationModule/departure/departure.css" />
+<script src="https://cdn.jsdelivr.net/gh/mgalante/jquery.redirect@master/jquery.redirect.js"></script>
+<script defer src="/reservationModule/departure/departure.js"></script>
+
+<div class="header-container">
+  <div class="header-title">
+    Reserve Trip
+  </div>
+  <div class="step-container">
+    <div class="step"></div>
+    <div class="step step-active"></div>
+    <div class="step"></div>
+    <div class="step last"></div>
+  </div>
+</div>
+
+<div>
+  Select time slot for 
+  <div class="location-container">
+    <div id="from"></div>
+    <div>→</div>
+    <div id="to"></div>
+  </div>
+  <div id="departure-header">(Departure trip)</div>
+</div>
+
+<div class="time-container">
+</div>
+
+<div>
+  <button id="back"><a href="/reservation">← BACK</a></button>
+  <button id="next">NEXT →</button>
+</div>
+
+<script>
+  const from = JSON.parse('<%- JSON.stringify(from) %>');
+  const to = JSON.parse('<%- JSON.stringify(to) %>');
+  const date = JSON.parse('<%- JSON.stringify(date) %>');
+  const schedules = JSON.parse('<%- JSON.stringify(schedules) %>');
+  const purpose = '<%- purpose %>';
+</script>

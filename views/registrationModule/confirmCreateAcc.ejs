@@ -1,0 +1,27 @@
+<%- include('../common/headers.ejs') %>
+<script src="/registrationModule/confirmCreateAcc/confirmCreateAcc.js"></script>
+<link rel="stylesheet" href="/registrationModule/confirmCreateAcc/confirmCreateAcc.css" />
+<div class="header-container">
+  <div class="header-title">
+    Create your account
+  </div>
+  <div class="step-container">
+    <div class="step-1"></div>
+    <div class="step-2"></div>
+  </div>
+  <div>Single sign-on with Google</div>
+</div>
+
+<div class="information-container">
+  <img src="<%- picture %>" alt="photo" />
+  <span id="name"><%= name %></span>
+  <span id="email"><%= email %></span>
+</div>
+<button id="next" onclick="toCreateAccount()">NEXT →</button>
+
+<div class="footer-container">
+  <div>Not you?</div>
+  <button id="sign-on" onclick="window.location.href='/auth/signin'">
+    Sign on with a different Google account
+  </button>
+</div>

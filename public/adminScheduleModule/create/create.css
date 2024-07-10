@@ -1,0 +1,9 @@
+body {
+  background-color: white;
+  padding: 25px;
+}
+
+.schedule-container {
+  display: flex;
+  gap: 200px
+}
