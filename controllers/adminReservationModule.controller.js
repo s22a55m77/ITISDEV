@@ -3,13 +3,15 @@ const {
   scheduleModel,
   scheduleDetailModel,
   reservationApprovalModel,
+  notificationModel,
 } = require('../models/index.js')
 const moment = require('moment-timezone')
 const { findNearestAndSurrounding } = require('../utils/dateUtil.js')
+const isSSU = require('../utils/isSSU.js')
 
 const adminReservationModuleController = e.Router()
 
-adminReservationModuleController.get('/', async (req, res) => {
+adminReservationModuleController.get('/', isSSU, async (req, res) => {
   const { selectedDate, selectedTime, line } = req.query
 
   if (!line) {
@@ -141,7 +143,7 @@ adminReservationModuleController.get('/', async (req, res) => {
   })
 })
 
-adminReservationModuleController.post('/confirm', async (req, res) => {
+adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
   const id = req.body.id
 
   try {
@@ -172,6 +174,18 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
           new: true,
         }
       )
+
+      const from = schedule.from
+      const to = schedule.to
+      const time = moment(schedule.time)
+        .tz('Asia/Manila')
+        .format('YYYY-MM-DD HH:mm')
+
+      await notificationModel.create({
+        title: 'Reservation Approved',
+        description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+        to: approval.user,
+      })
     }
     res.send({ success: true, id: schedule._id, slot: schedule.slot })
   } catch (error) {
@@ -180,7 +194,7 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
   }
 })
 
-adminReservationModuleController.post('/reject', async (req, res) => {
+adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
   const id = req.body.id
 
   try {
@@ -214,6 +228,18 @@ adminReservationModuleController.post('/reject', async (req, res) => {
           new: true,
         }
       )
+
+      const from = schedule.from
+      const to = schedule.to
+      const time = moment(schedule.time)
+        .tz('Asia/Manila')
+        .format('YYYY-MM-DD HH:mm')
+
+      await notificationModel.create({
+        title: 'Reservation Rejected',
+        description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+        to: doc.user,
+      })
     }
 
     res.send({ success: true, id: schedule._id, slot: schedule.slot })
@@ -223,52 +249,56 @@ adminReservationModuleController.post('/reject', async (req, res) => {
   }
 })
 
-adminReservationModuleController.post('/confirm/all', async (req, res) => {
-  const ids = req.body.ids
+adminReservationModuleController.post(
+  '/confirm/all',
+  isSSU,
+  async (req, res) => {
+    const ids = req.body.ids
 
-  try {
-    const approval = await reservationApprovalModel.find({
-      _id: { $in: ids },
-      $and: {
-        status: {
-          $ne: 'confirmed',
-        },
-      },
-    })
-
-    await reservationApprovalModel.updateMany(
-      { _id: { $in: ids } },
-      { status: 'confirmed' }
-    )
-
-    const users = approval.map((approval) => approval.user)
-
-    const schedule = await scheduleDetailModel.findOneAndUpdate(
-      {
-        approval: {
-          $in: ids,
-        },
-      },
-      {
-        $push: {
-          reserve: {
-            $each: users,
+    try {
+      const approval = await reservationApprovalModel.find({
+        _id: { $in: ids },
+        $and: {
+          status: {
+            $ne: 'confirmed',
           },
         },
-        $inc: {
-          slot: -users.length,
-        },
-      },
-      {
-        new: true,
-      }
-    )
+      })
 
-    res.send({ success: true, id: schedule._id, slot: schedule.slot })
-  } catch (error) {
-    console.error(error)
-    res.send({ success: false, error: error })
+      await reservationApprovalModel.updateMany(
+        { _id: { $in: ids } },
+        { status: 'confirmed' }
+      )
+
+      const users = approval.map((approval) => approval.user)
+
+      const schedule = await scheduleDetailModel.findOneAndUpdate(
+        {
+          approval: {
+            $in: ids,
+          },
+        },
+        {
+          $push: {
+            reserve: {
+              $each: users,
+            },
+          },
+          $inc: {
+            slot: -users.length,
+          },
+        },
+        {
+          new: true,
+        }
+      )
+
+      res.send({ success: true, id: schedule._id, slot: schedule.slot })
+    } catch (error) {
+      console.error(error)
+      res.send({ success: false, error: error })
+    }
   }
-})
+)
 
 module.exports = adminReservationModuleController

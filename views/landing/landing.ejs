@@ -1,6 +1,8 @@
 <%- include('../common/headers.ejs') %>
 <link rel="stylesheet" href="landing/landing.css" />
 
+<title>Landing</title>
+
 <div class="main-container">
   <div class="header">Hello, <%- name %>!</div>
   <a class="item" href="/announcement">Announcement</a>
@@ -11,9 +13,9 @@
 <div class="tab">
   <a href="/">Home</a>
   <% if(unRead) { %>
-  <div id="notification-badge" data-count="<%= unRead %>">Notification</div>
+  <div id="notification-badge" data-count="<%= unRead %>"><a href="/notification">Notification</a></div>
   <% } else { %>
-  <div>Notification</div>
+  <a href="/notification">Notification</a>
   <% } %>
 
   <a href="/profile">Account</a>
