@@ -237,7 +237,7 @@ adminReservationModuleController.post('/reject', async (req, res) => {
       await notificationModel.create({
         title: 'Reservation Rejected',
         description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
-        to: approval.user,
+        to: doc.user,
       })
     }
 

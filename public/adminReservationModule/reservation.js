@@ -196,15 +196,12 @@ $('#confirm').click(async function () {
 
     let index = timeList[0].findIndex((time) => time.id === json.id)
     if (index != -1) {
-      console.log(1111)
       timeList[0][index].slot = json.slot
       fromTimeRender(timeList[0])
     }
     index = timeList[1].findIndex((time) => time.id === json.id)
     if (index != -1) {
-      console.log(222222)
       timeList[1][index].slot = json.slot
-      console.log(timeList[1])
       toTimeRender(timeList[1])
     }
     renderPassengerList(passengerList)
@@ -213,7 +210,6 @@ $('#confirm').click(async function () {
 
 // Reject Reservation
 $('#reject').click(async function () {
-  console.log(selectedData)
   const id = selectedData._id
 
   const res = await fetch('/admin/reservation/reject', {
@@ -226,6 +222,7 @@ $('#reject').click(async function () {
 
   const json = await res.json()
 
+  console.log(json)
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'rejected'
 
@@ -237,10 +234,10 @@ $('#reject').click(async function () {
     index = timeList[1].findIndex((time) => time.id === json.id)
     if (index != -1) {
       timeList[1][index].slot = json.slot
-      console.log(timeList[1])
       toTimeRender(timeList[1])
     }
 
+    console.log(passengerList)
     renderPassengerList(passengerList)
   }
 })
