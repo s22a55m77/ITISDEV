@@ -27,5 +27,6 @@ $('#register').click((event) => {
   const id = $('#idNumber').val()
   if((!eaf || !vaccinationRecord) && id != "") {
     event.preventDefault()
+    alert('Please upload all required files')
   }
 })
