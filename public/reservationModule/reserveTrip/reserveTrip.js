@@ -136,3 +136,28 @@ $('#next').click(() => {
 
   $.redirect(`/reservation/departure?type=${type}`, {from, to, date, purpose}, "POST");
 })
+
+// Handle from icon click
+$('#from-icon').click(() => {
+  if($('#from').val() === null) {
+    return
+  }
+  const src = "/reservation/image/" + $('#from').val() + " PICK"
+  $('#image').attr('src', src)
+  $('#image-modal').show()
+})
+
+$('#to-icon').click(() => {
+  if($('#to').val() === null) {
+    return
+  }
+  const src = "/reservation/image/" + $('#to').val() + " DROP"
+  $('#image').attr('src', src)
+  $('#image-modal').show()
+})
+
+$(window).on('click', function(event) {
+  if (event.target == $('#image-modal')[0]) {
+    $('#image-modal').hide();
+  }
+});
