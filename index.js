@@ -16,6 +16,7 @@ const {
   adminScheduleModuleController,
   adminCheckInController,
   adminReservationModuleController,
+  adminRegistrationModuleController,
   reservationModuleController,
   myTripModuleController,
 } = require('./controllers/index.js')
@@ -64,6 +65,7 @@ app.use('/', landingController)
 app.use('/admin/schedule', adminScheduleModuleController)
 app.use('/admin/checkin', adminCheckInController)
 app.use('/admin/reservation', adminReservationModuleController)
+app.use('/admin/auth', adminRegistrationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
