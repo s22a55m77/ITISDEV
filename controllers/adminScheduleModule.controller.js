@@ -1,5 +1,9 @@
 const e = require('express')
-const { scheduleModel, scheduleDetailModel } = require('../models/index.js')
+const {
+  scheduleModel,
+  scheduleDetailModel,
+  notificationModel,
+} = require('../models/index.js')
 const moment = require('moment-timezone')
 const mongoose = require('../utils/mongoose.js')
 const {
@@ -287,7 +291,7 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
           populate: { path: 'user', strictPopulate: false },
         })
 
-      schedules.forEach((schedule) => {
+      schedules.forEach(async (schedule) => {
         if (schedule.reserve && schedule.reserve.length > 0) {
           const emails = schedule.reserve.map((user) => user.email)
 
@@ -302,6 +306,14 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
             to: emails,
             subject: 'Reservation Cancelled',
             text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+          })
+
+          const users = schedule.reserve.map((user) => user._id)
+
+          await notificationModel.create({
+            title: 'Reservation Cancelled',
+            description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+            to: users,
           })
         }
       })
