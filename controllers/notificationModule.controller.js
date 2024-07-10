@@ -1,10 +1,14 @@
 const e = require('express')
 const { notificationModel } = require('../models/index.js')
 const { ObjectId } = require('mongoose').Types
+const isAuthorized = require('../utils/isAuthorized.js')
+const httpContext = require('express-http-context')
 
 const notificationModuleController = e.Router()
 
-notificationModuleController.get('/', async (req, res) => {
+notificationModuleController.get('/', isAuthorized, async (req, res) => {
+  const user = httpContext.get('user')
+
   const notifications = await notificationModel.find({
     to: {
       $in: [user._id],
@@ -14,19 +18,24 @@ notificationModuleController.get('/', async (req, res) => {
   res.render('notificationModule/notification.ejs', { notifications })
 })
 
-notificationModuleController.get('/detail/:id', async (req, res) => {
-  const id = req.params.id
+notificationModuleController.get(
+  '/detail/:id',
+  isAuthorized,
+  async (req, res) => {
+    const id = req.params.id
+    const user = httpContext.get('user')
 
-  const notification = await notificationModel.find({
-    $and: {
-      to: {
-        $in: [user._id],
+    const notification = await notificationModel.find({
+      $and: {
+        to: {
+          $in: [user._id],
+        },
+        _id: new ObjectId(id),
       },
-      _id: new ObjectId(id),
-    },
-  })
+    })
 
-  res.render('notificationModule/notificationDetail.ejs', { notification })
-})
+    res.render('notificationModule/notificationDetail.ejs', { notification })
+  }
+)
 
 module.exports = notificationModuleController
