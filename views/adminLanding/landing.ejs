@@ -4,7 +4,7 @@
 
 <!-- Content for dispatcher -->
 <div class="dispatcher-container">
-  <div class="header">Hello, name</div>
+  <div class="header">Hello, <%= role %></div>
   <div class="item">
     <a href="/admin/checkin">Check In</a>
   </div>
@@ -16,11 +16,21 @@
 
 <!-- Content for admin -->
 <div class="admin-container">
-  <div class="header">Hello, name</div>
+  <div class="header">Hello, <%= name %></div>
   <div class="item">
     <a href="/admin/schedule">Schedules</a>
   </div>
   <div class="item">
     <a href="/admin/reservation">Reservations</a>
   </div>
+  <div class="item">
+    <a href="/admin/announcement">Announcement</a>
+  </div>
+  <div class="item admin">
+    <a href="/admin/auth/create">Add SSU/Dispatcher</a>
+  </div>
 </div>
+
+<script>
+  const role = "<%= role %>";
+</script>

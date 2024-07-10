@@ -1,5 +1,3 @@
-const role = 'admin'
-
 if (role === 'dispatcher') {
   $('.dispatcher-container').show()
   $('.tab').show()
@@ -9,4 +7,8 @@ else {
   $('.dispatcher-container').hide()
   $('.tab').hide()
   $('.admin-container').show()
+}
+
+if(role === 'admin') {
+  $('.admin').show()
 }

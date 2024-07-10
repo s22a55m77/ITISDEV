@@ -38,3 +38,7 @@ body {
 .admin-container {
   padding: 25px;
 }
+
+.admin {
+  display: none;
+}
