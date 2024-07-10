@@ -19,6 +19,7 @@ const {
   adminRegistrationModuleController,
   reservationModuleController,
   myTripModuleController,
+  notificationModuleController,
 } = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
@@ -65,6 +66,7 @@ app.use('/', landingController)
 app.use('/admin/schedule', adminScheduleModuleController)
 app.use('/admin/checkin', adminCheckInController)
 app.use('/admin/reservation', adminReservationModuleController)
+app.use('/notification', notificationModuleController)
 app.use('/admin/auth', adminRegistrationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {

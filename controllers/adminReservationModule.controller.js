@@ -3,6 +3,7 @@ const {
   scheduleModel,
   scheduleDetailModel,
   reservationApprovalModel,
+  notificationModel,
 } = require('../models/index.js')
 const moment = require('moment-timezone')
 const { findNearestAndSurrounding } = require('../utils/dateUtil.js')
@@ -172,6 +173,18 @@ adminReservationModuleController.post('/confirm', async (req, res) => {
           new: true,
         }
       )
+
+      const from = schedule.from
+      const to = schedule.to
+      const time = moment(schedule.time)
+        .tz('Asia/Manila')
+        .format('YYYY-MM-DD HH:mm')
+
+      await notificationModel.create({
+        title: 'Reservation Approved',
+        description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+        to: approval.user,
+      })
     }
     res.send({ success: true, id: schedule._id, slot: schedule.slot })
   } catch (error) {
@@ -214,6 +227,18 @@ adminReservationModuleController.post('/reject', async (req, res) => {
           new: true,
         }
       )
+
+      const from = schedule.from
+      const to = schedule.to
+      const time = moment(schedule.time)
+        .tz('Asia/Manila')
+        .format('YYYY-MM-DD HH:mm')
+
+      await notificationModel.create({
+        title: 'Reservation Rejected',
+        description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+        to: approval.user,
+      })
     }
 
     res.send({ success: true, id: schedule._id, slot: schedule.slot })

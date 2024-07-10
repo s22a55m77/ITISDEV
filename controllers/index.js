@@ -9,6 +9,7 @@ const adminReservationModuleController = require('./adminReservationModule.contr
 const adminRegistrationModuleController = require('./adminRegistrationModule.controller.js')
 const reservationModuleController = require('./reservationModule.controller.js')
 const myTripModuleController = require('./myTripModule.controller.js')
+const notificationModuleController = require('./notificationModule.controller.js')
 
 module.exports = {
   registrationModuleController,
@@ -22,4 +23,5 @@ module.exports = {
   adminRegistrationModuleController,
   reservationModuleController,
   myTripModuleController,
+  notificationModuleController
 }
