@@ -18,6 +18,7 @@ const {
   adminReservationModuleController,
   reservationModuleController,
   myTripModuleController,
+  notificationModuleController,
 } = require('./controllers/index.js')
 
 const print = require('./utils/printRoute')
@@ -42,8 +43,6 @@ initializeApp({
   }),
 })
 
-const notificationModuleController = require('./controllers/notificationModule.controller.js')
-
 const app = e()
 
 app.use(bodyParser.json())
@@ -56,9 +55,6 @@ app.use(e.static('public'))
 
 app.set('view engine', 'ejs')
 
-app.use('/notification', notificationModuleController)
-app.use('/admin/booking', bookingConfirmationModule)
-
 app.use('/auth', registrationModuleController)
 app.use('/profile', profileModuleController)
 app.use('/admin/announcement', adminAnnouncementModuleController)
@@ -69,6 +65,7 @@ app.use('/', landingController)
 app.use('/admin/schedule', adminScheduleModuleController)
 app.use('/admin/checkin', adminCheckInController)
 app.use('/admin/reservation', adminReservationModuleController)
+app.use('/notification', notificationModuleController)
 
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
