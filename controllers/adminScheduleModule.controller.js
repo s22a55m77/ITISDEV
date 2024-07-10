@@ -8,12 +8,13 @@ const {
   mergeDateAndTime,
   getDateChanges,
 } = require('../utils/dateUtil.js')
+const isSSU = require('../utils/isSSU.js')
 const emailTransporter = require('../utils/email.js')
 require('dotenv').config()
 
 const adminScheduleModuleController = e.Router()
 
-adminScheduleModuleController.get('/', async (req, res) => {
+adminScheduleModuleController.get('/', isSSU, async (req, res) => {
   const line = req.query.line
 
   if (!line) {
@@ -24,11 +25,11 @@ adminScheduleModuleController.get('/', async (req, res) => {
   res.render('adminScheduleModule/schedule.ejs', { schedules })
 })
 
-adminScheduleModuleController.get('/create', (req, res) => {
+adminScheduleModuleController.get('/create', isSSU, (req, res) => {
   res.render('adminScheduleModule/create.ejs')
 })
 
-adminScheduleModuleController.post('/create', async (req, res) => {
+adminScheduleModuleController.post('/create', isSSU, async (req, res) => {
   const { line, from, to, label, schedules } = req.body
 
   const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
@@ -79,7 +80,7 @@ adminScheduleModuleController.post('/create', async (req, res) => {
   }
 })
 
-adminScheduleModuleController.get('/edit/:id', async (req, res) => {
+adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
   const schedule = await scheduleModel.findById(id).populate('details')
@@ -130,7 +131,7 @@ adminScheduleModuleController.get('/edit/:id', async (req, res) => {
   })
 })
 
-adminScheduleModuleController.post('/edit/:id', async (req, res) => {
+adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
   const { deletedTime, addedTime, label, from, to } = req.body
 
@@ -349,7 +350,7 @@ adminScheduleModuleController.post('/edit/:id', async (req, res) => {
   }
 })
 
-adminScheduleModuleController.get('/delete/:id', async (req, res) => {
+adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
   const schedule = await scheduleModel.findById(id).populate('details')
