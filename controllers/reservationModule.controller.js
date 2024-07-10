@@ -2,6 +2,7 @@ const e = require('express')
 const {
   scheduleDetailModel,
   reservationApprovalModel,
+  imageModel,
 } = require('../models/index.js')
 const httpContext = require('express-http-context')
 const isAuthorized = require('../utils/isAuthorized.js')
@@ -330,5 +331,20 @@ reservationModuleController.post('/confirm', isAuthorized, async (req, res) => {
     purpose,
   })
 })
+
+reservationModuleController.get(
+  '/image/:location',
+  isAuthorized,
+  async (req, res) => {
+    const { location } = req.params
+
+    const { image } = await imageModel.findOne({
+      location,
+    })
+
+    res.header('Content-Type', 'image/jpeg')
+    res.send(image)
+  }
+)
 
 module.exports = reservationModuleController

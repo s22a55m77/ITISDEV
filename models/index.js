@@ -4,6 +4,7 @@ const scheduleModel = require('./scheduleModel.js')
 const scheduleDetailModel = require('./scheduleDetailModel.js')
 const reservationApprovalModel = require('./reservationApprovalModel.js')
 const notificationModel = require('./notificationModel.js')
+const imageModel = require('./imageModel.js')
 
 module.exports = {
   userModel,
@@ -12,4 +13,5 @@ module.exports = {
   scheduleDetailModel,
   reservationApprovalModel,
   notificationModel,
+  imageModel,
 }
