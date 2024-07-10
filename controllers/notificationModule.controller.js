@@ -25,14 +25,18 @@ notificationModuleController.get(
     const id = req.params.id
     const user = httpContext.get('user')
 
-    const notification = await notificationModel.find({
+    const notification = await notificationModel.findOneAndUpdate({
       $and: {
         to: {
           $in: [user._id],
         },
         _id: new ObjectId(id),
       },
-    })
+    }, {
+      $push: {
+        read: user,
+      }
+    }, {new: true})
 
     res.render('notificationModule/notificationDetail.ejs', { notification })
   }

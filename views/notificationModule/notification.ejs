@@ -9,11 +9,13 @@
 <div class="header-2">Notification</div>
 
 <div class="notification-container">
-  <a href="/notification/" style="display: contents">
+  <% for(const notification of notifications) { %>
+  <a href="/notification/detail/<%= notification._id %>" style="display: contents">
     <div class="notification-item">
       <div>ICON</div>
-      <div>Title</div>
+      <div><%= notification.title %></div>
       <div>></div>
     </div>
   </a>
+  <% } %>
 </div>
