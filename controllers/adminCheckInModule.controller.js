@@ -1,6 +1,7 @@
 const e = require('express')
 const moment = require('moment-timezone')
 const { scheduleDetailModel, userModel } = require('../models/index.js')
+const isDispatcher = require('../utils/isDispatcher.js')
 
 const adminCheckInController = e.Router()
 
@@ -78,11 +79,11 @@ async function getScheduleDetail(from, to, time, date) {
       },
     },
   ])
-  
+
   return schedule[0] || null
 }
 
-adminCheckInController.get('/', async (req, res) => {
+adminCheckInController.get('/', isDispatcher, async (req, res) => {
   const { from, to, time, date } = req.query
 
   const schedule = await getScheduleDetail(from, to, time, date)
@@ -104,7 +105,7 @@ adminCheckInController.get('/', async (req, res) => {
         status: passenger.status,
       })
   })
-  
+
   const reservedCount = passengerList.length
   const slotCount = schedule?.slot + reservedCount
   const presentCount = schedule?.reserve.filter(
@@ -121,7 +122,7 @@ adminCheckInController.get('/', async (req, res) => {
   })
 })
 
-adminCheckInController.get('/time', async (req, res) => {
+adminCheckInController.get('/time', isDispatcher, async (req, res) => {
   const { from, to, date } = req.query
 
   const schedule = await scheduleDetailModel.aggregate([
@@ -170,11 +171,11 @@ adminCheckInController.get('/time', async (req, res) => {
   res.send({ success: false })
 })
 
-adminCheckInController.get('/scan', (req, res) => {
+adminCheckInController.get('/scan', isDispatcher, (req, res) => {
   res.render('adminCheckInModule/scan.ejs')
 })
 
-adminCheckInController.get('/result', async (req, res) => {
+adminCheckInController.get('/result', isDispatcher, async (req, res) => {
   const { from, to, time, date, passengerId } = req.query
 
   const schedule = await getScheduleDetail(from, to, time, date)
@@ -202,7 +203,11 @@ adminCheckInController.get('/result', async (req, res) => {
   )
 
   if (!passengerInfo) {
-    res.render('adminCheckInModule/result.ejs', { invalid: true, reserve: false, passengerInfo: {} })
+    res.render('adminCheckInModule/result.ejs', {
+      invalid: true,
+      reserve: false,
+      passengerInfo: {},
+    })
     return
   }
 
@@ -229,7 +234,11 @@ adminCheckInController.get('/result', async (req, res) => {
     }
   )
 
-  res.render('adminCheckInModule/result.ejs', { invalid: false, reserve: true, passengerInfo })
+  res.render('adminCheckInModule/result.ejs', {
+    invalid: false,
+    reserve: true,
+    passengerInfo,
+  })
 })
 
 module.exports = adminCheckInController

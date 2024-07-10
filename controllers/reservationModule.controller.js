@@ -134,7 +134,7 @@ async function getSchedules(from, to, timeList, date) {
   return schedules.map((s) => ({ ids: s.sid, slot: s.slot, time: s.time }))
 }
 
-reservationModuleController.get('/date', async (req, res) => {
+reservationModuleController.get('/date', isAuthorized, async (req, res) => {
   const { from, to } = req.query
 
   const schedule = await scheduleDetailModel.aggregate([
@@ -177,18 +177,21 @@ reservationModuleController.get('/date', async (req, res) => {
   res.send({ weekdays, saturdays })
 })
 
-reservationModuleController.get('/', (req, res) => {
+reservationModuleController.get('/', isAuthorized, (req, res) => {
   res.render('reservationModule/reserveTrip.ejs')
 })
 
-reservationModuleController.post('/departure', async (req, res) => {
-  const { date, from, to, purpose } = req.body
+reservationModuleController.post(
+  '/departure',
+  isAuthorized,
+  async (req, res) => {
+    const { date, from, to, purpose } = req.body
 
-  const timeList = await getCommonTime(from, to, date)
+    const timeList = await getCommonTime(from, to, date)
 
-  const schedules = await getSchedules(from, to, timeList, date)
+    const schedules = await getSchedules(from, to, timeList, date)
 
-  /**
+    /**
    * [
         {
             "ids": [
@@ -202,10 +205,17 @@ reservationModuleController.post('/departure', async (req, res) => {
    *
    */
 
-  res.render('reservationModule/departure.ejs', { schedules, from, to, date, purpose })
-})
+    res.render('reservationModule/departure.ejs', {
+      schedules,
+      from,
+      to,
+      date,
+      purpose,
+    })
+  }
+)
 
-reservationModuleController.post('/return', async (req, res) => {
+reservationModuleController.post('/return', isAuthorized, async (req, res) => {
   const { date, from, to, departureIds, departureTime, purpose } = req.body
 
   const timeList = await getCommonTime(to, from, date)
@@ -219,7 +229,7 @@ reservationModuleController.post('/return', async (req, res) => {
     date,
     departureIds,
     departureTime,
-    purpose
+    purpose,
   })
 })
 
@@ -281,7 +291,7 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
           $push: {
             approval: docs[index],
             reserve: {
-              user
+              user,
             },
           },
         })
@@ -298,8 +308,16 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
 })
 
 reservationModuleController.post('/confirm', isAuthorized, async (req, res) => {
-  const { date, from, to, departureIds, returnIds, departureTime, returnTime, purpose } =
-    req.body
+  const {
+    date,
+    from,
+    to,
+    departureIds,
+    returnIds,
+    departureTime,
+    returnTime,
+    purpose,
+  } = req.body
 
   res.render('reservationModule/confirm.ejs', {
     date,
@@ -309,7 +327,7 @@ reservationModuleController.post('/confirm', isAuthorized, async (req, res) => {
     returnIds,
     departureTime,
     returnTime,
-    purpose
+    purpose,
   })
 })
 

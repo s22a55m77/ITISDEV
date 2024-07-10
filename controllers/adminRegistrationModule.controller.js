@@ -1,6 +1,8 @@
 const e = require('express')
 const { getAuth } = require('firebase-admin/auth')
 const { userModel } = require('../models/index.js')
+const isAuthorized = require('../utils/isAuthorized.js')
+const httpContext = require('express-http-context')
 
 const adminRegistrationModuleController = e.Router()
 
@@ -39,20 +41,40 @@ adminRegistrationModuleController.post('/signin', async (req, res) => {
   res.send({ success: true, nextUrl: '/admin/' })
 })
 
-adminRegistrationModuleController.get('/create', async (req, res) => {
-  res.render('adminRegistrationModule/create.ejs')
-})
+adminRegistrationModuleController.get(
+  '/create',
+  isAuthorized,
+  async (req, res) => {
+    const user = httpContext.get('user')
 
-adminRegistrationModuleController.post('/create', async (req, res) => {
-  const { email, role, name } = req.body
+    if (user.role !== 'admin') {
+      return res.redirect('/403.html')
+    }
 
-  await userModel.create({
-    email,
-    role,
-    name,
-  })
+    res.render('adminRegistrationModule/create.ejs')
+  }
+)
 
-  res.redirect('/admin/auth/create?success=true')
-})
+adminRegistrationModuleController.post(
+  '/create',
+  isAuthorized,
+  async (req, res) => {
+    const { email, role, name } = req.body
+
+    const user = httpContext.get('user')
+
+    if (user.role !== 'admin') {
+      return res.redirect('/403.html')
+    }
+
+    await userModel.create({
+      email,
+      role,
+      name,
+    })
+
+    res.redirect('/admin/auth/create?success=true')
+  }
+)
 
 module.exports = adminRegistrationModuleController

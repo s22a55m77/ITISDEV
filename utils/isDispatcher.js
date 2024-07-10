@@ -1,7 +1,7 @@
 const { getAuth } = require('firebase-admin/auth')
 const { userModel } = require('../models/index.js')
 
-async function isSSU(req, res, next) {
+async function isDispatcher(req, res, next) {
   const sessionCookie = req.cookies.session
 
   if (!sessionCookie) {
@@ -17,7 +17,7 @@ async function isSSU(req, res, next) {
 
     const user = await userModel.findOne({ email: decodedToken.email })
 
-    if (user.role !== 'ssu') {
+    if (user.role !== 'dispatcher') {
       res.redirect('/403.html')
       return next()
     }
@@ -29,4 +29,4 @@ async function isSSU(req, res, next) {
   }
 }
 
-module.exports = isSSU
+module.exports = isDispatcher
