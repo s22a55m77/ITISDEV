@@ -170,10 +170,11 @@ $('#saturdays-from-time-container').append(
     )
   })
 )
+
 // Set To time
 // weekdays
 $('#weekdays-to-time-container').append(
-  toTime[0].weekdays.map((time24) => {
+  toTime[0]?.weekdays?.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return (
       '<div id="' +
@@ -194,7 +195,7 @@ $('#weekdays-to-time-container').append(
 )
 // saturdays
 $('#saturdays-to-time-container').append(
-  toTime[0].saturdays.map((time24) => {
+  toTime[0]?.saturdays?.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return (
       '<div id="' +
