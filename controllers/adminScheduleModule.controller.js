@@ -390,10 +390,9 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
     if (schedule.reserve && schedule.reserve.length > 0) {
       // console.log(schedule.reserve[0].user)
       const emails = schedule.reserve.map((reservation) => {
-        console.log(reservation.user)
         return reservation.user.email
       })
-      console.log(emails)
+
       const from = schedule.from
       const to = schedule.to
       const time = moment(schedule.time)
@@ -408,7 +407,7 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
       })
 
       const users = schedule.reserve.map((reservation) => reservation.user._id)
-      console.log(users)
+
       await notificationModel.create({
         title: 'Reservation Cancelled',
         description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
