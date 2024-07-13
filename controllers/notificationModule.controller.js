@@ -25,18 +25,24 @@ notificationModuleController.get(
     const id = req.params.id
     const user = httpContext.get('user')
 
-    const notification = await notificationModel.findOneAndUpdate({
-      $and: {
-        to: {
-          $in: [user._id],
+    const notification = await notificationModel.findOneAndUpdate(
+      {
+        $and: {
+          to: {
+            $in: [user._id],
+          },
+          _id: new ObjectId(id),
         },
-        _id: new ObjectId(id),
       },
-    }, {
-      $push: {
-        read: user,
-      }
-    }, {new: true})
+      {
+        $push: {
+          read: user,
+        },
+      },
+      { new: true }
+    )
+
+    if (!notification) return res.redirect('404.html')
 
     res.render('notificationModule/notificationDetail.ejs', { notification })
   }

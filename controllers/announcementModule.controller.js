@@ -17,6 +17,8 @@ announcementModuleController.get('/:id', isAuthorized, async (req, res) => {
   const id = req.params.id
   const announcement = await announcementModel.findById(id)
 
+  if (!announcement) return res.redirect('404.html')
+
   if (!announcement.read.includes(user._id)) {
     await announcementModel.findByIdAndUpdate(id, {
       $push: { read: user },

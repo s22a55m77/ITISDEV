@@ -90,6 +90,10 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
 
   const schedule = await scheduleModel.findById(id).populate('details')
 
+  if (!schedule) {
+    return res.redirect('404.html')
+  }
+
   const from = moment(schedule.dateRange.split(' - ')[0], 'MMM D').format(
     'YYYY-MM-DD'
   )
@@ -141,6 +145,10 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
   const { deletedTime, addedTime, label, from, to } = req.body
 
   const schedule = await scheduleModel.findById(id).populate('details')
+
+  if (!schedule) {
+    return res.send({ success: false, error: 'Schedule not found' })
+  }
 
   const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
   const toStr = moment(to).tz('Asia/Manila').format('MMM D')
@@ -376,6 +384,10 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
   const schedule = await scheduleModel.findById(id).populate('details')
+
+  if (!schedule) {
+    return res.redirect('404.html')
+  }
 
   const schedules = await scheduleDetailModel
     .find({

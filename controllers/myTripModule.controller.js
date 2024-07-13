@@ -79,25 +79,23 @@ myTripModuleController.get('/:id', isAuthorized, async (req, res) => {
       },
     },
     {
-      $project:{
+      $project: {
         approval: 1,
         from: 1,
         to: 1,
-        time: 1
-      }
-    }
+        time: 1,
+      },
+    },
   ])
-  console.log(schedule)
+
+  if (!schedule) return res.redirect('404.html')
+
   const detail = {
     id: schedule[0].approval._id,
     from: schedule[0].from,
     to: schedule[0].to,
-    departureTime: moment(schedule[0].time)
-      .tz('Asia/Manila')
-      .format('hh:mm'),
-    departureDate: moment(schedule[0].time)
-      .tz('Asia/Manila')
-      .format('MMM DD'),
+    departureTime: moment(schedule[0].time).tz('Asia/Manila').format('hh:mm'),
+    departureDate: moment(schedule[0].time).tz('Asia/Manila').format('MMM DD'),
     status: schedule[0].approval.status,
   }
 

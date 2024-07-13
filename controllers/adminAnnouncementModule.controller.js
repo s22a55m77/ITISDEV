@@ -20,9 +20,11 @@ adminAnnouncementModuleController.get(
   async (req, res) => {
     const id = req.params.id
 
-    const { description, title, createdAt } = await announcementModel.findById(
-      id
-    )
+    const announcement = await announcementModel.findById(id)
+
+    if (!announcement) return res.redirect('404.html')
+
+    const { description, title, createdAt } = announcement
 
     res.render('adminAnnouncementModule/adminAnnouncementDetail.ejs', {
       title,
@@ -76,7 +78,11 @@ adminAnnouncementModuleController.post('/create', isSSU, async (req, res) => {
 adminAnnouncementModuleController.get('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
-  const { title, description } = await announcementModel.findById(id)
+  const announcement = await announcementModel.findById(id)
+
+  if (!announcement) return res.redirect('404.html')
+
+  const { title, description } = announcement
 
   res.render('adminAnnouncementModule/adminEditAnnouncement.ejs', {
     id,
