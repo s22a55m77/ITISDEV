@@ -5,8 +5,7 @@ async function isDispatcher(req, res, next) {
   const sessionCookie = req.cookies.session
 
   if (!sessionCookie) {
-    res.redirect('/admin/auth/signin')
-    return
+    return res.redirect('/admin/auth/signin')
   }
 
   try {
@@ -18,14 +17,12 @@ async function isDispatcher(req, res, next) {
     const user = await userModel.findOne({ email: decodedToken.email })
 
     if (user.role !== 'dispatcher') {
-      res.redirect('/403.html')
-      return next()
+      return res.redirect('/403.html')
     }
 
     return next()
   } catch (error) {
-    res.redirect('/admin/auth/signin')
-    return next()
+    return res.redirect('/admin/auth/signin')
   }
 }
 
