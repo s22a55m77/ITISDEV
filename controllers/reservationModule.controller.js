@@ -338,12 +338,12 @@ reservationModuleController.get(
   async (req, res) => {
     const { location } = req.params
 
-    const { image } = await imageModel.findOne({
+    const image = await imageModel.findOne({
       location,
     })
 
     res.header('Content-Type', 'image/jpeg')
-    res.send(image)
+    res.send(image?.image)
   }
 )
 
