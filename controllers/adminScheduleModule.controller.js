@@ -3,6 +3,7 @@ const {
   scheduleModel,
   scheduleDetailModel,
   notificationModel,
+  reservationApprovalModel,
 } = require('../models/index.js')
 const moment = require('moment-timezone')
 const mongoose = require('../utils/mongoose.js')
@@ -293,7 +294,9 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
 
       schedules.forEach(async (schedule) => {
         if (schedule.reserve && schedule.reserve.length > 0) {
-          const emails = schedule.reserve.map((user) => user.email)
+          const emails = schedule.reserve.map(
+            (reservation) => reservation.user.email
+          )
 
           const from = schedule.from
           const to = schedule.to
@@ -308,12 +311,19 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
             text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
           })
 
-          const users = schedule.reserve.map((user) => user._id)
+          const users = schedule.reserve.map(
+            (reservation) => reservation.user._id
+          )
 
           await notificationModel.create({
             title: 'Reservation Cancelled',
             description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
             to: users,
+          })
+
+          // delete all approval
+          await reservationApprovalModel.deleteMany({
+            _id: { $in: schedule.approval },
           })
         }
       })
@@ -367,9 +377,56 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
 
   const schedule = await scheduleModel.findById(id).populate('details')
 
-  await scheduleDetailModel.deleteMany({
-    _id: { $in: schedule.details.map((detail) => detail._id) },
+  const schedules = await scheduleDetailModel
+    .find({
+      _id: { $in: schedule.details.map((detail) => detail._id) },
+    })
+    .populate({
+      path: 'reserve',
+      populate: { path: 'user', strictPopulate: false },
+    })
+
+  schedules.forEach(async (schedule) => {
+    if (schedule.reserve && schedule.reserve.length > 0) {
+      // console.log(schedule.reserve[0].user)
+      const emails = schedule.reserve.map((reservation) => {
+        console.log(reservation.user)
+        return reservation.user.email
+      })
+      console.log(emails)
+      const from = schedule.from
+      const to = schedule.to
+      const time = moment(schedule.time)
+        .tz('Asia/Manila')
+        .format('MMM DD HH:mm')
+
+      emailTransporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: emails,
+        subject: 'Reservation Cancelled',
+        text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+      })
+
+      const users = schedule.reserve.map((reservation) => reservation.user._id)
+      console.log(users)
+      await notificationModel.create({
+        title: 'Reservation Cancelled',
+        description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+        to: users,
+      })
+    }
+
+    // delete all approval
+    await reservationApprovalModel.deleteMany({
+      _id: { $in: schedule.approval },
+    })
+
+    await scheduleDetailModel.findByIdAndDelete(schedule._id)
   })
+
+  // await scheduleDetailModel.deleteMany({
+  //   _id: { $in: schedule.details.map((detail) => detail._id) },
+  // })
 
   await scheduleModel.findByIdAndDelete(id)
 

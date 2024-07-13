@@ -1,4 +1,8 @@
 const { Schema, model } = require('../utils/mongoose.js')
+const reservationApproval = require('./reservationApprovalModel.js')
+const emailTransporter = require('../utils/email.js')
+const moment = require('moment-timezone')
+require('dotenv').config()
 
 const scheduleDetailSchema = new Schema(
   {
@@ -20,20 +24,6 @@ const scheduleDetailSchema = new Schema(
   },
   { collection: 'ScheduleDetail', timestamps: true }
 )
-
-scheduleDetailSchema.pre('remove', async (next) => {
-  try {
-    // Get the ReservationApproval model
-    const reservationApproval = this.model('ReservationApproval')
-
-    // Delete all associated approval documents
-    await reservationApproval.deleteMany({ _id: { $in: this.approval } })
-
-    next()
-  } catch (error) {
-    next(error)
-  }
-})
 
 const scheduleDetailModel = model('ScheduleDetail', scheduleDetailSchema)
 
