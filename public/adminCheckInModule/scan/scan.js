@@ -35,5 +35,8 @@ const config = {
 
 const html5QrCode = new Html5Qrcode("reader", fullconfig);
 
-// If you want to prefer front camera
-html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+.catch(() => {
+  $('#reader').hide();
+  $('#camera-not-on').show();
+});

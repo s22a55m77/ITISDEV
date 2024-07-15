@@ -10,3 +10,7 @@
   margin: 0 auto;
   width: 80%;
 }
+
+#camera-not-on {
+  display: none;
+}
