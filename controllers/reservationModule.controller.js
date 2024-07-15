@@ -164,8 +164,8 @@ reservationModuleController.get('/date', isAuthorized, async (req, res) => {
 
   if (schedule.length === 0) return res.send({ success: false })
 
-  const weekdays = []
-  const saturdays = []
+  let weekdays = []
+  let saturdays = []
 
   schedule.forEach((s) => {
     const date = moment(s.time).tz('Asia/Taipei')
@@ -175,6 +175,14 @@ reservationModuleController.get('/date', isAuthorized, async (req, res) => {
       weekdays.push(s.time)
     }
   })
+
+  // unique
+  weekdays = [...new Set(weekdays)]
+  saturdays = [...new Set(saturdays)]
+
+  // sort
+  weekdays.sort()
+  saturdays.sort()
 
   res.send({ weekdays, saturdays })
 })
