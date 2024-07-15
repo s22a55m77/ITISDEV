@@ -128,6 +128,11 @@ $('#next').click(() => {
   const to = $('#to').val()
   const date = getSelectedDates()
   const purpose = $('#purpose').val()
+  
+  if(purpose === "" || purpose === null) {
+    alert('Please enter purpose')
+    return
+  }
 
   if(date.length === 0) {
     alert('Please select a date')
