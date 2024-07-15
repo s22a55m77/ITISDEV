@@ -7,6 +7,7 @@ const {
 const httpContext = require('express-http-context')
 const isAuthorized = require('../utils/isAuthorized.js')
 const moment = require('moment-timezone')
+const mongoose = require('../utils/mongoose.js')
 
 const reservationModuleController = e.Router()
 
@@ -238,74 +239,89 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
   const { ids, purpose } = req.body
   const user = httpContext.get('user')
 
+  const session = await mongoose.startSession()
+
   try {
-    // TODO test if this works
-    if (
-      user.designation ===
-        'College - Manila Enrolled without Class/es in Laguna' ||
-      user.designation ===
-        'College - Laguna Enrolled without Class/es in Manila'
-    ) {
-      const approvals = []
+    await session.withTransaction(async () => {
+      if (
+        user.designation ===
+          'College - Manila Enrolled without Class/es in Laguna' ||
+        user.designation ===
+          'College - Laguna Enrolled without Class/es in Manila'
+      ) {
+        const approvals = []
 
-      ids.forEach(() => {
-        const approval = new reservationApprovalModel({
-          user,
-          designation: user.designation,
-          purpose,
-          status: 'pending',
+        ids.forEach(() => {
+          const approval = new reservationApprovalModel({
+            user,
+            designation: user.designation,
+            purpose,
+            status: 'pending',
+          })
+
+          approvals.push(approval)
         })
 
-        approvals.push(approval)
-      })
-
-      const docs = await reservationApprovalModel.insertMany(approvals)
-
-      ids.forEach(async (id, index) => {
-        await scheduleDetailModel.findByIdAndUpdate(id, {
-          $push: {
-            approval: docs[index],
-          },
-        })
-      })
-    } else {
-      const approvals = []
-
-      ids.forEach(() => {
-        const approval = new reservationApprovalModel({
-          user,
-          designation: user.designation,
-          purpose,
-          status: 'confirmed',
+        const docs = await reservationApprovalModel.insertMany(approvals, {
+          session,
         })
 
-        approvals.push(approval)
-      })
-
-      const docs = await reservationApprovalModel.insertMany(approvals)
-
-      ids.forEach(async (id, index) => {
-        await scheduleDetailModel.findByIdAndUpdate(id, {
-          $inc: {
-            slot: -1,
-          },
-          $push: {
-            approval: docs[index],
-            reserve: {
-              user,
+        ids.forEach(async (id, index) => {
+          await scheduleDetailModel.findByIdAndUpdate(
+            id,
+            {
+              $push: {
+                approval: docs[index],
+              },
             },
-          },
+            { session }
+          )
         })
-      })
-    }
+      } else {
+        const approvals = []
 
-    return res.render('reservationModule/success.ejs', { success: true })
+        ids.forEach(() => {
+          const approval = new reservationApprovalModel({
+            user,
+            designation: user.designation,
+            purpose,
+            status: 'confirmed',
+          })
+
+          approvals.push(approval)
+        })
+
+        const docs = await reservationApprovalModel.insertMany(approvals, {
+          session,
+        })
+
+        ids.forEach(async (id, index) => {
+          await scheduleDetailModel.findByIdAndUpdate(
+            id,
+            {
+              $inc: {
+                slot: -1,
+              },
+              $push: {
+                approval: docs[index],
+                reserve: {
+                  user,
+                },
+              },
+            },
+            { session }
+          )
+        })
+      }
+    })
+
+    res.render('reservationModule/success.ejs', { success: true })
   } catch (error) {
     console.error(error)
-    return res.render('reservationModule/success.ejs', { success: false })
+    res.render('reservationModule/success.ejs', { success: false })
   }
 
-  res.send({})
+  session.endSession()
 })
 
 reservationModuleController.post('/confirm', isAuthorized, async (req, res) => {

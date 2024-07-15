@@ -8,6 +8,7 @@ const {
 const moment = require('moment-timezone')
 const { findNearestAndSurrounding } = require('../utils/dateUtil.js')
 const isSSU = require('../utils/isSSU.js')
+const mongoose = require('../utils/mongoose.js')
 
 const adminReservationModuleController = e.Router()
 
@@ -146,107 +147,127 @@ adminReservationModuleController.get('/', isSSU, async (req, res) => {
 adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
   const id = req.body.id
 
+  const session = await mongoose.startSession()
+
   try {
-    const approval = await reservationApprovalModel.findByIdAndUpdate(
-      id,
-      {
-        status: 'confirmed',
-      },
-      { new: false }
-    )
-    let schedule
-    if (approval.status !== 'confirmed') {
-      schedule = await scheduleDetailModel.findOneAndUpdate(
+    await session.withTransaction(async () => {
+      const approval = await reservationApprovalModel.findByIdAndUpdate(
+        id,
         {
-          approval: {
-            $in: id,
-          },
+          status: 'confirmed',
         },
-        {
-          $push: {
-            reserve: approval.user,
-          },
-          $inc: {
-            slot: -1,
-          },
-        },
-        {
-          new: true,
-        }
+        { new: false, session }
       )
+      let schedule
+      if (approval.status !== 'confirmed') {
+        schedule = await scheduleDetailModel.findOneAndUpdate(
+          {
+            approval: {
+              $in: id,
+            },
+          },
+          {
+            $push: {
+              reserve: approval.user,
+            },
+            $inc: {
+              slot: -1,
+            },
+          },
+          {
+            new: true,
+            session,
+          }
+        )
 
-      const from = schedule.from
-      const to = schedule.to
-      const time = moment(schedule.time)
-        .tz('Asia/Manila')
-        .format('YYYY-MM-DD HH:mm')
+        const from = schedule.from
+        const to = schedule.to
+        const time = moment(schedule.time)
+          .tz('Asia/Manila')
+          .format('YYYY-MM-DD HH:mm')
 
-      await notificationModel.create({
-        title: 'Reservation Approved',
-        description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
-        to: approval.user,
-      })
-    }
-    res.send({ success: true, id: schedule._id, slot: schedule.slot })
+        await notificationModel.create(
+          {
+            title: 'Reservation Approved',
+            description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+            to: approval.user,
+          },
+          { session }
+        )
+      }
+      res.send({ success: true, id: schedule._id, slot: schedule.slot })
+    })
   } catch (error) {
     console.error(error)
     res.send({ success: false, error: error })
   }
+
+  session.endSession()
 })
 
 adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
   const id = req.body.id
 
+  const session = await mongoose.startSession()
+
   try {
-    const doc = await reservationApprovalModel.findByIdAndUpdate(
-      id,
-      {
-        status: 'rejected',
-      },
-      { new: false }
-    )
-
-    let schedule
-
-    // if from confirm to rejected
-    if (doc.status === 'confirmed') {
-      schedule = await scheduleDetailModel.findOneAndUpdate(
+    await session.withTransaction(async () => {
+      const doc = await reservationApprovalModel.findByIdAndUpdate(
+        id,
         {
-          approval: {
-            $in: id,
-          },
+          status: 'rejected',
         },
-        {
-          $pull: {
-            reserve: doc.user,
-          },
-          $inc: {
-            slot: 1,
-          },
-        },
-        {
-          new: true,
-        }
+        { new: false, session }
       )
 
-      const from = schedule.from
-      const to = schedule.to
-      const time = moment(schedule.time)
-        .tz('Asia/Manila')
-        .format('YYYY-MM-DD HH:mm')
+      let schedule
 
-      await notificationModel.create({
-        title: 'Reservation Rejected',
-        description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
-        to: doc.user,
-      })
-    }
+      // if from confirm to rejected
+      if (doc.status === 'confirmed') {
+        schedule = await scheduleDetailModel.findOneAndUpdate(
+          {
+            approval: {
+              $in: id,
+            },
+          },
+          {
+            $pull: {
+              reserve: doc.user,
+            },
+            $inc: {
+              slot: 1,
+            },
+          },
+          {
+            new: true,
+            session,
+          }
+        )
 
-    res.send({ success: true, id: schedule._id, slot: schedule.slot })
+        const from = schedule.from
+        const to = schedule.to
+        const time = moment(schedule.time)
+          .tz('Asia/Manila')
+          .format('YYYY-MM-DD HH:mm')
+
+        await notificationModel.create(
+          {
+            title: 'Reservation Rejected',
+            description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+            to: doc.user,
+          },
+          { session }
+        )
+      }
+
+      res.send({ success: true, id: schedule._id, slot: schedule.slot })
+    })
   } catch (error) {
     console.error(error)
     res.send({ success: false, error: error })
   }
+
+  session.endSession()
 })
 
 adminReservationModuleController.post(
@@ -255,49 +276,60 @@ adminReservationModuleController.post(
   async (req, res) => {
     const ids = req.body.ids
 
+    const session = await mongoose.startSession()
+
     try {
-      const approval = await reservationApprovalModel.find({
-        _id: { $in: ids },
-        $and: {
-          status: {
-            $ne: 'confirmed',
-          },
-        },
-      })
-
-      await reservationApprovalModel.updateMany(
-        { _id: { $in: ids } },
-        { status: 'confirmed' }
-      )
-
-      const users = approval.map((approval) => approval.user)
-
-      const schedule = await scheduleDetailModel.findOneAndUpdate(
-        {
-          approval: {
-            $in: ids,
-          },
-        },
-        {
-          $push: {
-            reserve: {
-              $each: users,
+      await session.withTransaction(async () => {
+        const approval = await reservationApprovalModel.find(
+          {
+            _id: { $in: ids },
+            $and: {
+              status: {
+                $ne: 'confirmed',
+              },
             },
           },
-          $inc: {
-            slot: -users.length,
-          },
-        },
-        {
-          new: true,
-        }
-      )
+          { session }
+        )
 
-      res.send({ success: true, id: schedule._id, slot: schedule.slot })
+        await reservationApprovalModel.updateMany(
+          { _id: { $in: ids } },
+          { status: 'confirmed' },
+          { session }
+        )
+
+        const users = approval.map((approval) => approval.user)
+
+        const schedule = await scheduleDetailModel.findOneAndUpdate(
+          {
+            approval: {
+              $in: ids,
+            },
+          },
+          {
+            $push: {
+              reserve: {
+                $each: users,
+              },
+            },
+            $inc: {
+              slot: -users.length,
+            },
+          },
+          {
+            new: true,
+            session,
+          }
+        )
+
+        res.send({ success: true, id: schedule._id, slot: schedule.slot })
+      })
     } catch (error) {
       console.error(error)
       res.send({ success: false, error: error })
     }
+
+    session.endSession()
   }
 )
 
