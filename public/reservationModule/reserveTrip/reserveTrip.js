@@ -55,21 +55,27 @@ function renderTimeSlotSaturdays(saturdays) {
 // Default Round Trip
 $('#round-trip').prop('checked', true)
 
+let roundTripCheck = true
+let oneWayCheck = false
 // Handle Change trip type
 $('#round-trip').click(() => {
-  if($('#one-way').is(':checked')) {
+  if(oneWayCheck) {
     $('.step-container').append('<div class="step last"></div>')
     $('#round-trip-arrow').show()
     $('#one-way-arrow').hide()
   }
+  roundTripCheck = true
+  oneWayCheck = false
 })
 
 $('#one-way').click(() => {
-  if($('#round-trip').is(':checked')) {
+  if(roundTripCheck) {
     $('.last').remove()
     $('#one-way-arrow').show()
     $('#round-trip-arrow').hide()
   }
+  roundTripCheck = false
+  oneWayCheck = true
 })
 
 function checkLocationIsSelected() {
@@ -95,6 +101,7 @@ async function handleLocationChange() {
       saturdays = res.saturdays
     }
 
+    console.log(weekdays)
     renderTimeSlotWeekdays(weekdays)
     renderTimeSlotSaturdays(saturdays)
   }
