@@ -215,6 +215,13 @@ reservationModuleController.post(
    *
    */
 
+    // sort by time
+    schedules.sort((a, b) => {
+      if (a.time < b.time) return -1
+      if (a.time > b.time) return 1
+      return 0
+    })
+
     res.render('reservationModule/departure.ejs', {
       schedules,
       from,
@@ -231,6 +238,13 @@ reservationModuleController.post('/return', isAuthorized, async (req, res) => {
   const timeList = await getCommonTime(to, from, date)
 
   const schedules = await getSchedules(to, from, timeList, date)
+
+  // sort by time
+  schedules.sort((a, b) => {
+    if (a.time < b.time) return -1
+    if (a.time > b.time) return 1
+    return 0
+  })
 
   res.render('reservationModule/return.ejs', {
     schedules,
