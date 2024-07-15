@@ -9,6 +9,8 @@ const moment = require('moment-timezone')
 const { findNearestAndSurrounding } = require('../utils/dateUtil.js')
 const isSSU = require('../utils/isSSU.js')
 const mongoose = require('../utils/mongoose.js')
+const emailTransporter = require('../utils/email.js')
+require('dotenv').config()
 
 const adminReservationModuleController = e.Router()
 
@@ -151,13 +153,15 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
 
   try {
     await session.withTransaction(async () => {
-      const approval = await reservationApprovalModel.findByIdAndUpdate(
-        id,
-        {
-          status: 'confirmed',
-        },
-        { new: false, session }
-      )
+      const approval = await reservationApprovalModel
+        .findByIdAndUpdate(
+          id,
+          {
+            status: 'confirmed',
+          },
+          { new: false, session }
+        )
+        .populate('user')
       let schedule
       if (approval.status !== 'confirmed') {
         schedule = await scheduleDetailModel.findOneAndUpdate(
@@ -187,13 +191,22 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
           .format('YYYY-MM-DD HH:mm')
 
         await notificationModel.create(
-          {
-            title: 'Reservation Approved',
-            description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
-            to: approval.user,
-          },
+          [
+            {
+              title: 'Reservation Approved',
+              description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+              to: approval.user,
+            },
+          ],
           { session }
         )
+
+        emailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: approval.user.email,
+          subject: 'Reservation Approved',
+          text: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+        })
       }
       res.send({ success: true, id: schedule._id, slot: schedule.slot })
     })
@@ -212,13 +225,15 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
 
   try {
     await session.withTransaction(async () => {
-      const doc = await reservationApprovalModel.findByIdAndUpdate(
-        id,
-        {
-          status: 'rejected',
-        },
-        { new: false, session }
-      )
+      const doc = await reservationApprovalModel
+        .findByIdAndUpdate(
+          id,
+          {
+            status: 'rejected',
+          },
+          { new: false, session }
+        )
+        .populate('user')
 
       let schedule
 
@@ -251,13 +266,22 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
           .format('YYYY-MM-DD HH:mm')
 
         await notificationModel.create(
-          {
-            title: 'Reservation Rejected',
-            description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
-            to: doc.user,
-          },
+          [
+            {
+              title: 'Reservation Rejected',
+              description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+              to: doc.user,
+            },
+          ],
           { session }
         )
+
+        emailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: doc.user.email,
+          subject: 'Reservation Rejected',
+          text: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+        })
       }
 
       res.send({ success: true, id: schedule._id, slot: schedule.slot })
@@ -280,17 +304,19 @@ adminReservationModuleController.post(
 
     try {
       await session.withTransaction(async () => {
-        const approval = await reservationApprovalModel.find(
-          {
-            _id: { $in: ids },
-            $and: {
-              status: {
-                $ne: 'confirmed',
+        const approval = await reservationApprovalModel
+          .find(
+            {
+              _id: { $in: ids },
+              $and: {
+                status: {
+                  $ne: 'confirmed',
+                },
               },
             },
-          },
-          { session }
-        )
+            { session }
+          )
+          .populate('user')
 
         await reservationApprovalModel.updateMany(
           { _id: { $in: ids } },
@@ -299,6 +325,7 @@ adminReservationModuleController.post(
         )
 
         const users = approval.map((approval) => approval.user)
+        const emails = users.map((user) => user.email)
 
         const schedule = await scheduleDetailModel.findOneAndUpdate(
           {
@@ -321,6 +348,30 @@ adminReservationModuleController.post(
             session,
           }
         )
+
+        const from = schedule.from
+        const to = schedule.to
+        const time = moment(schedule.time)
+          .tz('Asia/Manila')
+          .format('YYYY-MM-DD HH:mm')
+
+        await notificationModel.create(
+          [
+            {
+              title: 'Reservation Approved',
+              description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+              to: users,
+            },
+          ],
+          { session }
+        )
+
+        emailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: emails,
+          subject: 'Reservation Approved',
+          text: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+        })
 
         res.send({ success: true, id: schedule._id, slot: schedule.slot })
       })
