@@ -133,8 +133,23 @@ function renderPassengerList(passengerList) {
   })
 }
 
+// Get Stats
+function displayStats() {
+  const pending = passengerList.filter((passenger) => passenger.status === 'pending')
+    .length
+  const confirmed = passengerList.filter((passenger) => passenger.status === 'confirmed')
+    .length
+  const rejected = passengerList.filter((passenger) => passenger.status === 'rejected')
+    .length
+
+  $('#pending-count').text(pending)
+  $('#confirmed-count').text(confirmed)
+  $('#rejected-count').text(rejected)
+}
+
 // Set Passenger list
 renderPassengerList(passengerList)
+displayStats()
 
 // Filter
 let filter = ['pending', 'confirmed', 'rejected']
@@ -211,6 +226,7 @@ $('#confirm').click(async function () {
     }
 
     renderPassengerList(passengerList)
+    displayStats()
   }
 })
 
@@ -228,7 +244,6 @@ $('#reject').click(async function () {
 
   const json = await res.json()
 
-  console.log(json)
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'rejected'
 
@@ -249,6 +264,7 @@ $('#reject').click(async function () {
     }
 
     renderPassengerList(passengerList)
+    displayStats()
   }
 })
 
@@ -283,6 +299,7 @@ $('#confirm-all').click(async function () {
       toTimeRender(timeList[1])
     }
     renderPassengerList(newPassengerList)
+    displayStats()
   }
 })
 
