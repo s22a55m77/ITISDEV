@@ -194,16 +194,22 @@ $('#confirm').click(async function () {
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'confirmed'
 
-    let index = timeList[0].findIndex((time) => time.id === json.id)
-    if (index != -1) {
-      timeList[0][index].slot = json.slot
-      fromTimeRender(timeList[0])
+    if (timeList[0]) {
+      let index = timeList[0].findIndex((time) => time.id === json.id)
+      if (index != -1) {
+        timeList[0][index].slot = json.slot
+        fromTimeRender(timeList[0])
+      }
     }
-    index = timeList[1].findIndex((time) => time.id === json.id)
-    if (index != -1) {
-      timeList[1][index].slot = json.slot
-      toTimeRender(timeList[1])
+
+    if (timeList[1]) {
+      index = timeList[1].findIndex((time) => time.id === json.id)
+      if (index != -1) {
+        timeList[1][index].slot = json.slot
+        toTimeRender(timeList[1])
+      }
     }
+
     renderPassengerList(passengerList)
   }
 })
@@ -226,18 +232,22 @@ $('#reject').click(async function () {
   if (json.success) {
     passengerList.find((passenger) => passenger._id === id).status = 'rejected'
 
-    let index = timeList[0].findIndex((time) => time.id === json.id)
-    if (index != -1) {
-      timeList[0][index].slot = json.slot
-      fromTimeRender(timeList[0])
-    }
-    index = timeList[1].findIndex((time) => time.id === json.id)
-    if (index != -1) {
-      timeList[1][index].slot = json.slot
-      toTimeRender(timeList[1])
+    if (timeList[0]) {
+      let index = timeList[0].findIndex((time) => time.id === json.id)
+      if (index != -1) {
+        timeList[0][index].slot = json.slot
+        fromTimeRender(timeList[0])
+      }
     }
 
-    console.log(passengerList)
+    if (timeList[1]) {
+      index = timeList[1].findIndex((time) => time.id === json.id)
+      if (index != -1) {
+        timeList[1][index].slot = json.slot
+        toTimeRender(timeList[1])
+      }
+    }
+
     renderPassengerList(passengerList)
   }
 })
