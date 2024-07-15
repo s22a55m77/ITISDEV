@@ -156,7 +156,7 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
         {
           status: 'confirmed',
         },
-        { new: false }
+        { new: false, session }
       )
       let schedule
       if (approval.status !== 'confirmed') {
@@ -176,6 +176,7 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
           },
           {
             new: true,
+            session,
           }
         )
 
@@ -185,11 +186,14 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
           .tz('Asia/Manila')
           .format('YYYY-MM-DD HH:mm')
 
-        await notificationModel.create({
-          title: 'Reservation Approved',
-          description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
-          to: approval.user,
-        })
+        await notificationModel.create(
+          {
+            title: 'Reservation Approved',
+            description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+            to: approval.user,
+          },
+          { session }
+        )
       }
       res.send({ success: true, id: schedule._id, slot: schedule.slot })
     })
@@ -213,7 +217,7 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
         {
           status: 'rejected',
         },
-        { new: false }
+        { new: false, session }
       )
 
       let schedule
@@ -236,6 +240,7 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
           },
           {
             new: true,
+            session,
           }
         )
 
@@ -245,11 +250,14 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
           .tz('Asia/Manila')
           .format('YYYY-MM-DD HH:mm')
 
-        await notificationModel.create({
-          title: 'Reservation Rejected',
-          description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
-          to: doc.user,
-        })
+        await notificationModel.create(
+          {
+            title: 'Reservation Rejected',
+            description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+            to: doc.user,
+          },
+          { session }
+        )
       }
 
       res.send({ success: true, id: schedule._id, slot: schedule.slot })
@@ -272,18 +280,22 @@ adminReservationModuleController.post(
 
     try {
       await session.withTransaction(async () => {
-        const approval = await reservationApprovalModel.find({
-          _id: { $in: ids },
-          $and: {
-            status: {
-              $ne: 'confirmed',
+        const approval = await reservationApprovalModel.find(
+          {
+            _id: { $in: ids },
+            $and: {
+              status: {
+                $ne: 'confirmed',
+              },
             },
           },
-        })
+          { session }
+        )
 
         await reservationApprovalModel.updateMany(
           { _id: { $in: ids } },
-          { status: 'confirmed' }
+          { status: 'confirmed' },
+          { session }
         )
 
         const users = approval.map((approval) => approval.user)
@@ -306,6 +318,7 @@ adminReservationModuleController.post(
           },
           {
             new: true,
+            session,
           }
         )
 
