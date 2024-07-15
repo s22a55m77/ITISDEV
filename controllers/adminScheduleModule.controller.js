@@ -69,20 +69,31 @@ adminScheduleModuleController.post('/create', isSSU, async (req, res) => {
     }
   })
 
+  const session = await mongoose.startSession()
   try {
-    const scheduleDoc = await schedule.save()
+    await session.withTransaction(async () => {
+      const scheduleDoc = await schedule.save({ session })
 
-    const scheduleDetails = await scheduleDetailModel.insertMany(
-      toDesDetails.concat(returnDetails)
-    )
-    await scheduleModel.findByIdAndUpdate(scheduleDoc._id, {
-      $push: { details: scheduleDetails },
+      const scheduleDetails = await scheduleDetailModel.insertMany(
+        toDesDetails.concat(returnDetails),
+        {
+          session,
+        }
+      )
+      await scheduleModel.findByIdAndUpdate(
+        scheduleDoc._id,
+        {
+          $push: { details: scheduleDetails },
+        },
+        { session }
+      )
+      res.send({ success: true })
     })
-    res.send({ success: true })
   } catch (err) {
     console.error(err)
     res.send({ success: false, error: err })
   }
+  session.endSession()
 })
 
 adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
@@ -159,225 +170,269 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
   schedule.dateRange = dateRange
   schedule.label = label
 
-  schedule.save()
+  const session = await mongoose.startSession()
 
   try {
-    // if date range is changed
-    if (dateRange !== originalDateRange) {
-      // delete all details out of date range
-      const oldStart = moment(
-        originalDateRange.split(' - ')[0],
-        'MMM D'
-      ).format('YYYY-MM-DD')
-      const oldEnd = moment(originalDateRange.split(' - ')[1], 'MMM D').format(
-        'YYYY-MM-DD'
-      )
-      const newStart = from
-      const newEnd = to
+    await session.withTransaction(async () => {
+      schedule.save()
 
-      const changes = getDateChanges(oldStart, oldEnd, newStart, newEnd)
-      console.log(changes)
-      changes.forEach(async (change) => {
-        if (change.type === 'add') {
-          const day = moment(change.date).tz('Asia/Manila').day()
+      // if date range is changed
+      if (dateRange !== originalDateRange) {
+        // delete all details out of date range
+        const oldStart = moment(
+          originalDateRange.split(' - ')[0],
+          'MMM D'
+        ).format('YYYY-MM-DD')
+        const oldEnd = moment(
+          originalDateRange.split(' - ')[1],
+          'MMM D'
+        ).format('YYYY-MM-DD')
+        const newStart = from
+        const newEnd = to
 
-          let details
-          if (day === 6) {
-            details = schedule.details.filter(
-              (date) => moment(date.time).day() === 6
+        const changes = getDateChanges(oldStart, oldEnd, newStart, newEnd)
+        console.log(changes)
+        changes.forEach(async (change) => {
+          if (change.type === 'add') {
+            const day = moment(change.date).tz('Asia/Manila').day()
+
+            let details
+            if (day === 6) {
+              details = schedule.details.filter(
+                (date) => moment(date.time).day() === 6
+              )
+            } else {
+              details = schedule.details.filter(
+                (date) => moment(date.time).day() < 6
+              )
+            }
+
+            const lines = details.map(
+              (detail) => `${detail.from} - ${detail.to}`
             )
-          } else {
-            details = schedule.details.filter(
-              (date) => moment(date.time).day() < 6
+            const uniqueLines = [...new Set(lines)]
+
+            const toTime = [
+              ...new Set(
+                details.map((detail) => {
+                  const line = `${detail.from} - ${detail.to}`
+                  if (line === uniqueLines[0]) {
+                    return moment(detail.time).format('HH:mm')
+                  }
+                })
+              ),
+            ]
+            const returnTime = [
+              ...new Set(
+                details.map((detail) => {
+                  const line = `${detail.from} - ${detail.to}`
+                  if (line === uniqueLines[1]) {
+                    return moment(detail.time).format('HH:mm')
+                  }
+                })
+              ),
+            ]
+
+            const newDetails = []
+            toTime.forEach((time) => {
+              if (time) {
+                const formattedTime = moment(`${change.date} ${time}`)
+                  .tz('Asia/Manila')
+                  .format()
+                newDetails.push({
+                  from: uniqueLines[0].split(' - ')[0],
+                  to: uniqueLines[0].split(' - ')[1],
+                  time: formattedTime,
+                })
+              }
+            })
+
+            returnTime.forEach((time) => {
+              if (time) {
+                const formattedTime = moment(`${change.date} ${time}`)
+                  .tz('Asia/Manila')
+                  .format()
+                newDetails.push({
+                  from: uniqueLines[1].split(' - ')[0],
+                  to: uniqueLines[1].split(' - ')[1],
+                  time: formattedTime,
+                })
+              }
+            })
+            console.log(newDetails)
+            const docs = await scheduleDetailModel.insertMany(newDetails, {
+              session,
+            })
+            await scheduleModel.findByIdAndUpdate(
+              id,
+              {
+                $push: { details: docs },
+              },
+              { session }
             )
           }
-
-          const lines = details.map((detail) => `${detail.from} - ${detail.to}`)
-          const uniqueLines = [...new Set(lines)]
-
-          const toTime = [
-            ...new Set(
-              details.map((detail) => {
-                const line = `${detail.from} - ${detail.to}`
-                if (line === uniqueLines[0]) {
-                  return moment(detail.time).format('HH:mm')
-                }
-              })
-            ),
-          ]
-          const returnTime = [
-            ...new Set(
-              details.map((detail) => {
-                const line = `${detail.from} - ${detail.to}`
-                if (line === uniqueLines[1]) {
-                  return moment(detail.time).format('HH:mm')
-                }
-              })
-            ),
-          ]
-
-          const newDetails = []
-          toTime.forEach((time) => {
-            if (time) {
-              const formattedTime = moment(`${change.date} ${time}`)
+          if (change.type === 'delete') {
+            const detailsToDelete = schedule.details.filter((detail) => {
+              const date = moment(detail.time)
                 .tz('Asia/Manila')
-                .format()
-              newDetails.push({
-                from: uniqueLines[0].split(' - ')[0],
-                to: uniqueLines[0].split(' - ')[1],
-                time: formattedTime,
-              })
-            }
+                .format('YYYY-MM-DD')
+
+              return date === change.date
+            })
+            const ids = detailsToDelete.map((detail) => detail._id)
+            await scheduleDetailModel.deleteMany(
+              {
+                _id: { $in: ids },
+              },
+              { session }
+            )
+
+            const newDetails = schedule.details.filter(
+              (detail) => !detailsToDelete.includes(detail)
+            )
+
+            await scheduleModel.findByIdAndUpdate(
+              id,
+              {
+                details: newDetails,
+              },
+              { session }
+            )
+          }
+        })
+      }
+
+      // deletedTime = [{from, to, time, isWeekday}]
+      // delete all time in deletedTime
+      if (deletedTime) {
+        const detailsToDelete = schedule.details.filter((detail) => {
+          // time is in different format, deletedTime is in format 'HH:mm'
+          // details time is in format 'YYYY-MM-DDTHH:mm:ssZ'
+
+          return deletedTime.some((time) => {
+            return (
+              time.from === detail.from &&
+              time.to === detail.to &&
+              time.time ===
+                moment(detail.time).tz('Asia/Manila').format('HH:mm') &&
+              (!!time.isWeekday === moment(detail.time).day() < 6 ||
+                (time.isWeekday === 'false' && moment(detail.time).day() === 6))
+            )
+          })
+        })
+
+        const schedules = await scheduleDetailModel
+          .find(
+            {
+              _id: { $in: detailsToDelete.map((detail) => detail._id) },
+            },
+            null,
+            { session }
+          )
+          .populate({
+            path: 'reserve',
+            populate: { path: 'user', strictPopulate: false },
           })
 
-          returnTime.forEach((time) => {
-            if (time) {
-              const formattedTime = moment(`${change.date} ${time}`)
-                .tz('Asia/Manila')
-                .format()
-              newDetails.push({
-                from: uniqueLines[1].split(' - ')[0],
-                to: uniqueLines[1].split(' - ')[1],
-                time: formattedTime,
-              })
-            }
-          })
-          console.log(newDetails)
-          const docs = await scheduleDetailModel.insertMany(newDetails)
-          await scheduleModel.findByIdAndUpdate(id, {
-            $push: { details: docs },
-          })
-        }
-        if (change.type === 'delete') {
-          const detailsToDelete = schedule.details.filter((detail) => {
-            const date = moment(detail.time)
+        schedules.forEach(async (schedule) => {
+          if (schedule.reserve && schedule.reserve.length > 0) {
+            const emails = schedule.reserve.map(
+              (reservation) => reservation.user.email
+            )
+
+            const from = schedule.from
+            const to = schedule.to
+            const time = moment(schedule.time)
               .tz('Asia/Manila')
-              .format('YYYY-MM-DD')
+              .format('MMM DD HH:mm')
 
-            return date === change.date
-          })
-          const ids = detailsToDelete.map((detail) => detail._id)
-          await scheduleDetailModel.deleteMany({
-            _id: { $in: ids },
-          })
+            emailTransporter.sendMail({
+              from: process.env.EMAIL_USER,
+              to: emails,
+              subject: 'Reservation Cancelled',
+              text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+            })
 
-          const newDetails = schedule.details.filter(
-            (detail) => !detailsToDelete.includes(detail)
-          )
+            const users = schedule.reserve.map(
+              (reservation) => reservation.user._id
+            )
 
-          await scheduleModel.findByIdAndUpdate(id, {
-            details: newDetails,
-          })
-        }
-      })
-    }
+            await notificationModel.create(
+              {
+                title: 'Reservation Cancelled',
+                description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+                to: users,
+              },
+              { session }
+            )
 
-    // deletedTime = [{from, to, time, isWeekday}]
-    // delete all time in deletedTime
-    if (deletedTime) {
-      const detailsToDelete = schedule.details.filter((detail) => {
-        // time is in different format, deletedTime is in format 'HH:mm'
-        // details time is in format 'YYYY-MM-DDTHH:mm:ssZ'
-
-        return deletedTime.some((time) => {
-          return (
-            time.from === detail.from &&
-            time.to === detail.to &&
-            time.time ===
-              moment(detail.time).tz('Asia/Manila').format('HH:mm') &&
-            (!!time.isWeekday === moment(detail.time).day() < 6 ||
-              (time.isWeekday === 'false' && moment(detail.time).day() === 6))
-          )
-        })
-      })
-
-      const schedules = await scheduleDetailModel
-        .find({
-          _id: { $in: detailsToDelete.map((detail) => detail._id) },
-        })
-        .populate({
-          path: 'reserve',
-          populate: { path: 'user', strictPopulate: false },
+            // delete all approval
+            await reservationApprovalModel.deleteMany(
+              {
+                _id: { $in: schedule.approval },
+              },
+              { session }
+            )
+          }
         })
 
-      schedules.forEach(async (schedule) => {
-        if (schedule.reserve && schedule.reserve.length > 0) {
-          const emails = schedule.reserve.map(
-            (reservation) => reservation.user.email
+        await scheduleDetailModel.deleteMany(
+          {
+            _id: { $in: detailsToDelete.map((detail) => detail._id) },
+          },
+          { session }
+        )
+      }
+
+      // addedTime = [{from, to, weekdays, saturdays}]
+      // add all time in addedTime
+      if (addedTime) {
+        const weekdays = getWeekdays(from, to)
+        const saturdays = getSaturdays(from, to)
+
+        const newSchedules = []
+
+        addedTime.forEach((schedule) => {
+          const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
+          const saturdaySchedules = mergeDateAndTime(
+            saturdays,
+            schedule.saturdays
           )
 
-          const from = schedule.from
-          const to = schedule.to
-          const time = moment(schedule.time)
-            .tz('Asia/Manila')
-            .format('MMM DD HH:mm')
+          const dates = weekdaySchedules.concat(saturdaySchedules)
 
-          emailTransporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: emails,
-            subject: 'Reservation Cancelled',
-            text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+          dates.forEach((time) => {
+            newSchedules.push({
+              from: schedule.from,
+              to: schedule.to,
+              time,
+            })
           })
+        })
 
-          const users = schedule.reserve.map(
-            (reservation) => reservation.user._id
-          )
-
-          await notificationModel.create({
-            title: 'Reservation Cancelled',
-            description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-            to: users,
-          })
-
-          // delete all approval
-          await reservationApprovalModel.deleteMany({
-            _id: { $in: schedule.approval },
-          })
-        }
-      })
-
-      await scheduleDetailModel.deleteMany({
-        _id: { $in: detailsToDelete.map((detail) => detail._id) },
-      })
-    }
-
-    // addedTime = [{from, to, weekdays, saturdays}]
-    // add all time in addedTime
-    if (addedTime) {
-      const weekdays = getWeekdays(from, to)
-      const saturdays = getSaturdays(from, to)
-
-      const newSchedules = []
-
-      addedTime.forEach((schedule) => {
-        const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
-        const saturdaySchedules = mergeDateAndTime(
-          saturdays,
-          schedule.saturdays
+        const scheduleDetails = await scheduleDetailModel.insertMany(
+          newSchedules,
+          {
+            session,
+          }
         )
 
-        const dates = weekdaySchedules.concat(saturdaySchedules)
-
-        dates.forEach((time) => {
-          newSchedules.push({
-            from: schedule.from,
-            to: schedule.to,
-            time,
-          })
-        })
-      })
-
-      const scheduleDetails = await scheduleDetailModel.insertMany(newSchedules)
-
-      await scheduleModel.findByIdAndUpdate(id, {
-        $push: { details: scheduleDetails },
-      })
-    }
+        await scheduleModel.findByIdAndUpdate(
+          id,
+          {
+            $push: { details: scheduleDetails },
+          },
+          { session }
+        )
+      }
+    })
     res.send({ success: true })
   } catch (err) {
     console.error(err)
     res.send({ success: false, error: err })
   }
+
+  session.endSession()
 })
 
 adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
@@ -398,50 +453,74 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
       populate: { path: 'user', strictPopulate: false },
     })
 
-  schedules.forEach(async (schedule) => {
-    if (schedule.reserve && schedule.reserve.length > 0) {
-      // console.log(schedule.reserve[0].user)
-      const emails = schedule.reserve.map((reservation) => {
-        return reservation.user.email
-      })
+  const session = await mongoose.startSession()
 
-      const from = schedule.from
-      const to = schedule.to
-      const time = moment(schedule.time)
-        .tz('Asia/Manila')
-        .format('MMM DD HH:mm')
+  try {
+    await session.withTransaction(async () => {
+      await Promise.all(
+        schedules.map(async (schedule) => {
+          const from = schedule.from
+          const to = schedule.to
+          const time = moment(schedule.time)
+            .tz('Asia/Manila')
+            .format('MMM DD HH:mm')
+          let emails = []
 
-      emailTransporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: emails,
-        subject: 'Reservation Cancelled',
-        text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-      })
+          if (schedule.reserve && schedule.reserve.length > 0) {
+            // console.log(schedule.reserve[0].user)
+            emails = schedule.reserve.map((reservation) => {
+              return reservation.user.email
+            })
 
-      const users = schedule.reserve.map((reservation) => reservation.user._id)
+            const users = schedule.reserve.map(
+              (reservation) => reservation.user._id
+            )
 
-      await notificationModel.create({
-        title: 'Reservation Cancelled',
-        description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-        to: users,
-      })
-    }
+            await notificationModel.create(
+              {
+                title: 'Reservation Cancelled',
+                description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+                to: users,
+              },
+              { session }
+            )
+          }
 
-    // delete all approval
-    await reservationApprovalModel.deleteMany({
-      _id: { $in: schedule.approval },
+          // delete all approval
+          await reservationApprovalModel.deleteMany(
+            {
+              _id: { $in: schedule.approval },
+            },
+            { session }
+          )
+
+          await scheduleDetailModel.findByIdAndDelete(schedule._id, { session })
+
+          if (emails.length > 0) {
+            emailTransporter.sendMail({
+              from: process.env.EMAIL_USER,
+              to: emails,
+              subject: 'Reservation Cancelled',
+              text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+            })
+          }
+        })
+      )
+
+      // await scheduleDetailModel.deleteMany({
+      //   _id: { $in: schedule.details.map((detail) => detail._id) },
+      // })
+
+      await scheduleModel.findByIdAndDelete(id, { session })
+
+      res.redirect('/admin/schedule?success=delete')
     })
+  } catch (err) {
+    console.error(err)
+    res.redirect('/admin/schedule?error=delete')
+  }
 
-    await scheduleDetailModel.findByIdAndDelete(schedule._id)
-  })
-
-  // await scheduleDetailModel.deleteMany({
-  //   _id: { $in: schedule.details.map((detail) => detail._id) },
-  // })
-
-  await scheduleModel.findByIdAndDelete(id)
-
-  res.redirect('/admin/schedule?success=delete')
+  session.endSession()
 })
 
 module.exports = adminScheduleModuleController
