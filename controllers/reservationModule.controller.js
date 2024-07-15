@@ -274,17 +274,19 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
           session,
         })
 
-        ids.forEach(async (id, index) => {
-          await scheduleDetailModel.findByIdAndUpdate(
-            id,
-            {
-              $push: {
-                approval: docs[index],
+        await Promise.all(
+          ids.map(async (id, index) => {
+            await scheduleDetailModel.findByIdAndUpdate(
+              id,
+              {
+                $push: {
+                  approval: docs[index],
+                },
               },
-            },
-            { session }
-          )
-        })
+              { session }
+            )
+          })
+        )
       } else {
         const approvals = []
 
@@ -303,23 +305,25 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
           session,
         })
 
-        ids.forEach(async (id, index) => {
-          await scheduleDetailModel.findByIdAndUpdate(
-            id,
-            {
-              $inc: {
-                slot: -1,
-              },
-              $push: {
-                approval: docs[index],
-                reserve: {
-                  user,
+        await Promise.all(
+          ids.map(async (id, index) => {
+            await scheduleDetailModel.findByIdAndUpdate(
+              id,
+              {
+                $inc: {
+                  slot: -1,
+                },
+                $push: {
+                  approval: docs[index],
+                  reserve: {
+                    user,
+                  },
                 },
               },
-            },
-            { session }
-          )
-        })
+              { session }
+            )
+          })
+        )
       }
     })
 
