@@ -101,7 +101,6 @@ async function handleLocationChange() {
       saturdays = res.saturdays
     }
 
-    console.log(weekdays)
     renderTimeSlotWeekdays(weekdays)
     renderTimeSlotSaturdays(saturdays)
   }
