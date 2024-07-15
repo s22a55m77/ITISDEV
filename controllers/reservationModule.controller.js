@@ -315,10 +315,10 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
       }
     })
 
-    return res.render('reservationModule/success.ejs', { success: true })
+    res.render('reservationModule/success.ejs', { success: true })
   } catch (error) {
     console.error(error)
-    return res.render('reservationModule/success.ejs', { success: false })
+    res.render('reservationModule/success.ejs', { success: false })
   }
 
   session.endSession()
