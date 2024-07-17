@@ -40,15 +40,7 @@ adminScheduleModuleController.post('/create', isSSU, async (req, res) => {
   const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
   const toStr = moment(to).tz('Asia/Manila').format('MMM D')
   const dateRange = `${fromStr} - ${toStr}`
-  const startDate = moment(from).tz('Asia/Manila').format()
-  const endDate = moment(to).tz('Asia/Manila').format()
-  const schedule = new scheduleModel({
-    line,
-    dateRange,
-    startDate,
-    endDate,
-    label,
-  })
+  const schedule = new scheduleModel({ line, dateRange, label })
 
   const weekdays = getWeekdays(from, to)
   const saturdays = getSaturdays(from, to)
@@ -177,14 +169,12 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
 
   schedule.dateRange = dateRange
   schedule.label = label
-  schedule.startDate = moment(from).tz('Asia/Manila').format()
-  schedule.endDate = moment(to).tz('Asia/Manila').format()
 
   const session = await mongoose.startSession()
 
   try {
     await session.withTransaction(async () => {
-      await schedule.save()
+      schedule.save()
 
       // if date range is changed
       if (dateRange !== originalDateRange) {
@@ -368,13 +358,11 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
             )
 
             await notificationModel.create(
-              [
-                {
-                  title: 'Reservation Cancelled',
-                  description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-                  to: users,
-                },
-              ],
+              {
+                title: 'Reservation Cancelled',
+                description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+                to: users,
+              },
               { session }
             )
 
@@ -479,23 +467,21 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
           let emails = []
 
           if (schedule.reserve && schedule.reserve.length > 0) {
-            // console.log(schedule.reserve)
-            schedule.reserve.forEach((reservation) => {
-              if (reservation.user?.email) emails.push(reservation.user.email)
+            // console.log(schedule.reserve[0].user)
+            emails = schedule.reserve.map((reservation) => {
+              return reservation.user.email
             })
 
             const users = schedule.reserve.map(
-              (reservation) => reservation.user?._id
+              (reservation) => reservation.user._id
             )
 
             await notificationModel.create(
-              [
-                {
-                  title: 'Reservation Cancelled',
-                  description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-                  to: users,
-                },
-              ],
+              {
+                title: 'Reservation Cancelled',
+                description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+                to: users,
+              },
               { session }
             )
           }
