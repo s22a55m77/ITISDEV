@@ -198,12 +198,22 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
     return res.redirect('404.html')
   }
 
-  const from = moment(schedule.dateRange.split(' - ')[0], 'MMM D').format(
-    'YYYY-MM-DD'
-  )
-  const to = moment(schedule.dateRange.split(' - ')[1], 'MMM D').format(
-    'YYYY-MM-DD'
-  )
+  // get all dates from date range
+  const dates = []
+  schedule.details.forEach((detail) => {
+    const date = moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
+    // if date is not in dates then add
+    if (!dates.includes(date)) {
+      dates.push(date)
+    }
+  })
+
+  // const from = moment(schedule.dateRange.split(' - ')[0], 'MMM D').format(
+  //   'YYYY-MM-DD'
+  // )
+  // const to = moment(schedule.dateRange.split(' - ')[1], 'MMM D').format(
+  //   'YYYY-MM-DD'
+  // )
 
   const map = new Map()
 
@@ -236,8 +246,7 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
 
   res.render('adminScheduleModule/edit.ejs', {
     id: schedule._id,
-    from,
-    to,
+    dates,
     line: schedule.line,
     label: schedule.label,
     schedules: JSON.stringify(schedules),
