@@ -17,6 +17,94 @@ const isSSU = require('../utils/isSSU.js')
 const emailTransporter = require('../utils/email.js')
 require('dotenv').config()
 
+function getDateRange(dates) {
+  // get date range string ex. Jul 1 - Jul 4, Jul 8 - Jul 11
+  let dateRange = ''
+  dateRange += moment(dates[0]).format('MMM D')
+  for (let i = 1; i < dates.length; i++) {
+    // if there is no prev date then start
+
+    if (!moment(dates[i - 1]).isSame(moment(dates[i]).subtract(1, 'days'))) {
+      dateRange += moment(dates[i]).format('MMM D')
+    }
+
+    if (!moment(dates[i + 1]).isSame(moment(dates[i]).add(1, 'days'))) {
+      dateRange += ` - ${moment(dates[i]).format('MMM D')}, `
+    }
+  }
+  // remove last ,
+  dateRange = dateRange.slice(0, -2)
+  return dateRange
+}
+
+/**
+ *
+ * @param {object} schedules [{from, to, time}]
+ * @param {object} session mongoose session
+ */
+async function fixOverlapSchedules(schedules, session) {
+  for (const schedule of schedules) {
+    const date = moment(schedule.time).tz('Asia/Manila').format('YYYY-MM-DD')
+    const existingSchedules = await scheduleDetailModel.find({
+      time: {
+        $gte: moment(date).startOf('day'),
+        $lt: moment(date).endOf('day'),
+      },
+    })
+
+    if (existingSchedules.length > 0) {
+      // delete them
+      await scheduleDetailModel.deleteMany(
+        {
+          _id: { $in: existingSchedules.map((schedule) => schedule._id) },
+        },
+        { session }
+      )
+
+      // recalculate the date range
+      const schedules = await scheduleModel
+        .find({
+          details: { $in: existingSchedules.map((schedule) => schedule._id) },
+        })
+        .populate('details')
+
+      // remove from scheduleModel array
+      await scheduleModel.updateMany(
+        {
+          details: { $in: existingSchedules.map((schedule) => schedule._id) },
+        },
+        {
+          $pull: {
+            details: { $in: existingSchedules.map((schedule) => schedule._id) },
+          },
+        },
+        {
+          session,
+        }
+      )
+
+      for (const schedule of schedules) {
+        // get all dates
+        const dates = schedule.details.map((detail) => {
+          return moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
+        })
+        // sort
+        dates.sort()
+        // unique
+        const uniqueDates = [...new Set(dates)]
+
+        const dateRange = getDateRange(uniqueDates)
+
+        await scheduleModel.findByIdAndUpdate(
+          schedule._id,
+          { dateRange },
+          { session }
+        )
+      }
+    }
+  }
+}
+
 const adminScheduleModuleController = e.Router()
 
 adminScheduleModuleController.get('/', isSSU, async (req, res) => {
@@ -26,6 +114,8 @@ adminScheduleModuleController.get('/', isSSU, async (req, res) => {
     return res.redirect('/admin/schedule?line=1')
   }
   const schedules = await scheduleModel.find({ line })
+
+  const dateRange = schedules.map((schedule) => {})
 
   res.render('adminScheduleModule/schedule.ejs', { schedules })
 })
@@ -69,13 +159,16 @@ adminScheduleModuleController.post('/create', isSSU, async (req, res) => {
     }
   })
 
+  const newSchedules = toDesDetails.concat(returnDetails)
+
   const session = await mongoose.startSession()
   try {
     await session.withTransaction(async () => {
+      await fixOverlapSchedules(newSchedules, session)
       const scheduleDoc = await schedule.save({ session })
 
       const scheduleDetails = await scheduleDetailModel.insertMany(
-        toDesDetails.concat(returnDetails),
+        newSchedules,
         {
           session,
         }
