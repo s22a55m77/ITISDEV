@@ -6,16 +6,55 @@
 
 body {
   min-height: 100vh;
-  background-color: #EFECEC;
+  background-color: #efecec;
 }
 
 .bg-head {
   width: 100%;
   height: 82px;
-  background-color: #868F93;
+  background-color: #868f93;
 }
 
 a {
   color: black;
   text-decoration: none;
+}
+
+:root {
+  /* Color styles */
+  --celtic-600: #417845;
+  --celtic-500: #539458;
+  --celtic-400: #77b17b;
+  --celtic-200: #cde5ce;
+  --celtic-50: #f4f9f5;
+  --celtic-100: #e6f2e7;
+  --gray-white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-950: #030712;
+  --rose-800: #9f1239;
+  --rose-700: #be133c;
+
+  /* Text-size styles */
+  --bold-h1: 40px;
+  --bold-h2: 32px;
+  --bold-h3: 28px;
+  --bold-h4: 24px;
+  --bold-h5: 20px;
+  --bold-h6: 16px;
+  --body-base: 16px;
+  --body-small: 12px;
+  --body-strong: 17px;
+
+  /* Effect styles */
+  --shadow-small: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  --shadow-regular: 0px 4px 10px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0px 8px 35px rgba(0, 0, 0, 0.16);
 }
