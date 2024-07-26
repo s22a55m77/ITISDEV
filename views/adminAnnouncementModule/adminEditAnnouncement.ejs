@@ -15,33 +15,40 @@
   </head>
   <title>Edit Announcement</title>
   <body>
-    <div class="title">EDIT ANNOUNCEMENT</div>
-    <hr class="solid" />
-    <div id="alert">
-    </div>
-    <form method="post" action="/admin/announcement/edit/<%= id %>">
-      <label for="title">Title</label>
-      <input
-        id="title"
-        placeholder="text"
-        type="text"
-        name="title"
-        value="<%= title %>"
-      />
-      <label for="description">Description</label>
-      <input
-        id="description"
-        placeholder="text"
-        type="text"
-        name="description"
-        value="<%= description %>"
-      />
-      <div class="action-container">
-        <a href="/admin/announcement" style="display: contents">
-          <button id="cancel">CANCEL</button>
-        </a>
-        <button id="save" type="submit">SAVE</button>
-      </div>
-    </form>
+    <div class="bg-head"></div>
+    <main style="padding: 0 30px 0 30px">
+      <h4 class="title">
+        EDIT ANNOUNCEMENT
+        <hr class="solid" />
+      </h4>
+      <div id="alert"></div>
+      <form method="post" action="/admin/announcement/edit/<%= id %>">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          placeholder="Enter title here..."
+          type="text"
+          name="title"
+          value="<%= title %>"
+        />
+        <div class="description-container">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            placeholder="Enter description here..."
+            name="description"
+          >
+<%= description %></textarea
+          >
+        </div>
+
+        <div class="action-container">
+          <a href="/admin/announcement" style="display: contents">
+            <button id="cancel">CANCEL</button>
+          </a>
+          <button id="save" type="submit">SAVE</button>
+        </div>
+      </form>
+    </main>
   </body>
 </html>
