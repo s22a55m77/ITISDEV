@@ -1,6 +1,12 @@
 body {
-  background-color: white;
-  padding: 25px;
+  background-color: var(--celtic-50);
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .header-title {
@@ -8,21 +14,94 @@ body {
   font-weight: 700;
 }
 
-.step-container {
+.main-container {
+  padding: 20px 14px;
+}
+
+.trip-type-container, 
+.destination-container, 
+.select-dates-container,
+.purpose-container {
+  border-radius: 10px;
+  background: var(--gray-white);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.trip-type-container > div {
   display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-  gap: 20px;
+  gap: 12px;
+  align-items: flex-start;
 }
 
-.step {
+.trip-type-container input[type="radio"] {
+  display: none;
+}
+
+.trip-type-container label {
   width: 100%;
-  height: 8px;
-  background: rgba(0, 0, 0, 0.25);
+  text-align: center;
+  padding: 9px 26px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  border: 1px solid var(--Gray-400, #9CA3AF);
+  background: #FFF;
+  border-radius: 100px;
+  color: black;
+  cursor: pointer;
 }
 
-.step-active {
-  background: #000;
+.trip-type-active {
+  border: 1px solid var(--Celtic-600, #417845) !important;
+  background: var(--Celtic-600, #417845) !important;
+  color: var(--gray-white) !important;
+}
+
+.destination-container > div {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.destination-container select {
+  padding: 9px 10px 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  align-self: stretch;
+  border-radius: 10px;
+  border: 1px solid var(--Gray-400, #9CA3AF);
+  background: #FFF;
+}
+
+.trip-type-header,
+.destination-header,
+.select-dates-header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 16px;
+  color: var(--Gray-700, #374151);
+}
+
+.weekday-saturday {
+  color: var(--Gray-950, #030712);
+  font-family: "Radio Canada";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.month-display {
+  color: var(--Gray-700, #374151);
+  /* Body/Small */
+  font-family: "Radio Canada";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 #weekdays-container, #saturdays-container {
@@ -33,8 +112,25 @@ body {
 
 .day {
   display: flex;
+  width: 50px;
+  padding: 5px;
   flex-direction: column;
-  border: 1px solid black;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1px solid var(--Gray-400, #9CA3AF);
+  background: #FFF;
+}
+
+.date-display {
+  color: var(--Gray-950, #030712);
+  text-align: center;
+  font-family: "Radio Canada";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 input[type="checkbox"] {
@@ -42,11 +138,17 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked + label.day {
-  color: white;
-  background-color: black;
+  color: var(--gray-white);
+  border: 1px solid var(--Celtic-600, #417845);
+  background: var(--Celtic-600, #417845);
 }
 
-.select-date-container {
+input[type="checkbox"]:checked + label.day > .date-display {
+  color: var(--gray-white);
+}
+
+.select-destination-container {
+  margin-top: 12px;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -61,11 +163,32 @@ input[type="checkbox"]:checked + label.day {
   display: none;
 }
 
-#from-icon, #to-icon {
-  padding: 0px 10px;
-  border-radius: 100%;
-  border: 1px solid #000;
-  opacity: 0.5;
+#from-show, #to-show {
+  color: var(--Celtic-600, #417845);
+  text-align: center;
+  font-family: "Radio Canada";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+}
+
+#next {
+  margin-top: 70px;
+  display: flex;
+  width: 100%;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  align-self: stretch;
+
+  color: var(--Gray-White, #FFF);
+
+  border-radius: 10px;
+  border: 1px solid var(--Celtic-600, #417845);
+  background: var(--Celtic-600, #417845);
 }
 
 .modal {

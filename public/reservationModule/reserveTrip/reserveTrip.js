@@ -12,14 +12,16 @@ function renderTimeSlotWeekdays(weekdays) {
         renderedMonths[month] = true;
     }
       return (
-        '<div class="date-container">' 
-          + monthDiv +
-          '<input type="checkbox" id="' + date + month + '" value="'+ weekday +'" />' +
-          '<label for="' + date + month + '" class="day">' + 
-            '<span>' + day + '</span>' + 
-            date + 
-          '</label>'+
-        '</div>'
+        `
+          <div class="date-container">
+            <div class="month-display">${monthDiv}</div>
+            <input type="checkbox" id="${date + month}" value="${weekday}" />
+            <label for="${date + month}" class="day">
+              <span>${day}</span>
+              <span class="date-display">${date}</span>
+            </label>
+          </div>
+        `
       )
     })
   )
@@ -39,14 +41,16 @@ function renderTimeSlotSaturdays(saturdays) {
         renderedMonths[month] = true;
       }
       return (
-        '<div class="date-container">' 
-          + monthDiv +
-          '<input type="checkbox" id="' + date + month + '" value="'+ saturday +'" />' +
-          '<label for="' + date + month + '" class="day">' + 
-            '<span>' + day + '</span>' + 
-            date + 
-          '</label>'+
-        '</div>'
+        `
+          <div class="date-container">
+            <div class="month-display">${monthDiv}</div>
+            <input type="checkbox" id="${date + month}" value="${saturday}" />
+            <label for="${date + month}" class="day">
+              <span>${day}</span>
+               <span class="date-display">${date}</span>
+            </label>
+          </div>
+        `
       )
     })
   )
@@ -54,6 +58,7 @@ function renderTimeSlotSaturdays(saturdays) {
 
 // Default Round Trip
 $('#round-trip').prop('checked', true)
+$('#round-trip-label').addClass('trip-type-active');
 
 let roundTripCheck = true
 let oneWayCheck = false
@@ -63,6 +68,8 @@ $('#round-trip').click(() => {
     $('.step-container').append('<div class="step last"></div>')
     $('#round-trip-arrow').show()
     $('#one-way-arrow').hide()
+    $('#one-way-label').removeClass('trip-type-active')
+    $('#round-trip-label').addClass('trip-type-active')
   }
   roundTripCheck = true
   oneWayCheck = false
@@ -73,6 +80,8 @@ $('#one-way').click(() => {
     $('.last').remove()
     $('#one-way-arrow').show()
     $('#round-trip-arrow').hide()
+    $('#round-trip-label').removeClass('trip-type-active')
+    $('#one-way-label').addClass('trip-type-active')
   }
   roundTripCheck = false
   oneWayCheck = true
@@ -149,7 +158,7 @@ $('#next').click(() => {
 })
 
 // Handle from icon click
-$('#from-icon').click(() => {
+$('#from-show').click(() => {
   if($('#from').val() === null) {
     return
   }
@@ -158,7 +167,7 @@ $('#from-icon').click(() => {
   $('#image-modal').show()
 })
 
-$('#to-icon').click(() => {
+$('#to-show').click(() => {
   if($('#to').val() === null) {
     return
   }

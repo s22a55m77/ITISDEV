@@ -17,10 +17,12 @@ const timeElement = schedules.map((schedule, index) => {
   return (`
     <label for="${index}" class="time-item">
       <input ${schedule.slot <= 0 ? 'disabled': ''} type="radio" id="${index}" name="time" value=${schedule.time} />
-      <span>
-        ${moment(schedule.time, 'HH:mm').format('hh:mm A')}
-        <span class="${className}">${schedule.slot} SEATS</span>  
-      </span>
+      <div>
+        <div>
+          ${moment(schedule.time, 'HH:mm').format('hh:mm A')}
+        </div>
+        <div class="${className}">${schedule.slot} SEATS LEFT</div>  
+      </div>
     </label>
   `)
 })

@@ -4,6 +4,10 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 });
 let { type } = params; 
 
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M12 4L10.59 5.41L16.17 11H4V13H16.17L10.59 18.59L12 20L20 12L12 4Z" fill="#417845"/>
+            </svg>`
+
 if(type === 'one') {
   $('#trip-type').text('One Way')
   $('.round-trip-information').hide()
@@ -17,10 +21,10 @@ else {
   $('.round-trip-information').show()
   $('.one-way-information').hide()
   $('.one-way-information-time').hide()
-  const departureText = from + '→' + to
-  const returnText = to + '→' + from 
-  $('#departure').text(departureText)
-  $('#return').text(returnText)
+  const departureText = from + svg + to
+  const returnText = to + svg + from 
+  $('#departure').html(departureText)
+  $('#return').html(returnText)
   $('#departure-time').text(moment(departureTime, 'HH:mm').format('hh:mm A'))
   $('#return-time').text(moment(returnTime, 'HH:mm').format('hh:mm A'))
 }
@@ -37,13 +41,15 @@ $('#selected-dates-container').append(
       renderedMonths[month] = true;
   }
     return (
-      '<div class="date-container">' 
-        + monthDiv +
-        '<div for="' + date + month + '" class="day">' + 
-          '<span>' + day + '</span>' + 
-          date + 
-        '</div>'+
-      '</div>'
+      `
+        <div class="date-container">
+          <div class="month-display">${monthDiv}</div>
+          <div for="${date + month}" class="day">
+          <span>${day}</span>
+           <span class="date-display">${date}</span>
+          </div>
+        </div>
+      `
     )
   })
 )
