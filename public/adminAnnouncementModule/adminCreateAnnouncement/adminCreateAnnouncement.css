@@ -6,12 +6,10 @@ body {
 .title {
   margin-top: 15px;
   width: 100%;
-  font-size: 20px;
-  font-weight: 800;
   text-align: center;
   background-color: white;
   border-radius: 20px;
-  padding: 29px 41px 29px 41px;
+  padding: 30px 40px 30px 40px;
 }
 
 hr.solid {
