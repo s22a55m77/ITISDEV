@@ -7,7 +7,7 @@
 
 body {
   min-height: 100vh;
-  background-color: #efecec;
+  background-color: var(--bg);
 }
 
 .bg-head {
@@ -76,6 +76,8 @@ h6 {
   --gray-950: #030712;
   --rose-800: #9f1239;
   --rose-700: #be133c;
+
+  --bg: #efecec;
 
   /* Text-size styles */
   --body-base: 16px;
