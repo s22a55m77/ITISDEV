@@ -248,8 +248,8 @@ reservationModuleController.post('/return', isAuthorized, async (req, res) => {
 
   res.render('reservationModule/return.ejs', {
     schedules,
-    from,
-    to,
+    from: to,
+    to: from,
     date,
     departureIds,
     departureTime,
