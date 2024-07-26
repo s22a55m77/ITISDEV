@@ -12,10 +12,9 @@ a {
   height: 100px;
   background-color: white;
   border-radius: 20px;
-  padding: 25px;
+  padding: 20px;
 
   text-align: center;
-  font-size: 20px;
   font-weight: 700;
   line-height: 50px;
 }
@@ -38,20 +37,20 @@ a {
 .create-container {
   width: 100%;
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 
 #createBtn {
   width: 130px;
-  height: 36px; 
+  height: 36px;
   border-radius: 10px;
-  background: #A8DEA0;
+  background: var(--celtic-200);
   border: none;
 }
 
 hr.solid {
   margin-top: 15px;
-  border-top: 1px solid #A39C9C;
+  border-top: 1px solid #a39c9c;
 }
 
 .announcement {
@@ -73,7 +72,7 @@ hr.solid {
 .popup-container .popup {
   visibility: hidden;
   width: 160px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   color: black;
   text-align: center;
   border-radius: 6px;
@@ -87,7 +86,7 @@ hr.solid {
 
 /* Popup arrow */
 .popup-container .popup::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 95%;
   left: 50%;
@@ -102,7 +101,7 @@ hr.solid {
 }
 
 hr.popup-solid {
-  border-top: 1px solid #A39C9C;
+  border-top: 1px solid #a39c9c;
 }
 
 #alert {
@@ -115,4 +114,14 @@ hr.popup-solid {
   border: none;
   border-radius: 10px;
   z-index: 100;
+}
+
+.icon-bg {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: var(--celtic-400);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

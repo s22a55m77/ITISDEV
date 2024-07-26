@@ -15,21 +15,33 @@
   </head>
   <title>Create Announcement</title>
   <body>
-    <div class="title">CREATE ANNOUNCEMENT</div>
-    <hr class="solid" />
-    <div id="alert">
-    </div>
-    <form method="post" action="/admin/announcement/create">
-      <label for="title">Title</label>
-      <input id="title" placeholder="text" type="text" name="title" />
-      <label for="description">Description</label>
-      <input
-        id="description"
-        placeholder="text"
-        type="text"
-        name="description"
-      />
-      <button id="post">POST ANNOUNCEMENT</button>
-    </form>
+    <div class="bg-head"></div>
+    <main style="padding: 0 30px 0 30px">
+      <h4 class="title">
+        CREATE ANNOUNCEMENT
+        <hr class="solid" />
+      </h4>
+
+      <div id="alert"></div>
+      <form method="post" action="/admin/announcement/create">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          placeholder="Enter title here..."
+          type="text"
+          name="title"
+        />
+        <div class="description-container">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            placeholder="Enter description here..."
+            type="text"
+            name="description"
+          ></textarea>
+        </div>
+        <button id="post">POST ANNOUNCEMENT</button>
+      </form>
+    </main>
   </body>
 </html>
