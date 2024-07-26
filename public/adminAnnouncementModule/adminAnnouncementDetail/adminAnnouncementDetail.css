@@ -1,5 +1,6 @@
 .announcement-container {
   margin: 30px auto;
+  margin-top: 50px;
   width: 80%;
   height: 645px;
   background-color: white;
@@ -9,9 +10,7 @@
 
 #announcement-title {
   width: 100%;
-  font-size: 20px;
-  font-weight: 800;
-  text-align: center;
+  margin-left: 5px;
 }
 
 #announcement-date {
@@ -21,4 +20,28 @@
 
 #announcement-content {
   margin-top: 30px;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  margin-top: -50px;
+  transform: translate(-50%, 0%);
+  width: 80%;
+  height: 82px;
+  padding: 20px;
+
+  width: 80%;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.title-container {
+  display: flex;
+  padding: 10px 16px 10px 16px;
+  border-radius: 20px;
+  background-color: var(--celtic-400);
 }

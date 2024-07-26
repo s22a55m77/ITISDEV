@@ -16,8 +16,27 @@
   <title>Announcement Detail</title>
   <body>
     <div class="bg-head"></div>
+    <h4 class="title">
+      ARROWS EXPRESS SHUTTLE ANNOUNCEMENT
+      <hr class="solid" />
+    </h4>
     <div class="announcement-container">
-      <div id="announcement-title"><%= title %></div>
+      <div class="title-container">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+        >
+          <path
+            d="M18.3333 11.6666H21.6666V14.9999H18.3333V11.6666ZM18.3333 18.3333H21.6666V28.3333H18.3333V18.3333ZM20 3.33325C10.8 3.33325 3.33331 10.7999 3.33331 19.9999C3.33331 29.1999 10.8 36.6666 20 36.6666C29.2 36.6666 36.6666 29.1999 36.6666 19.9999C36.6666 10.7999 29.2 3.33325 20 3.33325ZM20 33.3333C12.65 33.3333 6.66665 27.3499 6.66665 19.9999C6.66665 12.6499 12.65 6.66659 20 6.66659C27.35 6.66659 33.3333 12.6499 33.3333 19.9999C33.3333 27.3499 27.35 33.3333 20 33.3333Z"
+            fill="black"
+          />
+        </svg>
+        <div id="announcement-title"><%= title %></div>
+      </div>
+
       <div id="announcement-date"><%= createdAt %></div>
       <div id="announcement-content"><%= description %></div>
     </div>
