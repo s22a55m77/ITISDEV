@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Radio Canada';
 }
 
 body {
@@ -12,12 +13,22 @@ body {
 .bg-head {
   width: 100%;
   height: 82px;
-  background-color: #868f93;
+  background-color: var(--celtic-600);
 }
 
 a {
   color: black;
   text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Radio Canada Big';
+  font-weight: 700;
 }
 
 h1 {
@@ -67,12 +78,6 @@ h6 {
   --rose-700: #be133c;
 
   /* Text-size styles */
-  --bold-h1: 40px;
-  --bold-h2: 32px;
-  --bold-h3: 28px;
-  --bold-h4: 24px;
-  --bold-h5: 20px;
-  --bold-h6: 16px;
   --body-base: 16px;
   --body-small: 12px;
   --body-strong: 17px;
