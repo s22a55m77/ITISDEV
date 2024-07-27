@@ -15,7 +15,7 @@ const scheduleDetailSchema = new Schema(
         user: { type: Schema.Types.ObjectId, ref: 'User' },
         status: {
           type: String,
-          enum: ['reserved', 'pending', 'absent'],
+          enum: ['present', 'pending', 'absent'],
           default: 'pending',
         },
       },
