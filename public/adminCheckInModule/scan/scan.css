@@ -9,8 +9,37 @@
 #reader {
   margin: 0 auto;
   width: 80%;
+  border-radius: 10px;
 }
 
 #camera-not-on {
   display: none;
+}
+
+.instruction {
+  margin: 0 auto;
+  color: var(--Gray-950, #030712);
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: 'Radio Canada';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 250px;
+}
+
+button {
+  margin: 0 auto;
+  display: flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--Celtic-600, #417845);
+  background: var(--Celtic-600, #417845);
+  color: var(--Gray-White, #fff);
+  max-width: 160px;
 }
