@@ -28,6 +28,19 @@ body {
   margin-bottom: 10px;
 }
 
+.purpose-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#purpose {
+  height: 30px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--Gray-400, #9CA3AF);
+}
+
 .trip-type-container > div {
   display: flex;
   gap: 12px;
