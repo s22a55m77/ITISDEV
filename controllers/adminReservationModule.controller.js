@@ -130,8 +130,8 @@ adminReservationModuleController.get('/', isSSU, async (req, res) => {
     ).approval.map((approval) => {
       return {
         _id: approval._id,
-        name: approval.user.name,
-        id: approval.user.idNumber,
+        name: approval.user?.name,
+        id: approval.user?.idNumber,
         designation: approval.designation,
         purpose: approval.purpose,
         status: approval.status,
