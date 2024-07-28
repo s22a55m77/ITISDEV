@@ -11,6 +11,9 @@ const reservationApprovalSchema = new Schema(
       enum: ['pending', 'confirmed', 'rejected', 'cancelled'],
       default: 'pending',
     },
+    from: { type: String, required: true },
+    to: { type: String, required: true },
+    time: { type: Date, required: true },
   },
   { collection: 'ReservationApproval', timestamps: true }
 )

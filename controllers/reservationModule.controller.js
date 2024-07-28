@@ -262,6 +262,12 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
   const session = await mongoose.startSession()
   try {
     await session.withTransaction(async () => {
+      const schedules = await scheduleDetailModel.find({
+        _id: {
+          $in: ids,
+        },
+      })
+
       if (
         user.campus ===
           'College - Manila Enrolled without Class/es in Laguna' ||
@@ -270,12 +276,15 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
       ) {
         const approvals = []
 
-        ids.forEach(() => {
+        schedules.forEach((schedule) => {
           const approval = new reservationApprovalModel({
             user,
             designation: user.campus,
             purpose,
             status: 'pending',
+            from: schedule.from,
+            to: schedule.to,
+            time: schedule.time, 
           })
 
           approvals.push(approval)
@@ -301,12 +310,15 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
       } else {
         const approvals = []
 
-        ids.forEach(() => {
+        schedules.forEach((schedule) => {
           const approval = new reservationApprovalModel({
             user,
             designation: user.campus,
             purpose,
             status: 'confirmed',
+            from: schedule.from,
+            to: schedule.to,
+            time: schedule.time,
           })
 
           approvals.push(approval)

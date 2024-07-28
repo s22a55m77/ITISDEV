@@ -14,29 +14,33 @@ const myTripModuleController = e.Router()
 myTripModuleController.get('/', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
 
-  const histories = await scheduleDetailModel.aggregate([
-    {
-      $lookup: {
-        from: 'ReservationApproval',
-        localField: 'approval',
-        foreignField: '_id',
-        as: 'approval',
-      },
-    },
-    {
-      $unwind: '$approval',
-    },
-    {
-      $match: {
-        'approval.user': user._id,
-      },
-    },
-    {
-      $sort: {
-        time: -1,
-      },
-    },
-  ])
+  const histories = await reservationApprovalModel.find({
+    user: user._id,
+  }).sort({ time: -1 })
+
+  // const histories = await scheduleDetailModel.aggregate([
+  //   {
+  //     $lookup: {
+  //       from: 'ReservationApproval',
+  //       localField: 'approval',
+  //       foreignField: '_id',
+  //       as: 'approval',
+  //     },
+  //   },
+  //   {
+  //     $unwind: '$approval',
+  //   },
+  //   {
+  //     $match: {
+  //       'approval.user': user._id,
+  //     },
+  //   },
+  //   {
+  //     $sort: {
+  //       time: -1,
+  //     },
+  //   },
+  // ])
 
   if (!histories) {
     return res.render('myTripModule/myTrip.ejs')
@@ -44,15 +48,15 @@ myTripModuleController.get('/', isAuthorized, async (req, res) => {
   console.log(histories)
   const tripList = histories.map((history) => {
     return {
-      id: history.approval._id,
+      id: history._id,
       from: history.from,
       to: history.to,
       date: moment(history.time).tz('Asia/Manila').format('YYYY-MM-DD'),
       time: moment(history.time).tz('Asia/Manila').format('hh:mm'),
-      status: history.approval.status,
+      status: history.status,
     }
   })
-
+  console.log(tripList)
   res.render('myTripModule/myTrip.ejs', { tripList })
 })
 
