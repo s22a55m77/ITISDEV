@@ -46,3 +46,15 @@
   border-radius: 20px;
   background-color: var(--celtic-400);
 }
+
+.back-btn {
+  margin-top: 10px;
+  margin-left: 45px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600);
+  padding: 5px 20px;
+  background-color: var(--celtic-50);
+  color: var(--celtic-600);
+}
