@@ -7,7 +7,7 @@ const httpContext = require('express-http-context')
 const adminRegistrationModuleController = e.Router()
 
 adminRegistrationModuleController.get('/signin', (req, res) => {
-  res.render('adminRegistrationModule/signIn.ejs')
+  res.render('adminRegistrationModule/signin.ejs')
 })
 
 adminRegistrationModuleController.post('/signin', async (req, res) => {
