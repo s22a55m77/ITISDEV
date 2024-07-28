@@ -90,6 +90,8 @@ hr .solid {
 
 #search {
   border: none;
+  width: 100%;
+  text-overflow: ellipsis;
 }
 
 #search::placeholder {
@@ -102,6 +104,7 @@ hr .solid {
 }
 
 #scan {
+  width: fit-content;
   display: inline-flex;
   align-items: center;
   background-color: var(--celtic-600);
@@ -110,7 +113,6 @@ hr .solid {
   border: none;
   border-radius: 10px;
   gap: 3px;
-  width: fit-content;
 }
 
 .passenger-item {
