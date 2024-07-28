@@ -71,8 +71,14 @@ $('#popup-btn').click(function () {
   popup.classList.toggle('show')
 })
 
+const dateListElement = []
+
+if (dateList.length === 0) {
+  dateListElement.push(`<div class='main-select'>No Schedule</div>`)
+}
+
 // Set Date list
-const dateListElement = dateList.map((date) => {
+dateList.forEach((date) => {
   let className
   const position = dateList.indexOf(selectedDate)
 
@@ -89,11 +95,13 @@ const dateListElement = dateList.map((date) => {
   }
 
   if (date) {
-    return `<div class='${className}'>${moment(date)
-      .format('MMM DD')
-      .replace(/^(\D*)0/, '$1')}</div>`
+    dateListElement.push(
+      `<div class='${className}'>${moment(date)
+        .format('MMM DD')
+        .replace(/^(\D*)0/, '$1')}</div>`
+    )
   } else {
-    return `<div class='${className}'>No Schedule</div>`
+    dateListElement.push(`<div class='${className}'>No Schedule</div>`)
   }
 })
 
