@@ -9,11 +9,13 @@ const notificationModuleController = e.Router()
 notificationModuleController.get('/', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
 
-  const notifications = await notificationModel.find({
-    to: {
-      $in: [user._id],
-    },
-  })
+  const notifications = await notificationModel
+    .find({
+      to: {
+        $in: [user._id],
+      },
+    })
+    .sort({ createdAt: -1 })
 
   res.render('notificationModule/notification.ejs', { notifications })
 })
