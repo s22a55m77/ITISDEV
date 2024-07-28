@@ -117,6 +117,16 @@ adminReservationModuleController.get('/', isSSU, async (req, res) => {
     else timeList[1] = value
   }
 
+  if (timeList[0] !== undefined)
+    timeList[0] = timeList[0].sort((a, b) => {
+      return moment(a.time, 'HH:mm').diff(moment(b.time, 'HH:mm'))
+    })
+
+  if (timeList[1] !== undefined)
+    timeList[1] = timeList[1].sort((a, b) => {
+      return moment(a.time, 'HH:mm').diff(moment(b.time, 'HH:mm'))
+    })
+
   let passengerList
 
   if (selectedTime) {
@@ -172,7 +182,7 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
           },
           {
             $push: {
-              reserve: {user: approval.user},
+              reserve: { user: approval.user },
             },
             $inc: {
               slot: -1,
@@ -247,7 +257,7 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
           },
           {
             $pull: {
-              reserve: {user: doc.user},
+              reserve: { user: doc.user },
             },
             $inc: {
               slot: 1,
