@@ -238,7 +238,7 @@ $('#confirm').click(async function () {
     }
 
     if (timeList[1]) {
-      index = timeList[1].findIndex((time) => time.id === json.id)
+      let index = timeList[1].findIndex((time) => time.id === json.id)
       if (index != -1) {
         timeList[1][index].slot = json.slot
         toTimeRender(timeList[1])
@@ -276,7 +276,7 @@ $('#reject').click(async function () {
     }
 
     if (timeList[1]) {
-      index = timeList[1].findIndex((time) => time.id === json.id)
+      let index = timeList[1].findIndex((time) => time.id === json.id)
       if (index != -1) {
         timeList[1][index].slot = json.slot
         toTimeRender(timeList[1])
