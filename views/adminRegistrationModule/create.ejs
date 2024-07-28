@@ -1,18 +1,29 @@
 <%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/adminRegistrationModule/create/create.css" />
 
 <title>Admin Register</title>
-<form action="/admin/auth/create" method="POST">
-  <label for="email"></label>
-  <input id="email" name="email" type="email" />
 
-  <label for="name"></label>
-  <input id="name" name="name" type="text" />
+<div class="header-container">
+  <div>Admin Registration</div>
+</div>
 
-  <label for="role"></label>
-  <select name="role" id="role">
-    <option value="ssu">SSU</option>
-    <option value="dispatcher">Dispatcher</option>
-  </select>
-
-  <button type="submit">Create</button>
-</form>
+<div class="main-container">
+  <form action="/admin/auth/create" method="POST">
+    <label for="email"></label>
+    <input id="email" name="email" type="email" placeholder="Email"/>
+  
+    <label for="name"></label>
+    <input id="name" name="name" type="text" placeholder="Name"/>
+  
+    <label for="role"></label>
+    <select name="role" id="role">
+      <option value="ssu">SSU</option>
+      <option value="dispatcher">Dispatcher</option>
+    </select>
+    
+    <div class="action-button">
+      <button type="button" onclick="window.location.href='/admin'">Back</button>
+      <button type="submit">Create</button>  
+    </div>
+  </form>
+</div>
