@@ -366,10 +366,13 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
               { session }
             )
 
-            // delete all approval
-            await reservationApprovalModel.deleteMany(
+            // update all approval
+            await reservationApprovalModel.updateMany(
               {
                 _id: { $in: schedule.approval },
+              },
+              {
+                status: 'cancelled',
               },
               { session }
             )
@@ -487,9 +490,12 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
           }
 
           // delete all approval
-          await reservationApprovalModel.deleteMany(
+          await reservationApprovalModel.updateMany(
             {
               _id: { $in: schedule.approval },
+            },
+            {
+              status: 'cancelled',
             },
             { session }
           )
