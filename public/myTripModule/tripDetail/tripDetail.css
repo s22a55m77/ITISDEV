@@ -1,11 +1,47 @@
-body {
-  background-color: white;
-  padding: 25px;
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.header {
+  color: var(--Gray-White, #FFF);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.margin-top-30 {
+  margin-top: 30px;
+}
+
+.sub-header {
+  color: var(--Gray-600, #4B5563);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+#status {
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .information-container {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
 .information-item {
@@ -16,4 +52,33 @@ body {
 hr .solid {
   height: 0.5px;
   background-color: #000;
+}
+
+#origin-date,
+#destination-date,
+#origin-location,
+#destination-location {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+#cancel {
+  margin-top: 100px;
+  padding: 16px 110px 16px 112px;
+  border: 1px solid #FFF;
+  background: var(--Rose-700, #BE133C);
+  color: #FFF;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
