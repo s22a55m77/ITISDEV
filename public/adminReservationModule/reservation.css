@@ -70,21 +70,32 @@ header {
 
 .popup-container .popup {
   visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   width: 160px;
-  background-color: #d9d9d9;
+  background-color: var(--celtic-500);
   color: black;
   text-align: center;
   border-radius: 6px;
-  padding: 8px 0;
+  padding: 8px 20px;
   position: absolute;
   z-index: 1;
   top: 125%;
   left: 50%;
   margin-left: -80px;
+  color: var(--gray-white);
 }
 
 .popup-container .show {
   visibility: visible;
+}
+
+#confirmed,
+#rejected,
+#pending {
+  accent-color: var(--celtic-600);
 }
 
 .location-container {
@@ -142,6 +153,29 @@ header {
   font-weight: 700;
 }
 
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0px 5px;
+}
+
+tr td, tr th {
+  padding: 0 10px;
+}
+
+tr {
+  margin-top: 10px;
+}
+
+tr td:nth-child(2) {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+tr td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 .main-select {
   color: #000;
   font-size: 21.412px;
@@ -167,19 +201,19 @@ header {
 }
 
 .confirmed {
-  background-color: rgba(0, 161, 74, 0.5);
+  background-color: var(--Celtic-400, #77B17B);
 }
 
 .pending {
-  background-color: rgba(244, 196, 26, 0.5);
+  background-color: var(--Gray-300, #D1D5DB);
 }
 
 .rejected {
-  background-color: rgba(244, 26, 26, 0.5);
+  background-color: var(--Rose-300, #FDA4AF);
 }
 
 .selected-row {
-  outline: 2px solid blue;
+  outline: 3px solid var(--celtic-600);
 }
 
 .passenger-container {
