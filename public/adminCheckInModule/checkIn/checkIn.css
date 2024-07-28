@@ -110,7 +110,7 @@ hr .solid {
   border: none;
   border-radius: 10px;
   gap: 3px;
-  width: 100%;
+  width: fit-content;
 }
 
 .passenger-item {
