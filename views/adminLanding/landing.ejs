@@ -3,7 +3,13 @@
 <script defer src="/adminLanding/landing.js" ></script>
 
 <div class="header-container">
-  <div class="header">Hello, <%= role %></div>
+  <div class="header">Hello, 
+    <% if (role.toLowerCase() === 'ssu') { %>
+      <%= role.toUpperCase() %>
+    <% } else { %>
+      <%= role.charAt(0).toUpperCase() + role.slice(1).toLowerCase() %>
+    <% } %>
+  </div>
 </div>
 
 <!-- Content for dispatcher -->

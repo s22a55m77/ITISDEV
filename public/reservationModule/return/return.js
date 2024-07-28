@@ -30,5 +30,11 @@ const getSelectedID = () => {
 $('#next').click(() => {
   const returnIds = getSelectedID();
   const returnTime = $('input[type="radio"]:checked').val()
+
+  if(returnIds.length === 0) {
+    alert('Please select time slot')
+    return;
+  }
+
   $.redirect(`/reservation/confirm?type=round`, {from, to, date, departureIds, returnIds, departureTime, returnTime, purpose}, "POST");
 })
