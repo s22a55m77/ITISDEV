@@ -139,7 +139,8 @@
   </div>
 
   <div class="passenger-container">
-    <% if (passengerList != '[]') {%>
+    <% if (passengerList == '[]' || passengerList.length == 0) { %> <% } else
+    {%>
     <div>
       <div class="passenger-header">
         <span class="header-text">Passenger List</span>
@@ -181,8 +182,8 @@
         <button id="confirm-all">Confirm all passengers</button>
       </div>
     </div>
+    <% } %>
   </div>
-  <% } %>
 </div>
 
 <a href="/admin">
