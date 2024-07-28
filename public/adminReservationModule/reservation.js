@@ -96,9 +96,11 @@ dateList.forEach((date) => {
 
   if (date) {
     dateListElement.push(
-      `<div class='${className}'>${moment(date)
+      `<div><a class='${className}' href="/admin/reservation?line=${line}&selectedDate=${date}">${moment(
+        date
+      )
         .format('MMM DD')
-        .replace(/^(\D*)0/, '$1')}</div>`
+        .replace(/^(\D*)0/, '$1')}</a></div>`
     )
   } else {
     dateListElement.push(`<div class='${className}'>No Schedule</div>`)
