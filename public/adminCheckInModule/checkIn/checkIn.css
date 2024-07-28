@@ -155,7 +155,9 @@ hr .solid {
 
 #from-location,
 #to-location {
+  width: 100%;
   max-width: 130px;
+  text-overflow: ellipsis;
 }
 
 #from-location,
