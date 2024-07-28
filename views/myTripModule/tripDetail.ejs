@@ -4,51 +4,52 @@
 
 <title>Trip Detail</title>
 
-<div>Trip details</div>
+<div class="header-container">
+  <div class="header">Trip details</div>
+</div>
 
-<div>
+<div class="main-container">
   <div>
-    STATUS
+    <div class="sub-header">
+      STATUS
+    </div>
+    <div id="status"></div>
   </div>
-  <div id="status">
+  
+  <div>
+    <div class="sub-header margin-top-30 ">Time</div>
+    <div id="origin-time"></div>
   </div>
+  
+  <div class="information-container">
+    <div class="information-item">
+      <div class="sub-header">
+        ORIGIN
+      </div>
+      <div class="sub-header">
+        DESTINATION
+      </div>
+    </div>
+    <div class="information-item">
+      <div id="origin-date">
+      </div>
+      <div id="destination-date">
+      </div>
+    </div>
+    <hr solid />
+    <div class="information-item">
+      <div id="origin-location">
+      </div>
+      <div id="destination-location">
+      </div>
+    </div>
+  </div>
+  
+  <form action="/trip/cancel/<%-detail.id%>" method="POST">
+    <button id="cancel">CANCEL TRIP</button>
+  </form>
+  
 </div>
-
-<div>
-  Time
-  <div id="origin-time">
-
-  </div>
-</div>
-
-<div class="information-container">
-  <div class="information-item">
-    <div>
-      ORIGIN
-    </div>
-    <div>
-      DESTINATION
-    </div>
-  </div>
-  <div class="information-item">
-    <div id="origin-date">
-    </div>
-    <div id="destination-date">
-    </div>
-  </div>
-  <hr solid />
-  <div class="information-item">
-    <div id="origin-location">
-    </div>
-    <div id="destination-location">
-    </div>
-  </div>
-</div>
-
-<form action="/trip/cancel/<%-detail.id%>" method="POST">
-  <button>CANCEL TRIP</button>
-</form>
-
 <script>
   const tripDetail = JSON.parse(`<%- JSON.stringify(detail) %>`);
   console.log(tripDetail)
