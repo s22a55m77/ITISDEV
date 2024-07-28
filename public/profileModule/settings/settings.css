@@ -1,6 +1,5 @@
 body {
-  background-color: white;
-  padding: 25px;
+  background-color: var(--celtic-50);
 }
 
 input[type="file"] {
@@ -12,8 +11,19 @@ input[type="file"] {
   font-weight: 700;
 }
 
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
 .upload-container {
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .item-container {
@@ -40,4 +50,11 @@ input[type="file"] {
   text-align: center;
   color: white;
   border-radius: 10px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #000;
+  background: var(--Celtic-50, #F4F9F5);
 }

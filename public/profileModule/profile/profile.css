@@ -1,11 +1,28 @@
 body {
-  background-color: white;
-  padding: 25px;
+  background-color: var(--celtic-50);
 }
 
 .header {
+  color: var(--Gray-White, #FFF);
+  /* Bold/H3 Heading */
+  font-family: "Radio Canada";
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.header-container {
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
 }
 
 .information-container {
