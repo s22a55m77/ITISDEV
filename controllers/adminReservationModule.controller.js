@@ -172,7 +172,7 @@ adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
           },
           {
             $push: {
-              reserve: approval.user,
+              reserve: {user: approval.user},
             },
             $inc: {
               slot: -1,
@@ -247,7 +247,7 @@ adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
           },
           {
             $pull: {
-              reserve: doc.user,
+              reserve: {user: doc.user},
             },
             $inc: {
               slot: 1,

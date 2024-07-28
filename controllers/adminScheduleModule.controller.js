@@ -358,11 +358,11 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
             )
 
             await notificationModel.create(
-              {
+              [{
                 title: 'Reservation Cancelled',
                 description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
                 to: users,
-              },
+              }],
               { session }
             )
 
@@ -480,11 +480,11 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
             )
 
             await notificationModel.create(
-              {
+              [{
                 title: 'Reservation Cancelled',
                 description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
                 to: users,
-              },
+              }],
               { session }
             )
           }

@@ -196,11 +196,9 @@ reservationModuleController.post(
   isAuthorized,
   async (req, res) => {
     const { date, from, to, purpose } = req.body
-
     const timeList = await getCommonTime(from, to, date)
 
     const schedules = await getSchedules(from, to, timeList, date)
-
     /**
    * [
         {
@@ -262,13 +260,12 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
 
   const session = await mongoose.startSession()
-
   try {
     await session.withTransaction(async () => {
       if (
-        user.designation ===
+        user.campus ===
           'College - Manila Enrolled without Class/es in Laguna' ||
-        user.designation ===
+        user.campus ===
           'College - Laguna Enrolled without Class/es in Manila'
       ) {
         const approvals = []
@@ -276,7 +273,7 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
         ids.forEach(() => {
           const approval = new reservationApprovalModel({
             user,
-            designation: user.designation,
+            designation: user.campus,
             purpose,
             status: 'pending',
           })
@@ -307,7 +304,7 @@ reservationModuleController.post('/success', isAuthorized, async (req, res) => {
         ids.forEach(() => {
           const approval = new reservationApprovalModel({
             user,
-            designation: user.designation,
+            designation: user.campus,
             purpose,
             status: 'confirmed',
           })
