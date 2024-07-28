@@ -1,11 +1,21 @@
 body {
   background-color: white;
-  padding: 25px;
 }
 
 #header-message {
   font-size: 24px;
   font-weight: 700;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
 }
 
 .message-container {
@@ -45,9 +55,13 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  background: #000;
   border: 1px solid #FFF;
+  background: var(--Celtic-600, #417845);  
   padding: 16px 0px;
   font-family: Inter; /* Applied for align of arrow */
   color: #FFF;
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
 }
