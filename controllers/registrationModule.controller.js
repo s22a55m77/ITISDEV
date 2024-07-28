@@ -15,7 +15,7 @@ registrationModuleController.post('/signin', async (req, res) => {
   const decodedToken = await getAuth().verifyIdToken(idToken)
 
   if (!decodedToken.email.endsWith('@dlsu.edu.ph')) {
-    await getAuth().deleteUser(uid)
+    await getAuth().deleteUser(decodedToken.uid)
     res.send({
       success: false,
       message: 'Invalid email domain',
