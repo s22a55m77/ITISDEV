@@ -70,6 +70,7 @@ hr .solid {
   padding-top: 15px;
   display: flex;
   gap: 10px;
+  width: 100%;
 }
 
 .no-passenger {
@@ -109,7 +110,7 @@ hr .solid {
   border: none;
   border-radius: 10px;
   gap: 3px;
-  min-width: 130px;
+  width: 100%;
 }
 
 .passenger-item {
