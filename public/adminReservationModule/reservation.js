@@ -29,8 +29,12 @@ function fromTimeRender(timeList) {
     }" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${
       time.id
     }">
-      ${moment(time.time, 'HH:mm').format('hh:mm a')}
-      ${time.slot}
+      ${moment(time.time, 'HH:mm').format('hh:mm A')}
+      ${
+        time.slot > 0
+          ? `<span class="green-slot">${time.slot} SEATS LEFT</span>`
+          : `<span class="red-slot">${time.slot} SEATS LEFT</span>`
+      }
     </a>`
   })
   $('#from-location-time-container').append(fromTimeListElement)
@@ -47,8 +51,12 @@ function toTimeRender(timeList) {
       }" href="/admin/reservation?line=${line}&selectedDate=${selectedDate}&selectedTime=${
       time.id
     }">
-        ${moment(time.time, 'HH:mm').format('hh:mm a')}
-        ${time.slot}
+        ${moment(time.time, 'HH:mm').format('hh:mm A')}
+        ${
+          time.slot > 0
+            ? `<span class="green-slot">${time.slot} SEATS LEFT</span>`
+            : `<span class="red-slot">${time.slot} SEATS LEFT</span>`
+        }
       </a>
     `
   })
@@ -58,11 +66,10 @@ function toTimeRender(timeList) {
 fromTimeRender(timeList[0])
 toTimeRender(timeList[1])
 
-// Filter popup
-function popup() {
+$('#popup-btn').click(function () {
   var popup = document.getElementById('popup')
   popup.classList.toggle('show')
-}
+})
 
 // Set Date list
 const dateListElement = dateList.map((date) => {
@@ -135,12 +142,15 @@ function renderPassengerList(passengerList) {
 
 // Get Stats
 function displayStats() {
-  const pending = passengerList.filter((passenger) => passenger.status === 'pending')
-    .length
-  const confirmed = passengerList.filter((passenger) => passenger.status === 'confirmed')
-    .length
-  const rejected = passengerList.filter((passenger) => passenger.status === 'rejected')
-    .length
+  const pending = passengerList.filter(
+    (passenger) => passenger.status === 'pending'
+  ).length
+  const confirmed = passengerList.filter(
+    (passenger) => passenger.status === 'confirmed'
+  ).length
+  const rejected = passengerList.filter(
+    (passenger) => passenger.status === 'rejected'
+  ).length
 
   $('#pending-count').text(pending)
   $('#confirmed-count').text(confirmed)
@@ -314,5 +324,16 @@ $('#next-date').click(function () {
   const nextDate = dateList[dateList.indexOf(selectedDate) + 1]
   if (nextDate) {
     window.location.href = `/admin/reservation?line=${line}&selectedDate=${nextDate}`
+  }
+})
+
+const reservationLinks = document.querySelectorAll('.tab > a')
+
+reservationLinks.forEach((link) => {
+  const linkUrlParams = new URLSearchParams(link.search)
+  const linkLineParam = linkUrlParams.get('line')
+
+  if (linkLineParam === line) {
+    link.classList.add('tab-active')
   }
 })
