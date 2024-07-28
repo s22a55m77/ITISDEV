@@ -114,6 +114,8 @@ body {
 }
 
 .rejected, .cancelled {
+  width: fit-content;
+  padding: 5px 10px;
   border-radius: 13.5px;
   background: var(--Rose-700, #BE133C);
   
