@@ -105,6 +105,7 @@ hr .solid {
 
 #scan {
   width: fit-content;
+  text-wrap: nowrap;
   display: inline-flex;
   align-items: center;
   background-color: var(--celtic-600);
