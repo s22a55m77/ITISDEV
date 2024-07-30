@@ -183,3 +183,10 @@ header {
 .toast-body {
   text-align: center;
 }
+
+#edit-single {
+  padding: 5px;
+  background-color: var(--celtic-50);
+  border: 1px solid var(--celtic-600);
+  border-radius: 10px;
+}
