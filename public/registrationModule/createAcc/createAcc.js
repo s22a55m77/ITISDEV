@@ -21,12 +21,16 @@ $('#vaccinationRecord').on('change', (e) => {
   $('#vaccination-filename').text(filename)
 })
 
+// toast
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
+
 $('#register').click((event) => {
   const eaf = $('#eaf')[0].files[0] 
   const vaccinationRecord = $('#vaccinationRecord')[0].files[0]
   const id = $('#idNumber').val()
   if((!eaf || !vaccinationRecord) && id != "") {
     event.preventDefault()
-    alert('Please upload all required files')
+    $('.toast-body').text('Please upload all required files')
+    toastBootstrap.show()
   }
 })

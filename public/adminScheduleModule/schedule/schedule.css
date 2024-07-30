@@ -117,6 +117,10 @@ tr {
   line-height: normal;
 }
 
+.toast {
+  background-color: var(--gray-white);
+}
+
 .toast-body {
   text-align: center;
 }

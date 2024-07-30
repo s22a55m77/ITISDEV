@@ -228,7 +228,7 @@ $('#save').on('click', async function () {
   scheduleInformation.label = $('#label').val()
 
   if(scheduleInformation.label === '') {
-    $('.toast-body').text('Please fill in the label.')
+    $('.toast-body').text('Please fill in the label')
     toastBootstrap.show()
     return
   }

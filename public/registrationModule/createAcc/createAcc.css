@@ -81,3 +81,11 @@ button {
   font-style: normal;
   font-weight: 700;
 }
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

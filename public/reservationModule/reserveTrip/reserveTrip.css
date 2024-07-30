@@ -242,3 +242,11 @@ input[type="checkbox"]:checked + label.day > .date-display {
   text-decoration: none;
   cursor: pointer;
 }
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

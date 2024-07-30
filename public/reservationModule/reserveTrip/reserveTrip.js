@@ -136,6 +136,9 @@ const getSelectedDates = () => {
   return selectedDates;
 };
 
+// toast
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
+
 // Handle Next
 $('#next').click(() => {
   const type = $('#round-trip').is(':checked') ? 'round' : 'one'
@@ -145,12 +148,14 @@ $('#next').click(() => {
   const purpose = $('#purpose').val()
   
   if(purpose === "" || purpose === null) {
-    alert('Please enter purpose')
+    $('.toast-body').text('Please enter purpose')
+    toastBootstrap.show()
     return
   }
 
   if(date.length === 0) {
-    alert('Please select a date')
+    $('.toast-body').text('Please select a date')
+    toastBootstrap.show()
     return
   }
 
