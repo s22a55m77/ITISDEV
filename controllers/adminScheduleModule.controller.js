@@ -607,12 +607,19 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
     return res.send({ success: false, error: 'Schedule not found' })
   }
 
-  const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
-  const toStr = moment(to).tz('Asia/Manila').format('MMM D')
+  let dateRange
+  if (to !== '') {
+    const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
+    const toStr = moment(to).tz('Asia/Manila').format('MMM D')
 
-  const dateRange = `${fromStr} - ${toStr}`
+    dateRange = `${fromStr} - ${toStr}`
+    schedule.dateRange = dateRange
+  } else {
+    const fromStr = moment(from).tz('Asia/Manila').format('MMM D')
+    dateRange = `${fromStr}`
+  }
+
   const originalDateRange = schedule.dateRange
-
   schedule.dateRange = dateRange
 
   const session = await mongoose.startSession()
@@ -837,28 +844,45 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
       // addedTime = [{from, to, weekdays, saturdays}]
       // add all time in addedTime
       if (addedTime) {
-        const weekdays = getWeekdays(from, to)
-        const saturdays = getSaturdays(from, to)
-
         const newSchedules = []
+        if (to === '') {
+          const date = moment(from).tz('Asia/Manila').format('YYYY-MM-DD')
+          addedTime.forEach((schedule) => {
+            const schedules = mergeDateAndTime([date], schedule.weekdays)
 
-        addedTime.forEach((schedule) => {
-          const weekdaySchedules = mergeDateAndTime(weekdays, schedule.weekdays)
-          const saturdaySchedules = mergeDateAndTime(
-            saturdays,
-            schedule.saturdays
-          )
-
-          const dates = weekdaySchedules.concat(saturdaySchedules)
-
-          dates.forEach((time) => {
-            newSchedules.push({
-              from: schedule.from,
-              to: schedule.to,
-              time,
+            schedules.forEach((time) => {
+              newSchedules.push({
+                from: schedule.from,
+                to: schedule.to,
+                time,
+              })
             })
           })
-        })
+        } else {
+          const weekdays = getWeekdays(from, to)
+          const saturdays = getSaturdays(from, to)
+
+          addedTime.forEach((schedule) => {
+            const weekdaySchedules = mergeDateAndTime(
+              weekdays,
+              schedule.weekdays
+            )
+            const saturdaySchedules = mergeDateAndTime(
+              saturdays,
+              schedule.saturdays
+            )
+
+            const dates = weekdaySchedules.concat(saturdaySchedules)
+
+            dates.forEach((time) => {
+              newSchedules.push({
+                from: schedule.from,
+                to: schedule.to,
+                time,
+              })
+            })
+          })
+        }
 
         const scheduleDetails = await scheduleDetailModel.insertMany(
           newSchedules,
