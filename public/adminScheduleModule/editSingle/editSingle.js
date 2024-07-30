@@ -334,3 +334,21 @@ $('#edit-single').click(() => {
   const { line } = params
   window.location.href = `/admin/schedule/edit/single/${date}?line=${line}`
 })
+
+if(dates) {
+  const url = window.location.href
+  const urlDate = url.match(/\d{4}-\d{2}-\d{2}/)[0]
+  $('#date-select').empty()
+  dates.forEach(date => {
+    if (date === urlDate) {
+      $('#date-select').append(`<option value="${date}" selected>${date}</option>`)
+    } else {
+      $('#date-select').append(`<option value="${date}">${date}</option>`)
+    }
+  })
+}
+
+$('#date-select').on('change', function() {
+  const date = $(this).val()
+  window.location.href = `/admin/schedule/edit/single/${date}?line=${line}`
+})

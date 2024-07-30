@@ -60,6 +60,8 @@
         </svg>
         Save Edited Schedule
       </button>
+      <select id="date-select">
+      </select>
     </div>
     <div class="schedule-container">
       <div>
@@ -104,4 +106,5 @@
   const id = '<%= id %>'
   let scheduleInformation = '<%= schedules %>'
   const date = '<%= date %>'
+  const dates= <%- JSON.stringify(dates) %>;
 </script>
