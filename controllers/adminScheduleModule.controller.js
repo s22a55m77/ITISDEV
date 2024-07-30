@@ -137,7 +137,7 @@ adminScheduleModuleController.get(
       details: { $in: schedules.map((schedule) => schedule._id) },
     })
 
-    const res = {
+    const result = {
       id: schedule._id,
       from: schedule.from,
       to: schedule.to,
