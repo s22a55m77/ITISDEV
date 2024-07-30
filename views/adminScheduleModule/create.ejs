@@ -8,9 +8,9 @@
 
 <title>Admin Create Schedule</title>
 
-<div>
+<header>
   Manage Shuttle Schedules
-</div>
+</header>
 <div class="tab">
   <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
   <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
@@ -19,47 +19,72 @@
   <a href="/admin/schedule/create?line=5">WALTER ↔ DLSU LAG</a>
 </div>
 
-<div onclick="back()">
-  ← BACK
+<div class="main-container">
+  <div id="back" onclick="back()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M15.7049 16.59L11.1249 12L15.7049 7.41L14.2949 6L8.29492 12L14.2949 18L15.7049 16.59Z" fill="#417845"/>
+    </svg>
+    BACK
+  </div>
+  
+  <div>
+    <div class="toolbar">
+      <div class="instruction">
+        <b>New schedule</b>
+        (Select date range):
+      </div>
+      <div id="date-range">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM9 14H7V12H9V14ZM13 14H11V12H13V14ZM17 14H15V12H17V14ZM9 18H7V16H9V18ZM13 18H11V16H13V18ZM17 18H15V16H17V18Z" fill="#417845"/>
+        </svg>
+        <span></span>
+      </div>
+      <input id="label" type="text" placeholder="Enter the label" />
+      <button id="save">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3ZM12 19C10.34 19 9 17.66 9 16C9 14.34 10.34 13 12 13C13.66 13 15 14.34 15 16C15 17.66 13.66 19 12 19ZM15 9H5V5H15V9Z" fill="white"/>
+        </svg>
+        Save New Schedule
+      </button>
+    </div>    
+    <div class="schedule-container">
+      <div>
+        <div class="weekday-saturday-header">Weekdays</div>
+        <div class="time-container">
+          <div>
+            <div class="from location-title"></div>
+            <div id="weekdays-from-time-container"></div>
+            <button id="weekdays-from-time-add">ADD +</button>
+          </div>
+          <div>
+            <div class="to location-title"></div>
+            <div id="weekdays-to-time-container"></div>
+            <button id="weekdays-to-time-add">ADD +</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="weekday-saturday-header">Saturdays</div>
+        <div class="time-container">
+          <div>
+            <div class="from location-title"></div>
+            <div id="saturdays-from-time-container"></div>
+            <button id="saturdays-from-time-add">ADD +</button>
+          </div>
+          <div>
+            <div class="to location-title"></div>
+            <div id="saturdays-to-time-container"></div>
+            <button id="saturdays-to-time-add">ADD +</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div>
-  <div>
-    Select date range
-    <input id="date-range" />
-  </div>
-  <input id="label" type="text" />
-  <div>
-    Weekdays
-    <div class="schedule-container">
-      <div>
-        <div class="from"></div>
-        <div id="weekdays-from-time-container"></div>
-        <button id="weekdays-from-time-add">ADD +</button>
-      </div>
-      <div>
-        <div class="to"></div>
-        <div id="weekdays-to-time-container"></div>
-        <button id="weekdays-to-time-add">ADD +</button>
-      </div>
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+  <div id="toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body">
     </div>
   </div>
-  <div>
-    Saturdays
-    <div class="schedule-container">
-      <div>
-        <div class="from"></div>
-        <div id="saturdays-from-time-container"></div>
-        <button id="saturdays-from-time-add">ADD +</button>
-      </div>
-      <div>
-        <div class="to"></div>
-        <div id="saturdays-to-time-container"></div>
-        <button id="saturdays-to-time-add">ADD +</button>
-      </div>
-    </div>
-  </div>
-  <button id="save">
-    SAVE
-  </button>
 </div>

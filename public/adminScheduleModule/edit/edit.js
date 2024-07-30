@@ -59,34 +59,10 @@ const editInformation = {
   to: to,
 }
 
-function edit() {
-  $('#date').hide()
-  $('#date-range').show()
-}
-
 // Set Date information
 const dateDisplay =
   moment(from).format('MMM D') + '-' + moment(to).format('MMM D')
 $('#date').text(dateDisplay)
-
-$('#date-range').daterangepicker({
-  opens: 'left',
-  startDate: moment(from),
-  endDate: moment(to),
-})
-
-// Handle Date Edit
-$('#date-range').on('apply.daterangepicker', function (ev, picker) {
-  const { startDate, endDate } = picker
-  const dateDisplay =
-    moment(startDate).format('MMM D') + '-' + moment(endDate).format('MMM D')
-  editInformation.from = moment(startDate).format('YYYY-MM-DD')
-  editInformation.to = moment(endDate).format('YYYY-MM-DD')
-
-  $('#date').text(dateDisplay)
-  $('#date-range').hide()
-  $('#date').show()
-})
 
 // Handle delete time
 function deleteTime(from, to, time, isWeekday, isLocal) {
@@ -114,38 +90,34 @@ function deleteTime(from, to, time, isWeekday, isLocal) {
     time.replace(':', '\\:')
   ).toString()
   id = isWeekday === 'true' ? id + 'weekday' : id + 'saturday'
-  console.log(id)
   $(id).remove()
 }
 
 // Set Time information
-console.log(scheduleInformation)
 // Set From time
-console.log(fromName)
 const fromTime = scheduleInformation.filter(
   (schedule) => schedule.from === fromName
 )
 const toTime = scheduleInformation.filter(
   (schedule) => schedule.from === toName
 )
+
+const deleteSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <circle cx="8.5" cy="8.5" r="8" stroke="#A70000"/>
+                    <rect x="4" y="8" width="9" height="1" fill="#A70000"/>
+                  </svg>`
+
 // weekdays
 $('#weekdays-from-time-container').append(
   fromTime[0].weekdays.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return (
-      '<div id="' +
-      fromName.replaceAll(' ', '') +
-      time24 +
-      'weekday">' +
-      time12 +
-      '<button onclick="deleteTime(\'' +
-      fromName +
-      "', '" +
-      toName +
-      "' , '" +
-      time24 +
-      "', 'true')\">Delete</button>" +
-      '</div>'
+      `
+        <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}weekday">
+          ${time12}
+          <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'true')">${deleteSVG}</div>
+        </div>
+      `
     )
   })
 )
@@ -154,19 +126,12 @@ $('#saturdays-from-time-container').append(
   fromTime[0].saturdays.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return (
-      '<div id="' +
-      fromName.replaceAll(' ', '') +
-      time24 +
-      'saturday">' +
-      time12 +
-      '<button onclick="deleteTime(\'' +
-      fromName +
-      "', '" +
-      toName +
-      "' , '" +
-      time24 +
-      "', 'false')\">Delete</button>" +
-      '</div>'
+      `
+      <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}saturday">
+        ${time12}
+        <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'false')">${deleteSVG}</div>
+      </div>
+      `
     )
   })
 )
@@ -177,19 +142,12 @@ $('#weekdays-to-time-container').append(
   toTime[0]?.weekdays?.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return (
-      '<div id="' +
-      toName.replaceAll(' ', '') +
-      time24 +
-      'weekday">' +
-      time12 +
-      '<button onclick="deleteTime(\'' +
-      toName +
-      "', '" +
-      fromName +
-      "' , '" +
-      time24 +
-      "', 'true')\">Delete</button>" +
-      '</div>'
+      `
+        <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}weekday">
+          ${time12}
+          <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'true')">${deleteSVG}</div>
+        </div>
+      `
     )
   })
 )
@@ -198,19 +156,12 @@ $('#saturdays-to-time-container').append(
   toTime[0]?.saturdays?.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return (
-      '<div id="' +
-      toName.replaceAll(' ', '') +
-      time24 +
-      'saturday">' +
-      time12 +
-      '<button onclick="deleteTime(\'' +
-      toName +
-      "', '" +
-      fromName +
-      "' , '" +
-      time24 +
-      "', 'false')\">Delete</button>" +
-      '</div>'
+      `
+      <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}saturday">
+        ${time12}
+        <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'false')">${deleteSVG}</div>
+      </div>
+      `
     )
   })
 )
@@ -232,19 +183,12 @@ $('#weekdays-from-time-container').on(
     let time24 = $('#weekdays-from-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#weekdays-from-time-container').append(
-      '<div id="' +
-        fromName.replaceAll(' ', '') +
-        time24 +
-        'weekday">' +
-        time12 +
-        '<button onclick="deleteTime(\'' +
-        fromName +
-        "', '" +
-        toName +
-        "' , '" +
-        time24 +
-        "', 'true', 'true')\">Delete</button>" +
-        '</div>'
+      `
+      <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}weekday">
+          ${time12}
+          <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'true', 'true')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#weekdays-from-time-input').remove()
     editInformation.addedTime[0].weekdays.push(time24)
@@ -265,19 +209,12 @@ $('#saturdays-from-time-container').on(
     let time24 = $('#saturdays-from-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#saturdays-from-time-container').append(
-      '<div id="' +
-        fromName.replaceAll(' ', '') +
-        time24 +
-        'saturday">' +
-        time12 +
-        '<button onclick="deleteTime(\'' +
-        fromName +
-        "', '" +
-        toName +
-        "' , '" +
-        time24 +
-        "', 'false', 'true')\">Delete</button>" +
-        '</div>'
+      `
+      <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}saturday">
+        ${time12}
+        <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'false', 'true')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#saturdays-from-time-input').remove()
     editInformation.addedTime[0].saturdays.push(time24)
@@ -300,19 +237,12 @@ $('#weekdays-to-time-container').on(
     let time24 = $('#weekdays-to-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#weekdays-to-time-container').append(
-      '<div id="' +
-        toName.replaceAll(' ', '') +
-        time24 +
-        'weekday">' +
-        time12 +
-        '<button onclick="deleteTime(\'' +
-        toName +
-        "', '" +
-        fromName +
-        "' , '" +
-        time24 +
-        "', 'true', 'true')\">Delete</button>" +
-        '</div>'
+      `
+      <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}weekday">
+        ${time12}
+        <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'true', 'true')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#weekdays-to-time-input').remove()
     editInformation.addedTime[1].weekdays.push(time24)
@@ -333,19 +263,12 @@ $('#saturdays-to-time-container').on(
     let time24 = $('#saturdays-to-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#saturdays-to-time-container').append(
-      '<div id="' +
-        toName.replaceAll(' ', '') +
-        time24 +
-        'saturday">' +
-        time12 +
-        '<button onclick="deleteTime(\'' +
-        toName +
-        "', '" +
-        fromName +
-        "' , '" +
-        time24 +
-        "', 'false', 'true')\">Delete</button>" +
-        '</div>'
+      `
+      <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}saturday">
+        ${time12}
+        <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'false', 'true')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#saturdays-to-time-input').remove()
     editInformation.addedTime[1].saturdays.push(time24)
@@ -371,5 +294,16 @@ $('#save').click(async function () {
     window.location.href = '/admin/schedule?success=true'
   } else {
     window.location.href = `/admin/schedule/edit/${editInformation.id}?error=edit`
+  }
+})
+
+const reservationLinks = document.querySelectorAll('.tab > a')
+
+reservationLinks.forEach((link) => {
+  const linkUrlParams = new URLSearchParams(link.search)
+  const linkLineParam = linkUrlParams.get('line')
+
+  if (linkLineParam === line) {
+    link.classList.add('tab-active')
   }
 })

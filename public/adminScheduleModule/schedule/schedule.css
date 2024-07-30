@@ -1,8 +1,122 @@
 body {
-  background-color: white;
-  padding: 25px;
+  background-color: var(--celtic-50);
+}
+
+header {
+  padding: 28px;
+  font-size: 28px;
+  color: var(--gray-white);
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background-color: var(--celtic-600);
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {  
+  margin-top: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+  border-radius: 20px;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  display: flex;
+  gap: 20px;
+  background-color: #fff;
+  margin-top: 15px;
+  padding: 20px;
 }
 
 .tab {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 30px;
   display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.tab > a {
+  font-size: 14px;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.tab-active {
+  border-radius: 10px;
+  border: 2.5px solid var(--Celtic-600, #417845);
+  background: var(--Gray-White, #fff);
+  padding: 5px 10px;
+  color: var(--celtic-600);
+}
+
+#add-new-schedule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--Celtic-600, #417845);
+  background: var(--Celtic-600, #417845);
+  padding: 9px 20px;
+  color: var(--Gray-White, #FFF);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+tr {
+  height: 60px;
+  border-bottom: 1px solid #D1D5DB;
+}
+
+#edit {
+  display: inline-flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--Celtic-600, #417845);
+  background: var(--gray-white);
+  color: var(--Celtic-600, #417845);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#delete {
+  display: inline-flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--Rose-700, #BE133C);
+  background-color: var(--gray-white);
+  color: var(--Rose-700, #BE133C);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.toast-body {
+  text-align: center;
 }
