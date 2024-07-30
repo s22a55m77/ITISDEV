@@ -86,6 +86,8 @@ body {
   border-radius: 10px;
   border: 1px solid var(--Gray-400, #9CA3AF);
   background: #FFF;
+  width: 100%;
+  text-overflow: ellipsis;
 }
 
 .trip-type-header,
@@ -162,6 +164,7 @@ input[type="checkbox"]:checked + label.day > .date-display {
 
 .select-destination-container {
   margin-top: 12px;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -170,6 +173,7 @@ input[type="checkbox"]:checked + label.day > .date-display {
 .from-container, .to-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 #one-way-arrow {
