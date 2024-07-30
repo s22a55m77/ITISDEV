@@ -7,21 +7,12 @@
   type="text/javascript"
   src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
 ></script>
-<script
-  type="text/javascript"
-  src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-></script>
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
-/>
 <link rel="stylesheet" href="/adminScheduleModule/edit/edit.css" />
 <script defer src="/adminScheduleModule/edit/edit.js"></script>
 
 <title>Admin Edit Schedule</title>
 
-<div>Manage Shuttle Schedules</div>
+<header>Manage Shuttle Schedules</header>
 <div class="tab">
   <a href="/admin/schedule/create?line=1">DLSU MNL ↔ DLSU LAG</a>
   <a href="/admin/schedule/create?line=2">PASEO ↔ DLSU LAG</a>
@@ -30,44 +21,59 @@
   <a href="/admin/schedule/create?line=5">WALTER ↔ DLSU LAG</a>
 </div>
 
-<div onclick="back()">← BACK</div>
-
-<div>
-  <div id="date"></div>
-  <input id="date-range" />
+<div class="main-container">
+  <div id="back" onclick="back()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M15.7049 16.59L11.1249 12L15.7049 7.41L14.2949 6L8.29492 12L14.2949 18L15.7049 16.59Z" fill="#417845"/>
+    </svg>
+    BACK
+  </div>
+  
   <div>
-    <button onclick="edit()">edit</button>
-  </div>
-  <input id="label" type="text" value="<%= label %>" />
-</div>
-
-<div>
-  Weekdays
-  <div class="schedule-container">
-    <div>
-      <div class="from"></div>
-      <div id="weekdays-from-time-container"></div>
-      <button id="weekdays-from-time-add">ADD +</button>
-    </div>
-    <div>
-      <div class="to"></div>
-      <div id="weekdays-to-time-container"></div>
-      <button id="weekdays-to-time-add">ADD +</button>
-    </div>
-  </div>
-</div>
-<div>
-  Saturdays
-  <div class="schedule-container">
-    <div>
-      <div class="from"></div>
-      <div id="saturdays-from-time-container"></div>
-      <button id="saturdays-from-time-add">ADD +</button>
-    </div>
-    <div>
-      <div class="to"></div>
-      <div id="saturdays-to-time-container"></div>
-      <button id="saturdays-to-time-add">ADD +</button>
+    <div class="toolbar">
+      <div class="instruction">
+        <b>Edit schedule</b>
+        for
+        <span><b id="date"></b></span>
+      </div>
+      <button id="save">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3ZM12 19C10.34 19 9 17.66 9 16C9 14.34 10.34 13 12 13C13.66 13 15 14.34 15 16C15 17.66 13.66 19 12 19ZM15 9H5V5H15V9Z" fill="white"/>
+        </svg>
+        Save Edited Schedule
+      </button>
+    </div>    
+    <div class="schedule-container">
+      <div>
+        <div class="weekday-saturday-header">Weekdays</div>
+        <div class="time-container">
+          <div>
+            <div class="from location-title"></div>
+            <div id="weekdays-from-time-container"></div>
+            <button id="weekdays-from-time-add">ADD +</button>
+          </div>
+          <div>
+            <div class="to location-title"></div>
+            <div id="weekdays-to-time-container"></div>
+            <button id="weekdays-to-time-add">ADD +</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="weekday-saturday-header">Saturdays</div>
+        <div class="time-container">
+          <div>
+            <div class="from location-title"></div>
+            <div id="saturdays-from-time-container"></div>
+            <button id="saturdays-from-time-add">ADD +</button>
+          </div>
+          <div>
+            <div class="to location-title"></div>
+            <div id="saturdays-to-time-container"></div>
+            <button id="saturdays-to-time-add">ADD +</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -80,4 +86,3 @@
   const id = '<%= id %>'
   let scheduleInformation = '<%= schedules %>'
 </script>
-<button id="save">SAVE</button>

@@ -2,9 +2,15 @@ function back() {
   window.location.href = '/admin/schedule'
 }
 
+function dateFormat(start, end) {
+  $('#date-range span').html(start.format('MMM D') + ' - ' + end.format('MMM D'));
+}
+
 $('#date-range').daterangepicker({
   opens: 'left',
-})
+}, dateFormat)
+
+dateFormat(moment(), moment())
 
 const lineName = [
   {
@@ -98,7 +104,6 @@ function deleteTime(from, day, time) {
     scheduleInformation.schedules[pointer].saturdays =
       scheduleInformation.schedules[pointer].saturdays.filter((e) => e !== time)
   }
-  console.log(id)
   $(id).remove()
 }
 
@@ -110,6 +115,11 @@ $('#weekdays-from-time-add').click(() => {
   )
 })
 
+const deleteSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <circle cx="8.5" cy="8.5" r="8" stroke="#A70000"/>
+                    <rect x="4" y="8" width="9" height="1" fill="#A70000"/>
+                  </svg>`
+
 $('#weekdays-from-time-container').on(
   'change',
   '#weekdays-from-time-input',
@@ -117,14 +127,12 @@ $('#weekdays-from-time-container').on(
     let time24 = $('#weekdays-from-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#weekdays-from-time-container').append(
-      '<div id="from' +
-        time24 +
-        'weekday">' +
-        time12 +
-        "<button onclick=\"deleteTime('from', 'weekday' , '" +
-        time24 +
-        '\')">Delete</button>' +
-        '</div>'
+      `
+      <div class="time-item" id="from${time24}weekday">
+          ${time12}
+          <div onclick="deleteTime('from', 'weekday', '${time24}')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#weekdays-from-time-input').remove()
     scheduleInformation.schedules[0].weekdays.push(time24)
@@ -146,14 +154,12 @@ $('#weekdays-to-time-container').on(
     let time24 = $('#weekdays-to-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#weekdays-to-time-container').append(
-      '<div id="to' +
-        time24 +
-        'weekday">' +
-        time12 +
-        "<button onclick=\"deleteTime('to', 'weekday' , '" +
-        time24 +
-        '\')">Delete</button>' +
-        '</div>'
+      `
+      <div class="time-item" id="to${time24}weekday">
+          ${time12}
+          <div onclick="deleteTime('to', 'weekday', '${time24}')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#weekdays-to-time-input').remove()
     scheduleInformation.schedules[1].weekdays.push(time24)
@@ -175,14 +181,12 @@ $('#saturdays-from-time-container').on(
     let time24 = $('#saturdays-from-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#saturdays-from-time-container').append(
-      '<div id="from' +
-        time24 +
-        'saturday">' +
-        time12 +
-        "<button onclick=\"deleteTime('from', 'saturday' , '" +
-        time24 +
-        '\')">Delete</button>' +
-        '</div>'
+      `
+      <div class="time-item" id="from${time24}saturday">
+          ${time12}
+          <div onclick="deleteTime('from', 'saturday', '${time24}')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#saturdays-from-time-input').remove()
     scheduleInformation.schedules[0].saturdays.push(time24)
@@ -204,28 +208,36 @@ $('#saturdays-to-time-container').on(
     let time24 = $('#saturdays-to-time-input').val()
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#saturdays-to-time-container').append(
-      '<div id="to' +
-        time24 +
-        'saturday">' +
-        time12 +
-        "<button onclick=\"deleteTime('to', 'saturday' , '" +
-        time24 +
-        '\')">Delete</button>' +
-        '</div>'
+      `
+      <div class="time-item" id="to${time24}saturday">
+          ${time12}
+          <div onclick="deleteTime('to', 'saturday', '${time24}')">${deleteSVG}</div>
+      </div>
+      `
     )
     $('#saturdays-to-time-input').remove()
     scheduleInformation.schedules[1].saturdays.push(time24)
   }
 )
 
+// toast
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
+
 // save
 $('#save').on('click', async function () {
   scheduleInformation.label = $('#label').val()
+
+  if(scheduleInformation.label === '') {
+    $('.toast-body').text('Please fill in the label.')
+    toastBootstrap.show()
+    return
+  }
 
   // store date from and to
   let dateRangePicker = $('#date-range').data('daterangepicker')
   let startDate = dateRangePicker.startDate.format('YYYY-MM-DD')
   let endDate = dateRangePicker.endDate.format('YYYY-MM-DD')
+
 
   scheduleInformation.from = startDate
   scheduleInformation.to = endDate
@@ -246,5 +258,15 @@ $('#save').on('click', async function () {
     window.location.href = `/admin/schedule/create?error=create&line=${scheduleInformation.line}`
   }
 
-  console.log(scheduleInformation)
+})
+
+const reservationLinks = document.querySelectorAll('.tab > a')
+
+reservationLinks.forEach((link) => {
+  const linkUrlParams = new URLSearchParams(link.search)
+  const linkLineParam = linkUrlParams.get('line')
+
+  if (linkLineParam === line) {
+    link.classList.add('tab-active')
+  }
 })
