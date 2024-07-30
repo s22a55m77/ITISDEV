@@ -27,12 +27,16 @@ const getSelectedID = () => {
   return departureIds;
 }
 
+// toast
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
+
 $('#next').click(() => {
   const returnIds = getSelectedID();
   const returnTime = $('input[type="radio"]:checked').val()
 
   if(returnIds.length === 0) {
-    alert('Please select time slot')
+    $('.toast-body').text('Please select a time')
+    toastBootstrap.show()
     return;
   }
 

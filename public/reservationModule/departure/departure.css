@@ -110,3 +110,11 @@ body {
   background: var(--Celtic-600, #417845);
   color: var(--Gray-White, #FFF);
 }
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}
