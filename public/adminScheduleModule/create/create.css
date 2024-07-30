@@ -183,3 +183,18 @@ header {
 .toast-body {
   text-align: center;
 }
+
+.in-range {
+  background: var(--celtic-200) !important;
+}
+
+.today,
+.end-date,
+.start-date {
+  background: var(--Celtic-600, #417845) !important;
+  color: white;
+}
+
+.applyBtn  {
+  background: var(--Celtic-600, #417845) !important;
+}
