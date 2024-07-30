@@ -334,3 +334,7 @@ $('#edit-single').click(() => {
   const { line } = params
   window.location.href = `/admin/schedule/edit/single/${date}?line=${line}`
 })
+
+if(!to) {
+  $('#edit-single').hide()
+}
