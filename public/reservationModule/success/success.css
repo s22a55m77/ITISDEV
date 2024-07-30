@@ -28,7 +28,7 @@ button {
   gap: 5px;
   padding: 9px 20px;
   border-radius: 10px;
-  border: 1px solid var(--Celtic-600, #417845);
+  border: 1px solid var(--celtic-600, #417845);
   width: 100%;
   background-color: inherit;
 }

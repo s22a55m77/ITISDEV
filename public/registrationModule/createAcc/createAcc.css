@@ -75,7 +75,7 @@ button {
   width: 100%;
   padding: 16px 48px 16px 47px;
   border: 1px solid #FFF;
-  background: var(--Celtic-600, #417845);
+  background: var(--celtic-600, #417845);
   color: #FFF;
   font-size: 16px;
   font-style: normal;

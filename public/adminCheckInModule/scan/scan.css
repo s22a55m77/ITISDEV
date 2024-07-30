@@ -18,7 +18,7 @@
 
 .instruction {
   margin: 0 auto;
-  color: var(--Gray-950, #030712);
+  color: var(--gray-950, #030712);
   text-align: center;
   leading-trim: both;
   text-edge: cap;
@@ -38,8 +38,8 @@ button {
   align-items: center;
   gap: 4px;
   border-radius: 10px;
-  border: 1px solid var(--Celtic-600, #417845);
-  background: var(--Celtic-600, #417845);
-  color: var(--Gray-White, #fff);
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #fff);
   max-width: 160px;
 }

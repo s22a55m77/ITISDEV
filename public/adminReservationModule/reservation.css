@@ -32,8 +32,8 @@ header {
 
 .tab-active {
   border-radius: 10px;
-  border: 2.5px solid var(--Celtic-600, #417845);
-  background: var(--Gray-White, #fff);
+  border: 2.5px solid var(--celtic-600, #417845);
+  background: var(--gray-white, #fff);
   padding: 5px 10px;
   color: var(--celtic-600);
 }
@@ -102,7 +102,7 @@ header {
   display: flex;
   gap: 30px;
   border-radius: 20px;
-  background: var(--Celtic-200, #cde5ce);
+  background: var(--celtic-200, #cde5ce);
   padding: 25px;
   min-height: 100%;
 }
@@ -185,7 +185,7 @@ tr td:last-child {
 }
 
 .sub-select {
-  color: var(--Celtic-200, #cde5ce);
+  color: var(--celtic-200, #cde5ce);
   font-size: 21.412px;
   font-style: normal;
   font-weight: 700;
@@ -193,7 +193,7 @@ tr td:last-child {
 }
 
 .not-select {
-  color: var(--Celtic-100, #e6f2e7);
+  color: var(--celtic-100, #e6f2e7);
   font-size: 21.412px;
   font-style: normal;
   font-weight: 700;
@@ -201,11 +201,11 @@ tr td:last-child {
 }
 
 .confirmed {
-  background-color: var(--Celtic-400, #77B17B);
+  background-color: var(--celtic-400, #77B17B);
 }
 
 .pending {
-  background-color: var(--Gray-300, #D1D5DB);
+  background-color: var(--gray-300, #D1D5DB);
 }
 
 .rejected {

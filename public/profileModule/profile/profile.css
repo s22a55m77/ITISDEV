@@ -3,7 +3,7 @@ body {
 }
 
 .header {
-  color: var(--Gray-White, #FFF);
+  color: var(--gray-white, #FFF);
   /* Bold/H3 Heading */
   font-family: "Radio Canada";
   font-size: 28px;

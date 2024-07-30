@@ -48,6 +48,6 @@ button {
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #FFF;
-  background: var(--Celtic-600, #417845);
+  background: var(--celtic-600, #417845);
   color: var(--gray-white);
 }

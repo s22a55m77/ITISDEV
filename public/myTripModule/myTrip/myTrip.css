@@ -30,7 +30,7 @@ body {
 }
 
 .header {
-  color: var(--Gray-White, #FFF);
+  color: var(--gray-white, #FFF);
   font-size: 28px;
   font-style: normal;
   font-weight: 700;
@@ -62,7 +62,7 @@ body {
   justify-content: space-between;
   align-items: center;
 
-  color: var(--Gray-600, #4B5563);
+  color: var(--gray-600, #4B5563);
   font-family: "Radio Canada";
   font-size: 12px;
   font-style: normal;
@@ -80,7 +80,7 @@ body {
   gap: 5px;
   align-items: center;
 
-  color: var(--Gray-600, #4B5563);
+  color: var(--gray-600, #4B5563);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -91,9 +91,9 @@ body {
   width: fit-content;
   padding: 5px 10px;
   border-radius: 13.5px;
-  border: 0.5px solid var(--Celtic-600, #417845);
-  background: var(--Celtic-600, #417845);
-  color: var(--Gray-White, #FFF);
+  border: 0.5px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #FFF);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -104,9 +104,9 @@ body {
   width: fit-content;
   padding: 5px 10px;
   border-radius: 13.5px;
-  border: 0.5px solid var(--Celtic-600, #417845);
+  border: 0.5px solid var(--celtic-600, #417845);
   background: #FFF;
-  color: var(--Celtic-600, #417845);
+  color: var(--celtic-600, #417845);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -119,7 +119,7 @@ body {
   border-radius: 13.5px;
   background: var(--Rose-700, #BE133C);
   
-  color: var(--Gray-White, #FFF);
+  color: var(--gray-white, #FFF);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

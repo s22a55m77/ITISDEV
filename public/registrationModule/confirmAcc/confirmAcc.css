@@ -49,7 +49,7 @@ img {
   width: 100%;
   padding: 16px 0px;
   border: 1px solid #FFF;
-  background: var(--Celtic-600, #417845);  
+  background: var(--celtic-600, #417845);  
   color: #FFF;
 }
 
@@ -66,9 +66,9 @@ img {
   font-weight: 600;
   padding: 5px 10px;
   border-radius: 13.5px;
-  border: 0.5px solid var(--Celtic-600, #417845);
+  border: 0.5px solid var(--celtic-600, #417845);
   background: #FFF;
-  color: var(--Celtic-600, #417845);
+  color: var(--celtic-600, #417845);
   font-size: 14px;
   font-style: normal;
   font-weight: 600;

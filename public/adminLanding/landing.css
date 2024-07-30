@@ -50,7 +50,7 @@ body {
 }
 
 .tab a {
-  color: var(--Gray-White, #FFF);
+  color: var(--gray-white, #FFF);
   font-size: 14px;
   font-style: normal;
   font-weight: 500;

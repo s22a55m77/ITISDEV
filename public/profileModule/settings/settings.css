@@ -56,5 +56,5 @@ select {
   width: 100%;
   padding: 10px;
   border: 1px solid #000;
-  background: var(--Celtic-50, #F4F9F5);
+  background: var(--celtic-50, #F4F9F5);
 }

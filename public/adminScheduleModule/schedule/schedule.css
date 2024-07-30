@@ -48,8 +48,8 @@ header {
 
 .tab-active {
   border-radius: 10px;
-  border: 2.5px solid var(--Celtic-600, #417845);
-  background: var(--Gray-White, #fff);
+  border: 2.5px solid var(--celtic-600, #417845);
+  background: var(--gray-white, #fff);
   padding: 5px 10px;
   color: var(--celtic-600);
 }
@@ -60,10 +60,10 @@ header {
   justify-content: center;
   gap: 4px;
   border-radius: 10px;
-  border: 1px solid var(--Celtic-600, #417845);
-  background: var(--Celtic-600, #417845);
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
   padding: 9px 20px;
-  color: var(--Gray-White, #FFF);
+  color: var(--gray-white, #FFF);
   text-align: center;
   font-size: 16px;
   font-style: normal;
@@ -90,9 +90,9 @@ tr {
   align-items: center;
   gap: 4px;
   border-radius: 10px;
-  border: 1px solid var(--Celtic-600, #417845);
+  border: 1px solid var(--celtic-600, #417845);
   background: var(--gray-white);
-  color: var(--Celtic-600, #417845);
+  color: var(--celtic-600, #417845);
   text-align: center;
   font-size: 16px;
   font-style: normal;

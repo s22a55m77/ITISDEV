@@ -38,7 +38,7 @@ body {
   gap: 6px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 1px solid var(--Gray-400, #9CA3AF);
+  border: 1px solid var(--gray-400, #9CA3AF);
 }
 
 .location-container {
@@ -55,7 +55,7 @@ body {
 }
 
 .green {
-  color:  var(--Celtic-500, #539458);
+  color:  var(--celtic-500, #539458);
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
@@ -63,7 +63,7 @@ body {
 }
 
 .red {
-  color:  var(--Celtic-500, #539458);
+  color:  var(--celtic-500, #539458);
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
@@ -84,9 +84,9 @@ body {
   align-items: center;
   gap: 4px;
   font-size: 16px;
-  background-color: var(--Celtic-50);
+  background-color: var(--celtic-50);
   border-radius: 10px;
-  border: 1px solid var(--Celtic-600, #417845);
+  border: 1px solid var(--celtic-600, #417845);
 }
 
 #back > a {
@@ -106,9 +106,9 @@ body {
   gap: 4px;
   font-size: 16px;
   border-radius: 10px;
-  border: 1px solid var(--Celtic-600, #417845);
-  background: var(--Celtic-600, #417845);
-  color: var(--Gray-White, #FFF);
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #FFF);
 }
 
 .toast {
