@@ -111,28 +111,30 @@ const deleteSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17
 $('#weekdays-from-time-container').append(
   fromTime[0].weekdays.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-    return (
-      `
-        <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}weekday">
+    return `
+        <div class="time-item" id="${fromName.replaceAll(
+          ' ',
+          ''
+        )}${time24}weekday">
           ${time12}
           <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'true')">${deleteSVG}</div>
         </div>
       `
-    )
   })
 )
 // saturdays
 $('#saturdays-from-time-container').append(
   fromTime[0].saturdays.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-    return (
-      `
-      <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}saturday">
+    return `
+      <div class="time-item" id="${fromName.replaceAll(
+        ' ',
+        ''
+      )}${time24}saturday">
         ${time12}
         <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'false')">${deleteSVG}</div>
       </div>
       `
-    )
   })
 )
 
@@ -141,28 +143,30 @@ $('#saturdays-from-time-container').append(
 $('#weekdays-to-time-container').append(
   toTime[0]?.weekdays?.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-    return (
-      `
-        <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}weekday">
+    return `
+        <div class="time-item" id="${toName.replaceAll(
+          ' ',
+          ''
+        )}${time24}weekday">
           ${time12}
           <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'true')">${deleteSVG}</div>
         </div>
       `
-    )
   })
 )
 // saturdays
 $('#saturdays-to-time-container').append(
   toTime[0]?.saturdays?.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
-    return (
-      `
-      <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}saturday">
+    return `
+      <div class="time-item" id="${toName.replaceAll(
+        ' ',
+        ''
+      )}${time24}saturday">
         ${time12}
         <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'false')">${deleteSVG}</div>
       </div>
       `
-    )
   })
 )
 
@@ -184,7 +188,10 @@ $('#weekdays-from-time-container').on(
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#weekdays-from-time-container').append(
       `
-      <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}weekday">
+      <div class="time-item" id="${fromName.replaceAll(
+        ' ',
+        ''
+      )}${time24}weekday">
           ${time12}
           <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'true', 'true')">${deleteSVG}</div>
       </div>
@@ -210,7 +217,10 @@ $('#saturdays-from-time-container').on(
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#saturdays-from-time-container').append(
       `
-      <div class="time-item" id="${fromName.replaceAll(' ', '')}${time24}saturday">
+      <div class="time-item" id="${fromName.replaceAll(
+        ' ',
+        ''
+      )}${time24}saturday">
         ${time12}
         <div onclick="deleteTime('${fromName}', '${toName}', '${time24}', 'false', 'true')">${deleteSVG}</div>
       </div>
@@ -264,7 +274,10 @@ $('#saturdays-to-time-container').on(
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     $('#saturdays-to-time-container').append(
       `
-      <div class="time-item" id="${toName.replaceAll(' ', '')}${time24}saturday">
+      <div class="time-item" id="${toName.replaceAll(
+        ' ',
+        ''
+      )}${time24}saturday">
         ${time12}
         <div onclick="deleteTime('${toName}', '${fromName}', '${time24}', 'false', 'true')">${deleteSVG}</div>
       </div>
@@ -306,4 +319,11 @@ reservationLinks.forEach((link) => {
   if (linkLineParam === line) {
     link.classList.add('tab-active')
   }
+})
+
+$('#edit-single').click(() => {
+  const date = moment(from).format('YYYY-MM-DD')
+  const linkUrlParams = new URLSearchParams()
+  const linkLineParam = linkUrlParams.get('line')
+  window.location.href = `/admin/schedule/edit/single/${date}?line=${linkLineParam}`
 })

@@ -101,52 +101,113 @@ adminScheduleModuleController.get(
   isSSU,
   async (req, res) => {
     const date = req.params.date
+    const { line } = req.query
 
-    const schedules = await scheduleDetailModel.aggregate([
+    if (!line) {
+      return res.redirect(`/admin/schedule/edit/single/${date}?line=1`)
+    }
+
+    const schedules = await scheduleModel.aggregate([
+      {
+        $lookup: {
+          from: 'ScheduleDetail',
+          localField: 'details',
+          foreignField: '_id',
+          as: 'details',
+        },
+      },
+      {
+        $unwind: {
+          path: '$details',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
           _id: 1,
-          from: 1,
-          to: 1,
+          line: 1,
+          from: '$details.from',
+          to: '$details.to',
           date: {
             $dateToString: {
               format: '%Y-%m-%d',
-              date: '$time',
+              date: '$details.time',
               timezone: 'Asia/Manila',
             },
           },
+          time: '$details.time',
         },
       },
       {
         $match: {
           date,
+          line: parseInt(line),
         },
       },
     ])
 
     if (schedules.length === 0) {
-      return res.redirect('404.html')
+      return res.redirect('/404.html')
     }
 
-    // get time
-    const times = schedules.map((schedule) => {
-      return moment(schedule.time).tz('Asia/Manila').format('HH:mm')
-    })
+    // console.log(schedules)
 
-    const schedule = await scheduleModel.findById({
-      details: { $in: schedules.map((schedule) => schedule._id) },
+    // get time
+    /**
+     [
+        {
+          from: 'DLSU MNL',
+          to: 'DLSU LAG',
+          weekdays: [ '15:39' ],
+          saturdays: [ '15:40' ]
+        },
+        {
+          from: 'DLSU LAG',
+          to: 'DLSU MNL',
+          weekdays: [ '17:39' ],
+          saturdays: []
+        }
+      ]
+     */
+    const map = new Map()
+
+    schedules.forEach((schedule) => {
+      const key = `${schedule.from}${schedule.to}`
+      map.set(key, map.get(key) ? map.get(key).concat(schedule) : [schedule])
     })
+    const formattedSchedules = []
+
+    for (const [key, value] of map) {
+      const times = value.map((schedule) => {
+        return schedule.time
+      })
+
+      const weekdays = times
+        .filter((time) => moment(time).day() !== 6)
+        .map((time) => moment(time).format('HH:mm'))
+      const saturdays = times
+        .filter((time) => moment(time).day() === 6)
+        .map((time) => moment(time).format('HH:mm'))
+
+      formattedSchedules.push({
+        from: value[0].from,
+        to: value[0].to,
+        weekdays: [...new Set(weekdays)],
+        saturdays: [...new Set(saturdays)],
+      })
+    }
+
+    const schedule = await scheduleModel.findById(schedules[0]._id)
 
     const result = {
       id: schedule._id,
-      from: schedule.from,
-      to: schedule.to,
+      dateRange: moment(date).tz('Asia/Manila').format('MMM D'),
       line: schedule.line,
       label: schedule.label,
-      schedule: JSON.stringify(times),
+      schedule: JSON.stringify(formattedSchedules),
     }
-
-    res.render('adminScheduleModule/editSingle.ejs', res)
+    console.log(result)
+    return res.render('adminScheduleModule/editSingle.ejs', result)
   }
 )
 
@@ -450,6 +511,7 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
       saturdays: [...new Set(saturdays)],
     })
   }
+  console.log(schedules)
 
   res.render('adminScheduleModule/edit.ejs', {
     id: schedule._id,
