@@ -63,6 +63,7 @@ const editInformation = {
 let dateDisplay = moment(from).format('MMM D')
 
 if (to != '') {
+  console.log(to)
   dateDisplay += '-' + moment(to).format('MMM D')
 }
 
@@ -295,9 +296,8 @@ $('#saturdays-to-time-container').on(
 // Save
 $('#save').click(async function () {
   editInformation.label = $('#label').val()
-  console.log(editInformation)
-
-  const res = await fetch('/admin/schedule/edit/' + editInformation.id, {
+  console.log(date)
+  const res = await fetch(`/admin/schedule/edit/single/${date}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

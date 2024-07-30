@@ -15,6 +15,7 @@ const {
 } = require('../utils/dateUtil.js')
 const isSSU = require('../utils/isSSU.js')
 const emailTransporter = require('../utils/email.js')
+const { ObjectId } = require('mongoose').Types
 require('dotenv').config()
 
 const adminScheduleModuleController = e.Router()
@@ -197,16 +198,29 @@ adminScheduleModuleController.get(
       })
     }
 
-    const schedule = await scheduleModel.findById(schedules[0]._id)
+    const schedule = await scheduleModel
+      .findById(schedules[0]._id)
+      .populate('details')
+
+    const dates = [
+      ...new Set(
+        schedule.details.map((detail) => {
+          return moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD')
+        })
+      ),
+    ]
 
     const result = {
       id: schedule._id,
-      dateRange: moment(date).tz('Asia/Manila').format('MMM D'),
+      from: moment(date).tz('Asia/Manila').format('MMM D'),
+      to: undefined,
       line: schedule.line,
       label: schedule.label,
-      schedule: JSON.stringify(formattedSchedules),
+      schedules: JSON.stringify(formattedSchedules),
+      dates: dates,
+      date: date,
     }
-    console.log(result)
+
     return res.render('adminScheduleModule/editSingle.ejs', result)
   }
 )
@@ -216,31 +230,46 @@ adminScheduleModuleController.post(
   isSSU,
   async (req, res) => {
     const { date } = req.params
-    const { deletedTime, addedTime, label } = req.body
+    const { deletedTime, addedTime, id } = req.body
 
-    const schedules = await scheduleDetailModel.aggregate([
+    const schedules = await scheduleModel.aggregate([
+      {
+        $lookup: {
+          from: 'ScheduleDetail',
+          localField: 'details',
+          foreignField: '_id',
+          as: 'details',
+        },
+      },
+      {
+        $unwind: {
+          path: '$details',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
           _id: 1,
           date: {
             $dateToString: {
               format: '%Y-%m-%d',
-              date: '$time',
+              date: '$details.time',
               timezone: 'Asia/Manila',
             },
           },
+          time: '$details.time',
+          detailId: '$details._id',
         },
       },
       {
         $match: {
           date,
+          _id: new ObjectId(id),
         },
       },
     ])
 
-    const schedule = await scheduleModel.findOne({
-      details: { $in: schedules.map((schedule) => schedule._id) },
-    })
+    const schedule = await scheduleModel.findById(id)
 
     if (!schedule) return res.redirect('/admin/schedule?error=edit')
 
@@ -249,26 +278,34 @@ adminScheduleModuleController.post(
     try {
       await session.withTransaction(async () => {
         // create new scheduleModel with new dateRange and label
-        const newSchedule = new scheduleModel({
+        const currentSchedule = new scheduleModel({
           line: schedule.line,
-          dateRange: moment(date).tz('Asia/Manila').format('MMM D'),
-          label,
-          details: schedules.map((schedule) => schedule._id),
+          dateRange: moment(date, 'YYYY-MM-DD')
+            .tz('Asia/Manila')
+            .format('MMM D'),
+          label: schedule.label,
+          details: schedules.map((schedule) => schedule.detailId),
         })
-        await newSchedule.save({ session })
+
+        await currentSchedule.save({ session })
+        console.log(schedules.map((schedule) => schedule.detailId))
         // remove details of :date in scheduleModel
-        await schedule.updateOne(
+        await scheduleModel.findByIdAndUpdate(
+          schedule._id,
           {
             $pull: {
-              details: { $in: schedules.map((schedule) => schedule._id) },
+              details: { $in: schedules.map((schedule) => schedule.detailId) },
             },
           },
           { session }
         )
-
-        await schedule.updateOne(
+        await scheduleModel.findByIdAndUpdate(
+          schedule._id,
           {
-            dateRange: `${schedule.dateRange.split(' - ')[0]} - ${moment(date)
+            dateRange: `${schedule.dateRange.split(' - ')[0]} - ${moment(
+              date,
+              'YYYY-MM-DD'
+            )
               .tz('Asia/Manila')
               .subtract(1, 'days')
               .format('MMM D')}`,
@@ -278,40 +315,72 @@ adminScheduleModuleController.post(
 
         if (
           schedule.dateRange.split(' - ')[1] !==
-          moment(date).tz('Asia/Manila').format('MMM D')
+          moment(date, 'YYYY-MM-DD').tz('Asia/Manila').format('MMM D')
         ) {
           // create new schedule for date after edited
+          // get the detail id of the date after edited
+
           const newSchedule = new scheduleModel({
             line: schedule.line,
-            dateRange: `${moment(date)
+            dateRange: `${moment(date, 'YYYY-MM-DD')
               .tz('Asia/Manila')
               .add(1, 'days')
               .format('MMM D')} - ${schedule.dateRange.split(' - ')[1]}`,
             label: schedule.label,
           })
-          newSchedule.save({ session })
 
           // remove details of future date in scheduleModel
-          const futureSchedules = await scheduleModel
-            .findOne({
-              details: {
-                $elemMatch: {
-                  time: {
-                    $gte: moment(date)
-                      .tz('Asia/Manila')
-                      .add(1, 'days')
-                      .format(),
+          const futureSchedules = await scheduleModel.aggregate(
+            [
+              {
+                $lookup: {
+                  from: 'ScheduleDetail',
+                  localField: 'details',
+                  foreignField: '_id',
+                  as: 'details',
+                },
+              },
+              {
+                $unwind: {
+                  path: '$details',
+                  preserveNullAndEmptyArrays: true,
+                },
+              },
+              {
+                $project: {
+                  scheduleId: '$_id',
+                  _id: '$details._id',
+                  date: {
+                    $dateToString: {
+                      format: '%Y-%m-%d',
+                      date: '$details.time',
+                    },
                   },
                 },
               },
-            })
-            .populate('details', { session })
+              {
+                $match: {
+                  date: {
+                    $gte: moment(date, 'YYYY-MM-DD')
+                      .tz('Asia/Manila')
+                      .add(1, 'days')
+                      .format('YYYY-MM-DD'),
+                  },
+                  scheduleId: new ObjectId(id),
+                },
+              },
+            ],
+            { session }
+          )
+          newSchedule.details = futureSchedules.map((schedule) => schedule._id)
+          await newSchedule.save({ session })
 
-          await schedule.updateOne(
+          await scheduleModel.findByIdAndUpdate(
+            schedule._id,
             {
               $pull: {
                 details: {
-                  $in: futureSchedules.details.map((detail) => detail._id),
+                  $in: futureSchedules.map((detail) => detail._id),
                 },
               },
             },
@@ -319,16 +388,19 @@ adminScheduleModuleController.post(
           )
         }
 
-        schedule.save({ session })
+        // console.log(schedule)
+        // throw new Error('test')
 
-        const newScheduleDoc = await scheduleModel
-          .findById(newSchedule._id)
-          .populate('details')
+        const scheduleDetails = await scheduleDetailModel.find({
+          _id: {
+            $in: currentSchedule.details,
+          },
+        })
 
         // deletedTime = [{from, to, time, isWeekday}]
         // delete all time in deletedTime
         if (deletedTime) {
-          const detailsToDelete = newScheduleDoc.details.filter((detail) => {
+          const detailsToDelete = scheduleDetails.filter((detail) => {
             // time is in different format, deletedTime is in format 'HH:mm'
             // details time is in format 'YYYY-MM-DDTHH:mm:ssZ'
 
@@ -358,56 +430,69 @@ adminScheduleModuleController.post(
               populate: { path: 'user', strictPopulate: false },
             })
 
-          schedules.forEach(async (schedule) => {
-            if (schedule.reserve && schedule.reserve.length > 0) {
-              const emails = schedule.reserve.map(
-                (reservation) => reservation.user.email
-              )
+          await Promise.all(
+            schedules.map(async (schedule) => {
+              if (schedule.reserve && schedule.reserve.length > 0) {
+                const emails = schedule.reserve.map(
+                  (reservation) => reservation.user.email
+                )
 
-              const from = schedule.from
-              const to = schedule.to
-              const time = moment(schedule.time)
-                .tz('Asia/Manila')
-                .format('MMM DD HH:mm')
+                const from = schedule.from
+                const to = schedule.to
+                const time = moment(schedule.time)
+                  .tz('Asia/Manila')
+                  .format('MMM DD HH:mm')
 
-              emailTransporter.sendMail({
-                from: process.env.EMAIL_USER,
-                to: emails,
-                subject: 'Reservation Cancelled',
-                text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-              })
+                await emailTransporter.sendMail({
+                  from: process.env.EMAIL_USER,
+                  to: emails,
+                  subject: 'Reservation Cancelled',
+                  text: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+                })
 
-              const users = schedule.reserve.map(
-                (reservation) => reservation.user._id
-              )
+                const users = schedule.reserve.map(
+                  (reservation) => reservation.user._id
+                )
 
-              await notificationModel.create(
-                [
+                await notificationModel.create(
+                  [
+                    {
+                      title: 'Reservation Cancelled',
+                      description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
+                      to: users,
+                    },
+                  ],
+                  { session }
+                )
+
+                // update all approval
+                await reservationApprovalModel.updateMany(
                   {
-                    title: 'Reservation Cancelled',
-                    description: `Your reservation from ${from} to ${to} at ${time} has been cancelled.`,
-                    to: users,
+                    _id: { $in: schedule.approval },
                   },
-                ],
-                { session }
-              )
-
-              // update all approval
-              await reservationApprovalModel.updateMany(
-                {
-                  _id: { $in: schedule.approval },
-                },
-                {
-                  status: 'cancelled',
-                },
-                { session }
-              )
-            }
-          })
+                  {
+                    status: 'cancelled',
+                  },
+                  { session }
+                )
+              }
+            })
+          )
 
           await scheduleDetailModel.deleteMany(
             {
               _id: { $in: detailsToDelete.map((detail) => detail._id) },
+            },
+            { session }
+          )
+
+          await currentSchedule.updateOne(
+            {
+              $pull: {
+                details: {
+                  $in: detailsToDelete.map((detail) => detail._id),
+                },
+              },
             },
             { session }
           )
@@ -416,24 +501,12 @@ adminScheduleModuleController.post(
         // addedTime = [{from, to, weekdays, saturdays}]
         // add all time in addedTime
         if (addedTime) {
-          const weekdays = getWeekdays(from, to)
-          const saturdays = getSaturdays(from, to)
-
           const newSchedules = []
 
           addedTime.forEach((schedule) => {
-            const weekdaySchedules = mergeDateAndTime(
-              weekdays,
-              schedule.weekdays
-            )
-            const saturdaySchedules = mergeDateAndTime(
-              saturdays,
-              schedule.saturdays
-            )
+            const schedules = mergeDateAndTime([date], schedule.weekdays)
 
-            const dates = weekdaySchedules.concat(saturdaySchedules)
-
-            dates.forEach((time) => {
+            schedules.forEach((time) => {
               newSchedules.push({
                 from: schedule.from,
                 to: schedule.to,
@@ -450,7 +523,7 @@ adminScheduleModuleController.post(
           )
 
           await scheduleModel.findByIdAndUpdate(
-            id,
+            currentSchedule._id,
             {
               $push: { details: scheduleDetails },
             },
@@ -458,12 +531,13 @@ adminScheduleModuleController.post(
           )
         }
       })
+      await session.endSession()
+      return res.send({ success: true })
     } catch (err) {
       console.error(err)
-      return res.redirect('/admin/schedule?error=edit')
+      await session.endSession()
+      return res.send({ success: false, error: err })
     }
-
-    session.endSession()
   }
 )
 
@@ -479,9 +553,10 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
   const from = moment(schedule.dateRange.split(' - ')[0], 'MMM D').format(
     'YYYY-MM-DD'
   )
-  const to = moment(schedule.dateRange.split(' - ')[1], 'MMM D').format(
-    'YYYY-MM-DD'
-  )
+
+  const rawTo = schedule.dateRange.split(' - ')[1]
+
+  const to = rawTo ? moment(rawTo, 'MMM D').format('YYYY-MM-DD') : null
 
   const map = new Map()
 
@@ -511,7 +586,6 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
       saturdays: [...new Set(saturdays)],
     })
   }
-  console.log(schedules)
 
   res.render('adminScheduleModule/edit.ejs', {
     id: schedule._id,
@@ -525,7 +599,7 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
 
 adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
-  const { deletedTime, addedTime, label, from, to } = req.body
+  const { deletedTime, addedTime, from, to } = req.body
 
   const schedule = await scheduleModel.findById(id).populate('details')
 
@@ -540,7 +614,6 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
   const originalDateRange = schedule.dateRange
 
   schedule.dateRange = dateRange
-  schedule.label = label
 
   const session = await mongoose.startSession()
 
