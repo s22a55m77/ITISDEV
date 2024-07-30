@@ -145,6 +145,8 @@ adminScheduleModuleController.get(
       label: schedule.label,
       schedule: JSON.stringify(times),
     }
+
+    res.render('adminScheduleModule/editSingle.ejs', res)
   }
 )
 
