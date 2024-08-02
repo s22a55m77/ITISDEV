@@ -16,7 +16,7 @@ announcementModuleController.get('/:id', isAuthorized, async (req, res) => {
 
   const id = req.params.id
   const announcement = await announcementModel.findById(id).catch((error) => {
-    return res.redirect('/404.html')
+    console.error(error)
   })
 
   if (!announcement) return res.redirect('/404.html')

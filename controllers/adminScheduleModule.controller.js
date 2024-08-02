@@ -548,7 +548,7 @@ adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
     .findById(id)
     .populate('details')
     .catch((err) => {
-      return res.redirect('/404.html')
+      console.error(err)
     })
 
   if (!schedule) {
@@ -921,7 +921,7 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
     .findById(id)
     .populate('details')
     .catch((err) => {
-      return res.redirect('/404.html')
+      console.error(err)
     })
 
   if (!schedule) {

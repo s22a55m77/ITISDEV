@@ -21,7 +21,7 @@ adminAnnouncementModuleController.get(
     const id = req.params.id
 
     const announcement = await announcementModel.findById(id).catch((error) => {
-      return res.redirect('/404.html')
+      console.error(error)
     })
 
     if (!announcement) return res.redirect('/404.html')
@@ -81,7 +81,7 @@ adminAnnouncementModuleController.get('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
   const announcement = await announcementModel.findById(id).catch((error) => {
-    return res.redirect('/404.html')
+    console.error(error)
   })
 
   if (!announcement) return res.redirect('/404.html')
