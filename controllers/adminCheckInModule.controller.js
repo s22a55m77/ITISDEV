@@ -214,7 +214,7 @@ adminCheckInController.get('/result', isDispatcher, async (req, res) => {
   if (!passenger) {
     res.render('adminCheckInModule/result.ejs', {
       invalid: false,
-      reserved: false,
+      reserve: false,
       passengerInfo,
     })
     return
