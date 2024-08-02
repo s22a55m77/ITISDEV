@@ -124,3 +124,21 @@ tr {
 .toast-body {
   text-align: center;
 }
+
+#back {
+  margin-top: 20px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--celtic-600, #417845);
+  padding: 5px 10px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  border: 1px solid var(--celtic-600, #417845);
+  border-radius: 10px;
+}
