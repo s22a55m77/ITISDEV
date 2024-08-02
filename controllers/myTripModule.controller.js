@@ -14,9 +14,11 @@ const myTripModuleController = e.Router()
 myTripModuleController.get('/', isAuthorized, async (req, res) => {
   const user = httpContext.get('user')
 
-  const histories = await reservationApprovalModel.find({
-    user: user._id,
-  }).sort({ time: -1 })
+  const histories = await reservationApprovalModel
+    .find({
+      user: user._id,
+    })
+    .sort({ time: -1 })
 
   // const histories = await scheduleDetailModel.aggregate([
   //   {
@@ -92,7 +94,7 @@ myTripModuleController.get('/:id', isAuthorized, async (req, res) => {
     },
   ])
 
-  if (!schedule) return res.redirect('404.html')
+  if (!schedule) return res.redirect('/404.html')
 
   const detail = {
     id: schedule[0].approval._id,
