@@ -544,10 +544,15 @@ adminScheduleModuleController.post(
 adminScheduleModuleController.get('/edit/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
-  const schedule = await scheduleModel.findById(id).populate('details')
+  const schedule = await scheduleModel
+    .findById(id)
+    .populate('details')
+    .catch((err) => {
+      console.error(err)
+    })
 
   if (!schedule) {
-    return res.redirect('404.html')
+    return res.redirect('/404.html')
   }
 
   const from = moment(schedule.dateRange.split(' - ')[0], 'MMM D').format(
@@ -912,10 +917,15 @@ adminScheduleModuleController.post('/edit/:id', isSSU, async (req, res) => {
 adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
   const id = req.params.id
 
-  const schedule = await scheduleModel.findById(id).populate('details')
+  const schedule = await scheduleModel
+    .findById(id)
+    .populate('details')
+    .catch((err) => {
+      console.error(err)
+    })
 
   if (!schedule) {
-    return res.redirect('404.html')
+    return res.redirect('/404.html')
   }
 
   const schedules = await scheduleDetailModel

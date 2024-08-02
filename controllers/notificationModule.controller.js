@@ -44,7 +44,7 @@ notificationModuleController.get(
       { new: true }
     )
 
-    if (!notification) return res.redirect('404.html')
+    if (!notification) return res.redirect('/404.html')
 
     res.render('notificationModule/notificationDetail.ejs', { notification })
   }

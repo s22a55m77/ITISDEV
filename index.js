@@ -71,6 +71,10 @@ app.use('/admin', adminLandingController)
 app.use('/notification', notificationModuleController)
 app.use('/admin/auth', adminRegistrationModuleController)
 
+app.get('*', function (req, res) {
+  res.redirect('/404.html')
+})
+
 app.listen(process.env.SERVER_PORT || 3000, () => {
   console.log('Server is running on port ' + (process.env.SERVER_PORT || 3000))
   app._router.stack.forEach(print.bind(null, []))
