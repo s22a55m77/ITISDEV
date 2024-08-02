@@ -1,5 +1,5 @@
-function popup() {
-  var popup = document.getElementById("popup");
+function popup(id) {
+  var popup = document.getElementById(`popup-${id}`);
   popup.classList.toggle("show");
 }
 
@@ -24,21 +24,13 @@ let { success, error } = params;
 if(success) {
   let successMessage = success.charAt(0).toUpperCase() + success.slice(1);
   successMessage = successMessage.split('-').join(' ')
-  $('#alert').text(successMessage)
-  $('#alert').css('background-color', '#00A14A')
-  $('#alert').show()
-  setTimeout(() => {
-    $('#alert').hide()
-  }, 2000)
+  $('.toast-body').text(successMessage)
+  toastBootstrap.show()
 }
 
 if(error) {
   let errorMessage = error.charAt(0).toUpperCase() + error.slice(1);
   errorMessage = errorMessage.split('-').join(' ')
-  $('#alert').text(errorMessage)
-  $('#alert').css('background-color', '#A70000')
-  $('#alert').show()
-  setTimeout(() => {
-    $('#alert').hide()
-  }, 2000)
+  $('.toast-body').text(errorMessage)
+  toastBootstrap.show()
 }

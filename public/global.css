@@ -104,3 +104,11 @@ h6 {
 .step-active {
   background: var(--gray-white);
 }
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

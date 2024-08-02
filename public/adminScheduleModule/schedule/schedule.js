@@ -15,9 +15,6 @@ reservationLinks.forEach((link) => {
   }
 })
 
-// toast
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
-
 if(success) {
   $('.toast-body').text('Deleted successfully')
   toastBootstrap.show()

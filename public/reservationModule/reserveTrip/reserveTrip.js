@@ -136,8 +136,6 @@ const getSelectedDates = () => {
   return selectedDates;
 };
 
-// toast
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
 
 // Handle Next
 $('#next').click(() => {

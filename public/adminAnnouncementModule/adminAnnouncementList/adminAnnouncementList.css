@@ -79,7 +79,7 @@ hr.solid {
   padding: 8px 0;
   position: absolute;
   z-index: 1;
-  top: 125%;
+  top: 50%;
   left: 50%;
   margin-left: -80px;
 }
@@ -136,4 +136,12 @@ hr.popup-solid {
   padding: 5px 20px;
   background-color: var(--celtic-50);
   color: var(--celtic-600);
+}
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
 }

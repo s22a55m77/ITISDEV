@@ -7,10 +7,6 @@ let { error } = params;
 if(error) {
   let errorMessage = error.charAt(0).toUpperCase() + error.slice(1);
   errorMessage = errorMessage.split('-').join(' ')
-  $('#alert').text(errorMessage)
-  $('#alert').css('background-color', '#A70000')
-  $('#alert').show()
-  setTimeout(() => {
-    $('#alert').hide()
-  }, 2000)
+  $('.toast-body').text(errorMessage)
+  toastBootstrap.show()
 }

@@ -220,9 +220,6 @@ $('#saturdays-to-time-container').on(
   }
 )
 
-// toast
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
-
 // save
 $('#save').on('click', async function () {
   scheduleInformation.label = $('#label').val()

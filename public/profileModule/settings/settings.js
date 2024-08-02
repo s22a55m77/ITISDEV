@@ -44,19 +44,11 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 let { success, error } = params; 
 
 if(success) {
-  $('#alert').css('background-color', '#00A14A')
-  $('#alert').text("Updated")
-  $('#alert').show();
-  setTimeout(() => {
-    $('#alert').hide();
-  }, 2000);
+  $('.toast-body').text("Updated")
+  toastBootstrap.show()
 }
 
 if(error) {
-  $('#alert').css('background-color', '#A70000')
-  $('#alert').text("Upload Failed")
-  $('#alert').show();
-  setTimeout(() => {
-    $('#alert').hide();
-  }, 2000);
+  $('.toast-body').text("Upload failed")
+  toastBootstrap.show()
 }

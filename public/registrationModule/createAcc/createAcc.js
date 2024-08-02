@@ -21,9 +21,6 @@ $('#vaccinationRecord').on('change', (e) => {
   $('#vaccination-filename').text(filename)
 })
 
-// toast
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance($('#toast')) 
-
 $('#register').click((event) => {
   const eaf = $('#eaf')[0].files[0] 
   const vaccinationRecord = $('#vaccinationRecord')[0].files[0]

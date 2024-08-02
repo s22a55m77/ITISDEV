@@ -61,11 +61,11 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 let { success, error } = params; 
 
 if(success) {
-  $('#alert-message').text(success.charAt(0).toUpperCase() + success.slice(1))
-  $('#alert-message').show()
+  $('.toast-body').text(success.charAt(0).toUpperCase() + success.slice(1))
+  toastBootstrap.show()
 }
 
 if(error) {
-  $('#alert-message').text(error.charAt(0).toUpperCase() + error.slice(1).replace(/-/g, ' '))
-  $('#alert-message').show()
+  $('.toast-body').text(error.charAt(0).toUpperCase() + error.slice(1).replace(/-/g, ' '))
+  toastBootstrap.show()
 }
