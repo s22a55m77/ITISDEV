@@ -1,25 +1,92 @@
 <%- include('../common/headers.ejs') %>
-<link rel="stylesheet" href="/adminCheckInModule/result/result.css"/>
+<link rel="stylesheet" href="/adminCheckInModule/result/result.css" />
 <script defer src="/adminCheckInModule/result/result.js"></script>
 
 <title>Result</title>
-<div id="status-message"></div>
+<div class="message">
+  <div id="check">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+        fill="#539458"
+      />
+    </svg>
+  </div>
+  <div id="exclamation">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+        fill="#BE133C"
+      />
+    </svg>
+  </div>
+  <div id="cross">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M15.73 3H8.27L3 8.27V15.73L8.27 21H15.73L21 15.73V8.27L15.73 3ZM17 15.74L15.74 17L12 13.26L8.26 17L7 15.74L10.74 12L7 8.26L8.26 7L12 10.74L15.74 7L17 8.26L13.26 12L17 15.74Z"
+        fill="#BE133C"
+      />
+    </svg>
+  </div>
+  <div id="status-message"></div>
+</div>
 
-<div id="name"><%-passengerInfo.name %></div>
-<div id="type"><%-passengerInfo.designation %></div>
-<div id="id"><%-passengerInfo.idNumber %></div>
+<div class="passenger-container">
+  <div id="name"><%-passengerInfo.name %></div>
+  <div id="type"><%-passengerInfo.designation %></div>
+  <div id="id"><%-passengerInfo.idNumber %></div>
+</div>
 
 <button id="scan-another">
-  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 0 30 24" fill="none">
-    <rect x="4" y="1" width="22" height="22" rx="3" stroke="white" stroke-width="2"/>
-    <path d="M0 5H30V18H0V5Z" fill="black"/>
-    <path d="M1 11.5H29" stroke="white" stroke-width="2"/>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <path
+      d="M9.5 6.5V9.5H6.5V6.5H9.5ZM11 5H5V11H11V5ZM9.5 14.5V17.5H6.5V14.5H9.5ZM11 13H5V19H11V13ZM17.5 6.5V9.5H14.5V6.5H17.5ZM19 5H13V11H19V5ZM13 13H14.5V14.5H13V13ZM14.5 14.5H16V16H14.5V14.5ZM16 13H17.5V14.5H16V13ZM13 16H14.5V17.5H13V16ZM14.5 17.5H16V19H14.5V17.5ZM16 16H17.5V17.5H16V16ZM17.5 14.5H19V16H17.5V14.5ZM17.5 17.5H19V19H17.5V17.5ZM22 7H20V4H17V2H22V7ZM22 22V17H20V20H17V22H22ZM2 22H7V20H4V17H2V22ZM2 2V7H4V4H7V2H2Z"
+      fill="white"
+    />
   </svg>
-  SCAN ANOTHER
+  Scan Another QR
 </button>
-<button id="back-to-list">BACK TO LIST</button>
+<button id="back-to-list">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="25"
+    height="24"
+    viewBox="0 0 25 24"
+    fill="none"
+  >
+    <path
+      d="M20.5 11H8.33L13.92 5.41L12.5 4L4.5 12L12.5 20L13.91 18.59L8.33 13H20.5V11Z"
+      fill="#417845"
+    />
+  </svg>
+  Back to List
+</button>
 
 <script>
-  const result = "<%- reserve %>"
-  const invalid = "<%- invalid %>"
+  const result = '<%- reserve %>'
+  const invalid = '<%- invalid %>'
 </script>
