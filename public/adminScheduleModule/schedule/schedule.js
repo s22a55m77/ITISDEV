@@ -16,7 +16,12 @@ reservationLinks.forEach((link) => {
 })
 
 if(success) {
-  $('.toast-body').text('Deleted successfully')
+  if (success == "delete")
+    $('.toast-body').text('Deleted successfully')
+  if (success== "create")
+    $('.toast-body').text('Created successfully')
+  if (success == "edit")
+    $('.toast-body').text('Edited successfully')
   toastBootstrap.show()
 }
 

@@ -271,7 +271,7 @@ adminScheduleModuleController.post(
 
     const schedule = await scheduleModel.findById(id)
 
-    if (!schedule) return res.redirect('/admin/schedule?error=edit')
+    if (!schedule) return res.redirect(`/admin/schedule?error=edit&line=1`)
 
     const session = await mongoose.startSession()
 
@@ -1002,11 +1002,11 @@ adminScheduleModuleController.get('/delete/:id', isSSU, async (req, res) => {
 
       await scheduleModel.findByIdAndDelete(id, { session })
 
-      res.redirect('/admin/schedule?success=delete')
+      res.redirect(`/admin/schedule?success=delete&line=${schedule.line}`)
     })
   } catch (err) {
     console.error(err)
-    res.redirect('/admin/schedule?error=delete')
+    res.redirect(`/admin/schedule?error=delete&line=${schedule.line}`)
   }
 
   session.endSession()

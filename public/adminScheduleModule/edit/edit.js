@@ -307,12 +307,26 @@ $('#save').click(async function () {
 
   const json = await res.json()
 
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  })
+
   if (json.success) {
-    window.location.href = '/admin/schedule?success=true'
+    window.location.href = `/admin/schedule?success=edit&line=${params.line}`
   } else {
     window.location.href = `/admin/schedule/edit/${editInformation.id}?error=edit`
   }
 })
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+})
+
+const { error } = params
+if (error == "edit") {
+  $('.toast-body').text('Error in edit')
+  toastBootstrap.show()
+}
 
 const reservationLinks = document.querySelectorAll('.tab > a')
 

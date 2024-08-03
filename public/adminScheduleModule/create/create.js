@@ -250,7 +250,7 @@ $('#save').on('click', async function () {
   const json = await res.json()
 
   if (json.success) {
-    window.location.href = '/admin/schedule?success=create'
+    window.location.href = `/admin/schedule?success=create&line=${scheduleInformation.line}`
   } else {
     window.location.href = `/admin/schedule/create?error=create&line=${scheduleInformation.line}`
   }
