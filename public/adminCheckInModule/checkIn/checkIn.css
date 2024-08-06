@@ -182,3 +182,7 @@ label {
 #walk-in {
   color: var(--gray-700);
 }
+
+.material-chevron {
+    cursor: pointer;
+}
