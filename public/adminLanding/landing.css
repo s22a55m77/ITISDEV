@@ -73,3 +73,8 @@ body {
 .admin {
   display: none;
 }
+
+.material-icons {
+    font-size: 36px;
+    color: var(--celtic-400);
+}
