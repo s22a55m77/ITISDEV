@@ -11,6 +11,13 @@ header {
   line-height: normal;
   background-color: var(--celtic-600);
   border-radius: 0px 0px 10px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .material-icons {
+    color: white;
 }
 
 .main-container {  
