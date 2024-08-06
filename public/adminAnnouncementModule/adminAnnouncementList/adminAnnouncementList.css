@@ -3,6 +3,22 @@ a {
   text-decoration: none;
 }
 
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.header {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.header a {
+  color: var(--gray-white) !important;
+}
+
 .announcementlist-title {
   position: absolute;
   left: 50%;
