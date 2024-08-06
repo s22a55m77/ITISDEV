@@ -209,6 +209,8 @@ hr.popup-solid {
   gap: 10px;
   height: max-content;
   padding: 6px 12px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .delete-btn {
