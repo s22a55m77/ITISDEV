@@ -1,5 +1,5 @@
 function back() {
-  history.back()
+  window.location.href = '/admin/schedule?line=' + line
 }
 
 const lineName = [
@@ -113,7 +113,7 @@ const deleteSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17
 
 // weekdays
 $('#weekdays-from-time-container').append(
-  fromTime[0].weekdays.map((time24) => {
+  fromTime[0]?.weekdays.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return `
         <div class="time-item" id="${fromName.replaceAll(
@@ -128,7 +128,7 @@ $('#weekdays-from-time-container').append(
 )
 // saturdays
 $('#saturdays-from-time-container').append(
-  fromTime[0].saturdays.map((time24) => {
+  fromTime[0]?.saturdays.map((time24) => {
     let time12 = moment(time24, 'HH:mm').format('hh:mm A')
     return `
       <div class="time-item" id="${fromName.replaceAll(
