@@ -89,3 +89,7 @@ button {
 .toast-body {
   text-align: center;
 }
+
+button {
+    border-radius: 10px;
+}
