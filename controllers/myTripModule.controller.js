@@ -54,7 +54,7 @@ myTripModuleController.get('/', isAuthorized, async (req, res) => {
       from: history.from,
       to: history.to,
       date: moment(history.time).tz('Asia/Manila').format('YYYY-MM-DD'),
-      time: moment(history.time).tz('Asia/Manila').format('hh:mm'),
+      time: moment(history.time).tz('Asia/Manila').format('HH:mm'),
       status: history.status,
     }
   })
@@ -100,7 +100,7 @@ myTripModuleController.get('/:id', isAuthorized, async (req, res) => {
     id: schedule[0].approval._id,
     from: schedule[0].from,
     to: schedule[0].to,
-    departureTime: moment(schedule[0].time).tz('Asia/Manila').format('hh:mm'),
+    departureTime: moment(schedule[0].time).tz('Asia/Manila').format('HH:mm'),
     departureDate: moment(schedule[0].time).tz('Asia/Manila').format('MMM DD'),
     status: schedule[0].approval.status,
   }

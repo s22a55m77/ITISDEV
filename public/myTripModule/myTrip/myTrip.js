@@ -1,3 +1,4 @@
+console.log(tripList)
 // Render trip list
 if(tripList) {
   tripList.forEach((trip) => {
