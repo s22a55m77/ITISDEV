@@ -42,6 +42,7 @@ body {
   width: 100%;
   border-radius: 10px;
   border: 1px solid var(--gray-400, #9CA3AF);
+  padding: 0px 10px;
 }
 
 .trip-type-container > div {
