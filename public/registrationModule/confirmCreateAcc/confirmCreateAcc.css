@@ -49,6 +49,7 @@ img {
   width: 100%;
   padding: 16px 0px;
   border: 1px solid #FFF;
+  border-radius: 10px;
   background: var(--celtic-600, #417845);
   color: #FFF;
   font-size: 16px;
