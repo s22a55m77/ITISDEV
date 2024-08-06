@@ -186,3 +186,8 @@ label {
 .material-chevron {
     cursor: pointer;
 }
+
+.trip-container svg {
+    display: block;
+    margin-top: 4px;
+}
