@@ -56,10 +56,12 @@ header .material-icons {
 
 .tab-active {
   border-radius: 10px;
-  border: 2.5px solid var(--celtic-600, #417845);
-  background: var(--gray-white, #fff);
+  /* border: 2.5px solid var(--celtic-600, #417845);
+  background: var(--gray-white, #fff); */
   padding: 5px 10px;
   color: var(--celtic-600);
+  background-color: var(--celtic-200);
+  font-weight: 700 !important;
 }
 
 #add-new-schedule {
