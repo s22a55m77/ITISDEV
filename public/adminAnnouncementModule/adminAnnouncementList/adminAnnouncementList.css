@@ -87,6 +87,25 @@ hr.solid {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  gap: 16px;
+  align-items: stretch;
+  padding: 16px;
+}
+
+.announcement:not(:last-child) {
+  border-bottom: 1px solid var(--gray-300);
+}
+
+.announcement-left {
+  height: 100%;
+}
+
+.announcement-info {
+  flex: 1;
+  }
+
+.announcement-info h5 {
+  margin-bottom: 0;
 }
 
 .popup-container {
@@ -150,10 +169,11 @@ hr.popup-solid {
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  background-color: var(--celtic-400);
+  background-color: var(--celtic-200);
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--celtic-500);
 }
 
 .back-btn {
@@ -174,4 +194,29 @@ hr.popup-solid {
 
 .toast-body {
   text-align: center;
+}
+
+.announcement-options {
+  display: flex;
+  gap: 10px;
+}
+
+.secondary-btn {
+  border-radius: 10px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: max-content;
+  padding: 6px 12px;
+}
+
+.delete-btn {
+  border-color: var(--rose-700);
+  color: var(--rose-700);
+}
+
+.edit-btn {
+  border-color: var(--celtic-600);
+  color: var(--celtic-600);
 }
