@@ -3,9 +3,10 @@
 <script defer src="/adminLanding/landing.js" ></script>
 
 <div class="header-container">
-  <div class="header">Hello, 
+  <div class="header">
+    Hello, 
     <% if (role.toLowerCase() === 'ssu') { %>
-      <%= role.toUpperCase() %>
+      <%= role.toUpperCase() %> Admin
     <% } else { %>
       <%= role.charAt(0).toUpperCase() + role.slice(1).toLowerCase() %>
     <% } %>
@@ -14,9 +15,12 @@
 
 <!-- Content for dispatcher -->
 <div class="dispatcher-container">
-  <div class="item">
-    <a href="/admin/checkin">Check In</a>
-  </div>
+    <a href="/admin/checkin">
+    <div class="item">
+        <span class="material-icons">checklist</span>
+        Check In
+      </div>
+  </a>
 </div>
 <div class="tab">
   <a href="/admin">Home</a>  
@@ -24,19 +28,31 @@
 </div>
 
 <!-- Content for admin -->
-<div class="admin-container">
-  <div class="item">
-    <a href="/admin/schedule">Schedules</a>
-  </div>
-  <div class="item">
-    <a href="/admin/reservation">Reservations</a>
-  </div>
-  <div class="item">
-    <a href="/admin/announcement">Announcement</a>
-  </div>
-  <div class="item admin">
-    <a href="/admin/auth/create">Add SSU/Dispatcher</a>
-  </div>
+ <div class="admin-container">
+  <a href="/admin/schedule">
+    <div class="item">
+      <span class="material-icons">calendar_month</span>
+      Manage Shuttle Schedules
+    </div>
+  </a>
+  <a href="/admin/reservation">
+    <div class="item">
+      <span class="material-icons">fact_check</span>
+      Manage Reservations
+    </div>
+  </a>
+  <a href="/admin/announcement">
+    <div class="item">
+      <span class="material-icons">campaign</span>
+      Manage Announcements
+    </div>
+  </a>
+  <a href="/admin/auth/create">
+    <div class="item admin">
+      <span class="material-icons">group_add</span>
+      Add SSU/Dispatcher
+    </div>
+  </a>
 </div>
 
 <script>

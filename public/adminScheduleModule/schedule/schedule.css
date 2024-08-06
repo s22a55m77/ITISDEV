@@ -11,6 +11,13 @@ header {
   line-height: normal;
   background-color: var(--celtic-600);
   border-radius: 0px 0px 10px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .material-icons {
+    color: white;
 }
 
 .main-container {  
@@ -30,9 +37,10 @@ header {
 }
 
 .tab {
-  margin-left: 50px;
+  /* margin-left: 50px;
   margin-right: 50px;
-  margin-top: 30px;
+  margin-top: 30px; */
+  margin: 30px 40px 0;
   display: flex;
   gap: 40px;
   flex-wrap: wrap;
@@ -48,10 +56,12 @@ header {
 
 .tab-active {
   border-radius: 10px;
-  border: 2.5px solid var(--celtic-600, #417845);
-  background: var(--gray-white, #fff);
+  /* border: 2.5px solid var(--celtic-600, #417845);
+  background: var(--gray-white, #fff); */
   padding: 5px 10px;
   color: var(--celtic-600);
+  background-color: var(--celtic-200);
+  font-weight: 700 !important;
 }
 
 #add-new-schedule {
@@ -141,4 +151,13 @@ tr {
   cursor: pointer;
   border: 1px solid var(--celtic-600, #417845);
   border-radius: 10px;
+}
+
+table button {
+    font-size: 14px !important;
+    padding: 5px 12px 5px 10px  !important;
+}
+
+table #edit {
+    margin-right: 10px;
 }

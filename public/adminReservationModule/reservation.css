@@ -11,6 +11,13 @@ header {
   line-height: normal;
   background-color: var(--celtic-600);
   border-radius: 0px 0px 10px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .material-icons {
+    color: white;
 }
 
 .tab {
@@ -31,12 +38,14 @@ header {
 }
 
 .tab-active {
-  border-radius: 10px;
-  border: 2.5px solid var(--celtic-600, #417845);
-  background: var(--gray-white, #fff);
-  padding: 5px 10px;
-  color: var(--celtic-600);
-}
+    border-radius: 10px;
+    /* border: 2.5px solid var(--celtic-600, #417845);
+    background: var(--gray-white, #fff); */
+    padding: 5px 10px;
+    color: var(--celtic-600);
+    background-color: var(--celtic-200);
+    font-weight: 700 !important;
+  }
 
 .main-container {
   display: flex;
@@ -102,7 +111,7 @@ header {
   display: flex;
   gap: 30px;
   border-radius: 20px;
-  background: var(--celtic-200, #cde5ce);
+  background: var(--gray-100);
   padding: 25px;
   min-height: 100%;
 }
@@ -217,7 +226,7 @@ tr td:last-child {
 }
 
 .passenger-container {
-  background-color: var(--celtic-200);
+  background: var(--gray-100);
   border-radius: 20px;
   padding: 20px;
   flex: 1;
@@ -279,4 +288,8 @@ tr td:last-child {
   padding: 5px 20px;
   background-color: var(--celtic-50);
   color: var(--celtic-600);
+}
+
+#prev-date, #next-date {
+  cursor: pointer;
 }

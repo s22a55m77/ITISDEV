@@ -4,13 +4,16 @@
 
 <title>Admin Schedule</title>
 
-<header>Manage Shuttle Schedules</header>
+<header>
+    <a href="/admin"><span class="material-icons">arrow_back</span></a>
+    Manage Shuttle Schedules
+</header>
 <div class="tab">
-  <a href="/admin/schedule?line=1">DLSU MNL ↔ DLSU LAG</a>
-  <a href="/admin/schedule?line=2">PASEO ↔ DLSU LAG</a>
-  <a href="/admin/schedule?line=3">CARMONA ↔ DLSU LAG</a>
-  <a href="/admin/schedule?line=4">PAVILION ↔ DLSU LAG</a>
-  <a href="/admin/schedule?line=5">WALTER ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=1">DLSU MNL <span class="material-icons">&nbsp;sync_alt&nbsp;</span> DLSU LAG</a>
+  <a href="/admin/schedule?line=2">PASEO <span class="material-icons">&nbsp;sync_alt&nbsp;</span> DLSU LAG</a>
+  <a href="/admin/schedule?line=3">CARMONA <span class="material-icons">&nbsp;sync_alt&nbsp;</span> DLSU LAG</a>
+  <a href="/admin/schedule?line=4">PAVILION <span class="material-icons">&nbsp;sync_alt&nbsp;</span> DLSU LAG</a>
+  <a href="/admin/schedule?line=5">WALTER <span class="material-icons">&nbsp;sync_alt&nbsp;</span> DLSU LAG</a>
 </div>
 
 
@@ -60,12 +63,12 @@
       <% } %>
     </table>
   </div>
-  <div id="back" onclick="window.location.href='/admin/'">
+  <!-- <div id="back" onclick="window.location.href='/admin/'">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
       <path d="M20.5 11H8.33L13.92 5.41L12.5 4L4.5 12L12.5 20L13.91 18.59L8.33 13H20.5V11Z" fill="#417845"/>
     </svg>
     BACK
-  </div>
+  </div> -->
 </div>
 
 <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">

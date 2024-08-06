@@ -19,7 +19,7 @@ body {
 }
 
 form {
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -63,7 +63,7 @@ input[type="file"] {
 
 
 .action-container {
-  margin-top: 40%;
+  margin-top: 36%;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -88,4 +88,8 @@ button {
 
 .toast-body {
   text-align: center;
+}
+
+button {
+    border-radius: 10px;
 }
