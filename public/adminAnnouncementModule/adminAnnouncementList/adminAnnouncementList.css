@@ -60,11 +60,22 @@ a {
 }
 
 #createBtn {
-  width: 130px;
-  height: 36px;
+  width: max-content;
+  padding: 10px 20px;
   border-radius: 10px;
-  background: var(--celtic-200);
+  background-color: var(--celtic-600);
   border: none;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color .3s;;
+}
+
+#createBtn:hover {
+  background-color: var(--celtic-500);
 }
 
 hr.solid {
