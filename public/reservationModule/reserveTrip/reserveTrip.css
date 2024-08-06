@@ -255,6 +255,7 @@ input[type="checkbox"]:checked + label.day > .date-display {
   text-align: center;
 }
 
-#round-trip-arrow {
+#round-trip-arrow,
+#one-way-arrow {
     margin-top: 8px;
 }
