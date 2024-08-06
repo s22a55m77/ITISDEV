@@ -289,3 +289,7 @@ tr td:last-child {
   background-color: var(--celtic-50);
   color: var(--celtic-600);
 }
+
+#prev-date, #next-date {
+  cursor: pointer;
+}
