@@ -111,7 +111,7 @@ header .material-icons {
   display: flex;
   gap: 30px;
   border-radius: 20px;
-  background: var(--celtic-200, #cde5ce);
+  background: var(--gray-100);
   padding: 25px;
   min-height: 100%;
 }
@@ -226,7 +226,7 @@ tr td:last-child {
 }
 
 .passenger-container {
-  background-color: var(--celtic-200);
+  background: var(--gray-100);
   border-radius: 20px;
   padding: 20px;
   flex: 1;
