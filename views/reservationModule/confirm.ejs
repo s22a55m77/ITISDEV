@@ -1,0 +1,122 @@
+<%- include('../common/headers.ejs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mgalante/jquery.redirect@master/jquery.redirect.js"></script>
+<link rel="stylesheet" href="/reservationModule/confirm/confirm.css" />
+<script defer type="module" src="/reservationModule/confirm/confirm.js"></script>
+
+<title>Confirm</title>
+
+<div class="header-container">
+  <div class="header-title">
+    Reserve Trip
+  </div>
+  <div class="step-container">
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step step-active last"></div>
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="main-container-header">
+    <b>Confirm your details:</b>
+  </div>
+  
+  <div class="trip-type-container">
+    <div class="card-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M17 5H3C1.9 5 1 5.89 1 7V16H3C3 17.65 4.34 19 6 19C7.66 19 9 17.65 9 16H14.5C14.5 17.65 15.84 19 17.5 19C19.16 19 20.5 17.65 20.5 16H23V11L17 5ZM3 11V7H7V11H3ZM6 17.5C5.17 17.5 4.5 16.83 4.5 16C4.5 15.17 5.17 14.5 6 14.5C6.83 14.5 7.5 15.17 7.5 16C7.5 16.83 6.83 17.5 6 17.5ZM13 11H9V7H13V11ZM17.5 17.5C16.67 17.5 16 16.83 16 16C16 15.17 16.67 14.5 17.5 14.5C18.33 14.5 19 15.17 19 16C19 16.83 18.33 17.5 17.5 17.5ZM15 11V7H16L20 11H15Z" fill="#77B17B"/>
+      </svg>
+      Trip type
+    </div>
+    <div id="trip-type"></div>
+  </div>
+  
+  <div class="one-way-information">
+    <div class="card-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M6.41 6L5 7.41L9.58 12L5 16.59L6.41 18L12.41 12L6.41 6Z" fill="#77B17B"/>
+        <path d="M13 6L11.59 7.41L16.17 12L11.59 16.59L13 18L19 12L13 6Z" fill="#77B17B"/>
+      </svg>
+      Departure
+    </div>
+    <div class="location-time-container">
+      <div class="">
+        <div id="from"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 4L10.59 5.41L16.17 11H4V13H16.17L10.59 18.59L12 20L20 12L12 4Z" fill="#417845"/>
+        </svg>
+        <div id="to"></div>
+      </div>
+      <div id="one-way-departure-time"></div>
+    </div>
+  </div>
+  
+  <div class="selected-dates-container">
+    <div class="card-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM9 14H7V12H9V14ZM13 14H11V12H13V14ZM17 14H15V12H17V14ZM9 18H7V16H9V18ZM13 18H11V16H13V18ZM17 18H15V16H17V18Z" fill="#77B17B"/>
+      </svg>
+      Selected dates
+    </div>
+    <div id="selected-dates-container">
+    </div>
+  </div>
+  
+  
+  <div class="round-trip-information">
+    <div class="departure-container">
+      <div class="card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6.41 6L5 7.41L9.58 12L5 16.59L6.41 18L12.41 12L6.41 6Z" fill="#77B17B"/>
+          <path d="M13 6L11.59 7.41L16.17 12L11.59 16.59L13 18L19 12L13 6Z" fill="#77B17B"/>
+        </svg>
+        Departure
+      </div>
+      <div class="location-time-container">
+        <div id="departure"></div>
+        <div id="departure-time"></div>
+      </div>
+    </div>
+
+    <div class="return-container">
+      <div class="card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M17.59 18L19 16.59L14.42 12L19 7.41L17.59 6L11.59 12L17.59 18Z" fill="#77B17B"/>
+          <path d="M11 18L12.41 16.59L7.83 12L12.41 7.41L11 6L5 12L11 18Z" fill="#77B17B"/>
+        </svg>
+        Return
+      </div>
+      <div class="location-time-container">
+        <div id="return"></div>
+        <div id="return-time"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="button-container">
+    <button id="back" onclick="history.back()">← BACK</button>
+    <button id="reserve">Reserve Trip</button>
+  </div>
+</div>
+
+<script>
+  const from = JSON.parse('<%- JSON.stringify(from) %>');
+  const to = JSON.parse('<%- JSON.stringify(to) %>');
+  const date = JSON.parse('<%- JSON.stringify(date) %>');
+  const departureIds = JSON.parse('<%- JSON.stringify(departureIds) %>');
+  const departureTime = JSON.parse('<%- JSON.stringify(departureTime) %>');
+  const purpose = '<%- purpose %>';
+
+  console.log(purpose)
+
+  let returnIds = [];
+  let returnTime;
+  try {
+    returnIds = JSON.parse('<%- JSON.stringify(returnIds) %>');
+    returnTime = JSON.parse('<%- JSON.stringify(returnTime) %>');
+  } catch (error) {
+  }
+
+</script>

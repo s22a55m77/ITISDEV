@@ -1,0 +1,397 @@
+const e = require('express')
+const {
+  scheduleModel,
+  scheduleDetailModel,
+  reservationApprovalModel,
+  notificationModel,
+} = require('../models/index.js')
+const moment = require('moment-timezone')
+const { findNearestAndSurrounding } = require('../utils/dateUtil.js')
+const isSSU = require('../utils/isSSU.js')
+const mongoose = require('../utils/mongoose.js')
+const emailTransporter = require('../utils/email.js')
+require('dotenv').config()
+
+const adminReservationModuleController = e.Router()
+
+adminReservationModuleController.get('/', isSSU, async (req, res) => {
+  const { selectedDate, selectedTime, line } = req.query
+
+  if (!line) {
+    res.redirect('/admin/reservation?line=1')
+    return
+  }
+
+  const schedule = await scheduleModel.aggregate([
+    {
+      $lookup: {
+        from: 'ScheduleDetail',
+        localField: 'details',
+        foreignField: '_id',
+        as: 'details',
+      },
+    },
+    {
+      $match: {
+        line: Number(line) || 1,
+      },
+    },
+    {
+      $project: {
+        details: {
+          _id: true,
+          from: true,
+          to: true,
+          slot: true,
+          time: true,
+        },
+      },
+    },
+  ])
+
+  if (!schedule[0]) {
+    res.render('adminReservationModule/reservation.ejs', {
+      dateList: [],
+      timeList: [],
+      passengerList: [],
+    })
+    return
+  }
+
+  const days = []
+  schedule[0].details.forEach((detail) =>
+    days.push(moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD'))
+  )
+
+  const uniqueDays = [...new Set(days)]
+
+  if (!selectedDate) {
+    const today = moment.tz('Asia/Manila').format('YYYY-MM-DD')
+
+    const nearestAndSurroundingTimes = findNearestAndSurrounding(
+      uniqueDays,
+      today
+    )
+
+    // const firstDate
+
+    res.redirect(
+      `/admin/reservation?line=${line}&selectedDate=${nearestAndSurroundingTimes[2]}`
+    )
+    return
+  }
+
+  const nearestAndSurroundingTimes = findNearestAndSurrounding(
+    uniqueDays,
+    selectedDate
+  )
+
+  const details = schedule[0].details.filter(
+    (detail) =>
+      moment(detail.time).tz('Asia/Manila').format('YYYY-MM-DD') ===
+      selectedDate
+  )
+
+  const map = new Map()
+  details.forEach((detail) => {
+    const existing = map.get(detail.from)
+    const obj = {
+      id: detail._id,
+      slot: detail.slot,
+      time: moment(detail.time).tz('Asia/Manila').format('HH:mm'),
+    }
+    map.set(detail.from, existing ? existing.concat(obj) : [obj])
+  })
+
+  const timeList = []
+
+  for (const [key, value] of map.entries()) {
+    if (
+      key === 'DLSU MNL' ||
+      key === 'PASEO' ||
+      key === 'CARMONA' ||
+      key === 'PAVILION' ||
+      key === 'WALTER'
+    )
+      timeList[0] = value
+    else timeList[1] = value
+  }
+
+  if (timeList[0] !== undefined)
+    timeList[0] = timeList[0].sort((a, b) => {
+      return moment(a.time, 'HH:mm').diff(moment(b.time, 'HH:mm'))
+    })
+
+  if (timeList[1] !== undefined)
+    timeList[1] = timeList[1].sort((a, b) => {
+      return moment(a.time, 'HH:mm').diff(moment(b.time, 'HH:mm'))
+    })
+
+  let passengerList
+
+  if (selectedTime) {
+    passengerList = (
+      await scheduleDetailModel.findById(selectedTime).populate({
+        path: 'approval',
+        populate: {
+          path: 'user',
+        },
+      })
+    ).approval.map((approval) => {
+      return {
+        _id: approval._id,
+        name: approval.user?.name,
+        id: approval.user?.idNumber,
+        designation: approval.designation,
+        purpose: approval.purpose,
+        status: approval.status,
+      }
+    })
+  }
+
+  res.render('adminReservationModule/reservation.ejs', {
+    dateList: JSON.stringify(nearestAndSurroundingTimes),
+    timeList: JSON.stringify(timeList),
+    passengerList: JSON.stringify(passengerList || []),
+  })
+})
+
+adminReservationModuleController.post('/confirm', isSSU, async (req, res) => {
+  const id = req.body.id
+
+  const session = await mongoose.startSession()
+
+  try {
+    await session.withTransaction(async () => {
+      const approval = await reservationApprovalModel
+        .findByIdAndUpdate(
+          id,
+          {
+            status: 'confirmed',
+          },
+          { new: false, session }
+        )
+        .populate('user')
+      let schedule
+      if (approval.status !== 'confirmed') {
+        schedule = await scheduleDetailModel.findOneAndUpdate(
+          {
+            approval: {
+              $in: id,
+            },
+          },
+          {
+            $push: {
+              reserve: { user: approval.user },
+            },
+            $inc: {
+              slot: -1,
+            },
+          },
+          {
+            new: true,
+            session,
+          }
+        )
+
+        const from = schedule.from
+        const to = schedule.to
+        const time = moment(schedule.time)
+          .tz('Asia/Manila')
+          .format('YYYY-MM-DD HH:mm')
+
+        await notificationModel.create(
+          [
+            {
+              title: 'Reservation Approved',
+              description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+              to: approval.user,
+            },
+          ],
+          { session }
+        )
+
+        emailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: approval.user.email,
+          subject: 'Reservation Approved',
+          text: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+        })
+      }
+      res.send({ success: true, id: schedule._id, slot: schedule.slot })
+    })
+  } catch (error) {
+    console.error(error)
+    res.send({ success: false, error: error })
+  }
+
+  session.endSession()
+})
+
+adminReservationModuleController.post('/reject', isSSU, async (req, res) => {
+  const id = req.body.id
+
+  const session = await mongoose.startSession()
+
+  try {
+    await session.withTransaction(async () => {
+      const doc = await reservationApprovalModel
+        .findByIdAndUpdate(
+          id,
+          {
+            status: 'rejected',
+          },
+          { new: false, session }
+        )
+        .populate('user')
+
+      let schedule
+
+      // if from confirm to rejected
+      if (doc.status === 'confirmed') {
+        schedule = await scheduleDetailModel.findOneAndUpdate(
+          {
+            approval: {
+              $in: id,
+            },
+          },
+          {
+            $pull: {
+              reserve: { user: doc.user },
+            },
+            $inc: {
+              slot: 1,
+            },
+          },
+          {
+            new: true,
+            session,
+          }
+        )
+
+        const from = schedule.from
+        const to = schedule.to
+        const time = moment(schedule.time)
+          .tz('Asia/Manila')
+          .format('YYYY-MM-DD HH:mm')
+
+        await notificationModel.create(
+          [
+            {
+              title: 'Reservation Rejected',
+              description: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+              to: doc.user,
+            },
+          ],
+          { session }
+        )
+
+        emailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: doc.user.email,
+          subject: 'Reservation Rejected',
+          text: `Your reservation from ${from} to ${to} at ${time} has been rejected.`,
+        })
+      }
+
+      res.send({ success: true, id: schedule._id, slot: schedule.slot })
+    })
+  } catch (error) {
+    console.error(error)
+    res.send({ success: false, error: error })
+  }
+
+  session.endSession()
+})
+
+adminReservationModuleController.post(
+  '/confirm/all',
+  isSSU,
+  async (req, res) => {
+    const ids = req.body.ids
+
+    const session = await mongoose.startSession()
+
+    try {
+      await session.withTransaction(async () => {
+        const approval = await reservationApprovalModel
+          .find(
+            {
+              _id: { $in: ids },
+              $and: {
+                status: {
+                  $ne: 'confirmed',
+                },
+              },
+            },
+            { session }
+          )
+          .populate('user')
+
+        await reservationApprovalModel.updateMany(
+          { _id: { $in: ids } },
+          { status: 'confirmed' },
+          { session }
+        )
+
+        const users = approval.map((approval) => approval.user)
+        const emails = users.map((user) => user.email)
+
+        const schedule = await scheduleDetailModel.findOneAndUpdate(
+          {
+            approval: {
+              $in: ids,
+            },
+          },
+          {
+            $push: {
+              reserve: {
+                $each: users,
+              },
+            },
+            $inc: {
+              slot: -users.length,
+            },
+          },
+          {
+            new: true,
+            session,
+          }
+        )
+
+        const from = schedule.from
+        const to = schedule.to
+        const time = moment(schedule.time)
+          .tz('Asia/Manila')
+          .format('YYYY-MM-DD HH:mm')
+
+        await notificationModel.create(
+          [
+            {
+              title: 'Reservation Approved',
+              description: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+              to: users,
+            },
+          ],
+          { session }
+        )
+
+        emailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: emails,
+          subject: 'Reservation Approved',
+          text: `Your reservation from ${from} to ${to} at ${time} has been approved.`,
+        })
+
+        res.send({ success: true, id: schedule._id, slot: schedule.slot })
+      })
+    } catch (error) {
+      console.error(error)
+      res.send({ success: false, error: error })
+    }
+
+    session.endSession()
+  }
+)
+
+module.exports = adminReservationModuleController

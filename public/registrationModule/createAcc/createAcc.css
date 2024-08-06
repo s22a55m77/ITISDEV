@@ -1,0 +1,91 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0;
+}
+
+input, select {
+  padding: 9px 10px;
+  border: 1px solid #000;
+  background-color: var(--celtic-50);
+}
+
+.file-upload-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+#eaf-filename, #vaccination-filename {
+  color: #868F93;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.file-upload {
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  border: 0.5px solid #000;
+  min-width: 110px;
+}
+
+
+.action-container {
+  margin-top: 40%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  bottom: 60px;
+}
+
+button {
+  width: 100%;
+  padding: 16px 48px 16px 47px;
+  border: 1px solid #FFF;
+  background: var(--celtic-600, #417845);
+  color: #FFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

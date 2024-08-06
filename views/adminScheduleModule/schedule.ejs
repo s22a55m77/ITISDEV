@@ -1,0 +1,76 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/adminScheduleModule/schedule/schedule.css" />
+<script defer src="/adminScheduleModule/schedule/schedule.js"></script>
+
+<title>Admin Schedule</title>
+
+<header>Manage Shuttle Schedules</header>
+<div class="tab">
+  <a href="/admin/schedule?line=1">DLSU MNL ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=2">PASEO ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=3">CARMONA ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=4">PAVILION ↔ DLSU LAG</a>
+  <a href="/admin/schedule?line=5">WALTER ↔ DLSU LAG</a>
+</div>
+
+
+<div class="main-container">
+  <div>
+    <a href="/admin/schedule/create">
+      <button id="add-new-schedule">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="white"/>
+        </svg>
+        ADD NEW SCHEDULE
+      </button>
+    </a>
+  </div>
+  <div class="card-container">
+    <table>
+      <tr>
+        <th>Date Range</th>
+        <th>Label</th>
+        <th>Actions</th>
+      </tr>
+      <% for(const schedule of schedules) { %>
+      <tr>
+        <td><%= schedule.dateRange %></td>
+        <td><%= schedule.label %></td>
+        <td>
+          <a
+            href="/admin/schedule/edit/<%= schedule._id %>?line=<%= schedule.line %>"
+          >
+            <button id="edit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M14.0588 9.02L14.9788 9.94L5.91878 19H4.99878V18.08L14.0588 9.02ZM17.6588 3C17.4088 3 17.1488 3.1 16.9588 3.29L15.1288 5.12L18.8788 8.87L20.7088 7.04C21.0988 6.65 21.0988 6.02 20.7088 5.63L18.3688 3.29C18.1688 3.09 17.9188 3 17.6588 3ZM14.0588 6.19L2.99878 17.25V21H6.74878L17.8088 9.94L14.0588 6.19Z" fill="#417845"/>
+              </svg>
+              EDIT
+            </button>
+          </a>
+          <a href="/admin/schedule/delete/<%= schedule._id %>">
+            <button id="delete">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M16 9V19H8V9H16ZM14.5 3H9.5L8.5 4H5V6H19V4H15.5L14.5 3ZM18 7H6V19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7Z" fill="#BE133C"/>
+              </svg>
+              DELETE
+            </button></a
+          >
+        </td>
+      </tr>
+      <% } %>
+    </table>
+  </div>
+  <div id="back" onclick="window.location.href='/admin/'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+      <path d="M20.5 11H8.33L13.92 5.41L12.5 4L4.5 12L12.5 20L13.91 18.59L8.33 13H20.5V11Z" fill="#417845"/>
+    </svg>
+    BACK
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+  <div id="toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+body {
+  background-color: var(--celtic-50);
+  position: relative;
+}
+
+header {
+  padding: 28px;
+  font-size: 28px;
+  color: var(--gray-white);
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background-color: var(--celtic-600);
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  margin-top: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+  flex-wrap: wrap;
+}
+
+.schedule-container {
+  margin-top: 40px;
+  display: flex;
+  gap: 20px;
+}
+
+.time-container {
+  margin-top: 10px;
+  display: flex;
+  gap: 100px;
+  padding: 20px;
+  border-radius: 10px;
+  background: var(--gray-white, #FFF);
+}
+
+.weekday-saturday-header {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.tab {
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 30px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.tab > a {
+  font-size: 14px;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.tab-active {
+  border-radius: 10px;
+  border: 2.5px solid var(--celtic-600, #417845);
+  background: var(--gray-white, #fff);
+  padding: 5px 10px;
+  color: var(--celtic-600);
+}
+
+#back {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--celtic-600, #417845);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.instruction {
+  color: var(--gray-950, #030712);
+  font-size: 18px;
+  font-style: normal;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#date-range {
+  display: inline-flex;
+  padding: 6px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+  cursor: pointer;
+}
+
+#date-range span {
+  color: var(--celtic-600, #417845);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#save {
+  display: inline-flex;
+  padding: 6px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #FFF);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+#label {
+  height: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+}
+
+.location-title {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#weekdays-from-time-container,
+#weekdays-to-time-container,
+#saturdays-from-time-container,
+#saturdays-to-time-container {
+  margin: 20px 0;
+}
+
+#saturdays-from-time-add,
+#saturdays-to-time-add,
+#weekdays-from-time-add,
+#weekdays-to-time-add {
+  display: inline-flex;
+  padding: var(--Radius-radius-sm, 4px) 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  color: #00A14A;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border: 1px dashed #00A14A;
+  background-color: white;
+
+  cursor: pointer;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-body {
+  text-align: center;
+}
+
+#date-select {
+  padding: 5px;
+  background-color: var(--celtic-50);
+  border: 1px solid var(--celtic-600);
+  border-radius: 10px;
+}

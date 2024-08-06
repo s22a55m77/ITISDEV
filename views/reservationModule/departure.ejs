@@ -1,0 +1,74 @@
+<%- include('../common/headers.ejs') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<link rel="stylesheet" href="/reservationModule/departure/departure.css" />
+<script src="https://cdn.jsdelivr.net/gh/mgalante/jquery.redirect@master/jquery.redirect.js"></script>
+<script defer src="/reservationModule/departure/departure.js"></script>
+
+<title>Departure</title>
+
+<div class="header-container">
+  <div class="header-title">
+    Reserve Trip
+  </div>
+  <div class="step-container">
+    <div class="step"></div>
+    <div class="step step-active"></div>
+    <div class="step"></div>
+    <div class="step last"></div>
+  </div>
+</div>
+
+<div class="main-container">
+  <div>
+    <div class="main-container-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M12.49 2C6.97 2 2.5 6.48 2.5 12C2.5 17.52 6.97 22 12.49 22C18.02 22 22.5 17.52 22.5 12C22.5 6.48 18.02 2 12.49 2ZM12.5 20C8.08 20 4.5 16.42 4.5 12C4.5 7.58 8.08 4 12.5 4C16.92 4 20.5 7.58 20.5 12C20.5 16.42 16.92 20 12.5 20Z" fill="#77B17B"/>
+        <path d="M13 7H11.5V13L16.75 16.15L17.5 14.92L13 12.25V7Z" fill="#77B17B"/>
+      </svg>
+      Select <b>departure</b> trip time
+    </div>
+    <div class="location-container">
+      <div id="from"></div>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+          <path d="M12 4.5L10.59 5.91L16.17 11.5H4V13.5H16.17L10.59 19.09L12 20.5L20 12.5L12 4.5Z" fill="#417845"/>
+        </svg>
+      </div>
+      <div id="to"></div>
+    </div>
+  </div>
+  
+  <div class="time-container">
+  </div>
+  
+  <div class="button-container">
+    <button id="back">
+      <a href="/reservation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+          <path d="M20.5 11H8.33L13.92 5.41L12.5 4L4.5 12L12.5 20L13.91 18.59L8.33 13H20.5V11Z" fill="#417845"/>
+        </svg> BACK
+      </a>
+    </button>
+    <button id="next">
+      NEXT 
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <path d="M12.5 4L11.09 5.41L16.67 11H4.5V13H16.67L11.09 18.59L12.5 20L20.5 12L12.5 4Z" fill="white"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+  <div id="toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body">
+    </div>
+  </div>
+</div>
+
+<script>
+  const from = JSON.parse('<%- JSON.stringify(from) %>');
+  const to = JSON.parse('<%- JSON.stringify(to) %>');
+  const date = JSON.parse('<%- JSON.stringify(date) %>');
+  const schedules = JSON.parse('<%- JSON.stringify(schedules) %>');
+  const purpose = '<%- purpose %>';
+</script>

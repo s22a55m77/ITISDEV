@@ -1,0 +1,218 @@
+<%- include('../common/headers.ejs') %>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<link rel="stylesheet" href="/adminReservationModule/reservation.css" />
+<script
+  defer
+  type="module"
+  src="/adminReservationModule/reservation.js"
+></script>
+
+<title>Admin Reservation</title>
+<header>View Reservations</header>
+<div class="tab">
+  <a href="/admin/reservation?line=1"
+    >DLSU MNL
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M6.99 11L3 15L6.99 19V16H14V14H6.99V11ZM21 9L17.01 5V8H10V10H17.01V13L21 9Z"
+        fill="black"
+      />
+    </svg>
+    DLSU LAG
+  </a>
+  <a href="/admin/reservation?line=2"
+    >PASEO
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M6.99 11L3 15L6.99 19V16H14V14H6.99V11ZM21 9L17.01 5V8H10V10H17.01V13L21 9Z"
+        fill="black"
+      />
+    </svg>
+    DLSU LAG
+  </a>
+  <a href="/admin/reservation?line=3"
+    >CARMONA
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M6.99 11L3 15L6.99 19V16H14V14H6.99V11ZM21 9L17.01 5V8H10V10H17.01V13L21 9Z"
+        fill="black"
+      />
+    </svg>
+    DLSU LAG
+  </a>
+  <a href="/admin/reservation?line=4"
+    >PAVILION
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M6.99 11L3 15L6.99 19V16H14V14H6.99V11ZM21 9L17.01 5V8H10V10H17.01V13L21 9Z"
+        fill="black"
+      />
+    </svg>
+    DLSU LAG
+  </a>
+  <a href="/admin/reservation?line=5"
+    >WALTER
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M6.99 11L3 15L6.99 19V16H14V14H6.99V11ZM21 9L17.01 5V8H10V10H17.01V13L21 9Z"
+        fill="black"
+      />
+    </svg>
+    DLSU LAG
+  </a>
+</div>
+
+<div class="main-container">
+  <div class="date-select-container">
+    <div id="prev-date">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+      >
+        <path
+          d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z"
+          fill="#417845"
+        />
+      </svg>
+    </div>
+    <div id="date-list"></div>
+    <div id="next-date">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <path
+          d="M12 4L10.59 5.41L16.17 11H4V13H16.17L10.59 18.59L12 20L20 12L12 4Z"
+          fill="#417845"
+        />
+      </svg>
+    </div>
+  </div>
+  <div>
+    <div class="location-container">
+      <div id="from-location-time-container">
+        <div id="from-location-name"></div>
+      </div>
+      <div id="to-location-time-container">
+        <div id="to-location-name"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="passenger-container">
+    <% if (passengerList == '[]' || passengerList.length == 0) { %> <% } else
+    {%>
+    <div>
+      <div class="passenger-header">
+        <span class="header-text">Passenger List</span>
+
+        <div class="popup-container">
+          <button id="popup-btn">Filter</button>
+          <div class="popup" id="popup">
+            <div>
+              <input type="checkbox" id="confirmed" name="confirmed" checked />
+              <label for="confirmed">Confirmed</label><br />
+            </div>
+            <div>
+              <input type="checkbox" id="rejected" name="rejected" checked />
+              <label for="rejected">Rejected</label><br />
+            </div>
+            <div>
+              <input type="checkbox" id="pending" name="pending" checked />
+              <label for="pending">Pending</label><br />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>Pending: <span id="pending-count"></span></div>
+      <div>Confirmed: <span id="confirmed-count"></span></div>
+      <div>Rejected: <span id="rejected-count"></span></div>
+      <div class="passenger-list-table-container">
+        <table id="passenger-list-table">
+          <tr>
+            <th>Name</th>
+            <th>ID Number</th>
+            <th>Designation</th>
+            <th>Purpose</th>
+          </tr>
+        </table>
+      </div>
+      <div class="passenger-actions">
+        <button id="confirm">Confirm Booking</button>
+        <button id="reject">Reject Booking</button>
+        <button id="confirm-all">Confirm all passengers</button>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<a href="/admin">
+  <button class="back-btn">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="24"
+      viewBox="0 0 25 24"
+      fill="none"
+    >
+      <path
+        d="M20.5 11H8.33L13.92 5.41L12.5 4L4.5 12L12.5 20L13.91 18.59L8.33 13H20.5V11Z"
+        fill="#417845"
+      />
+    </svg>
+    Back
+  </button>
+</a>
+
+<script>
+  const dateListJson =
+    `<%- dateList %>`.trim() === '' ? '[]' : `<%- dateList %>`
+  const timeListJson =
+    `<%- timeList %>`.trim() === '' ? '[]' : `<%- timeList %>`
+  const passengerListJson =
+    `<%- passengerList %>`.trim() === '' ? '[]' : `<%- passengerList %>`
+
+  const dateList = JSON.parse(dateListJson)
+  const timeList = JSON.parse(timeListJson)
+  const passengerList = JSON.parse(passengerListJson)
+</script>

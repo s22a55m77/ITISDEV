@@ -1,0 +1,139 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/reservationModule/reserveTrip/reserveTrip.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mgalante/jquery.redirect@master/jquery.redirect.js"></script>
+<script defer src="/reservationModule/reserveTrip/reserveTrip.js"></script>
+
+<title>Reserve Trip</title>
+
+<div class="header-container">
+  <div class="header-title">
+    Reserve Trip
+  </div>
+  <div class="step-container">
+    <div class="step step-active"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step last"></div>
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="trip-type-container">
+    <div class="trip-type-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M17 5H3C1.9 5 1 5.89 1 7V16H3C3 17.65 4.34 19 6 19C7.66 19 9 17.65 9 16H14.5C14.5 17.65 15.84 19 17.5 19C19.16 19 20.5 17.65 20.5 16H23V11L17 5ZM3 11V7H7V11H3ZM6 17.5C5.17 17.5 4.5 16.83 4.5 16C4.5 15.17 5.17 14.5 6 14.5C6.83 14.5 7.5 15.17 7.5 16C7.5 16.83 6.83 17.5 6 17.5ZM13 11H9V7H13V11ZM17.5 17.5C16.67 17.5 16 16.83 16 16C16 15.17 16.67 14.5 17.5 14.5C18.33 14.5 19 15.17 19 16C19 16.83 18.33 17.5 17.5 17.5ZM15 11V7H16L20 11H15Z" fill="#77B17B"/>
+        </svg>
+      Select trip type
+    </div>
+    <div style="margin-top: 12px;">
+      <label id="round-trip-label" for="round-trip" class="trip-type-active">Round trip</label>
+      <input id="round-trip" type="radio" name="trip-type" value="round-trip" />
+      <label id="one-way-label" for="one-way">One way</label>
+      <input id="one-way" type="radio" name="trip-type" value="one-way" />
+    </div>
+  </div>
+  
+  <div class="purpose-container">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M16.5 19.72H4.5V7.5H11.5V5.5H4.5C3.4 5.5 2.5 6.4 2.5 7.5V19.5C2.5 20.6 3.4 21.5 4.5 21.5H16.5C17.6 21.5 18.5 20.6 18.5 19.5V12.5H16.5V19.72Z" fill="#77B17B"/>
+      <path d="M18.5 2.5H16.5V5.5H13.5C13.51 5.51 13.5 7.5 13.5 7.5H16.5V10.49C16.51 10.5 18.5 10.49 18.5 10.49V7.5H21.5V5.5H18.5V2.5Z" fill="#77B17B"/>
+      <path d="M14.5 9.5H6.5V11.5H14.5V9.5Z" fill="#77B17B"/>
+      <path d="M6.5 12.5V14.5H14.5V12.5H6.5Z" fill="#77B17B"/>
+      <path d="M14.5 15.5H6.5V17.5H14.5V15.5Z" fill="#77B17B"/>
+    </svg>
+    <label for="purpose">Purpose:</label>
+    <input id="purpose"/>
+  </div>
+  
+  <div class="destination-container">
+    <div class="destination-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="#77B17B"/>
+        </svg>
+      Select Destination
+    </div>
+    <div class="select-destination-container">
+      <div class="from-container">
+        <select name="from" id="from">
+          <option disabled selected value>Select Start Location</option>
+          <option>CARMONA</option>
+          <option>DLSU MNL</option>
+          <option>DLSU LAG</option>
+          <option>PASEO</option>
+          <option>PAVILION</option>
+          <option>WALTER</option>
+        </select>
+        <div id="from-show">Show image</div>
+
+      </div>
+      <div id="round-trip-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6.99 11L3 15L6.99 19V16H14V14H6.99V11ZM21 9L17.01 5V8H10V10H17.01V13L21 9Z" fill="#417845"/>
+        </svg>
+      </div>
+      <div id="one-way-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 4L10.59 5.41L16.17 11H4V13H16.17L10.59 18.59L12 20L20 12L12 4Z" fill="#417845"/>
+        </svg>
+      </div>
+      <div class="to-container">
+        <select name="to" id="to">
+          <option disabled selected value>Select Destination</option>
+          <option>CARMONA</option>
+          <option>DLSU MNL</option>
+          <option>DLSU LAG</option>
+          <option>PASEO</option>
+          <option>PAVILION</option>
+          <option>WALTER</option>
+        </select>
+        <div id="to-show">Show image</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="select-dates-container">
+    <div class="select-dates-header">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM9 14H7V12H9V14ZM13 14H11V12H13V14ZM17 14H15V12H17V14ZM9 18H7V16H9V18ZM13 18H11V16H13V18ZM17 18H15V16H17V18Z" fill="#77B17B"/>
+        </svg>
+      Select date/s
+    </div>
+    <div class="weekday-saturday">
+      Weekdays
+    </div>
+    <div id="weekdays-container">
+    
+    </div>
+    <div class="weekday-saturday">
+      Saturdays
+    </div>
+    <div id="saturdays-container">
+    
+    </div>
+  </div>
+  
+  
+  <button id="next">
+    Next
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+      <path d="M12.5 4L11.09 5.41L16.67 11H4.5V13H16.67L11.09 18.59L12.5 20L20.5 12L12.5 4Z" fill="white"/>
+    </svg>
+  </button>
+  
+  
+  <div id="image-modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <image id="image" width="100%"></image>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+  <div id="toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.announcementlist-title {
+  position: absolute;
+  left: 50%;
+  margin-top: -50px;
+  transform: translate(-50%, 0%);
+  width: 80%;
+  height: 100px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+
+  text-align: center;
+  font-weight: 700;
+  line-height: 50px;
+}
+
+@media screen and (min-width: 800px) {
+  .announcementlist-title {
+    margin-top: -50px;
+  }
+}
+
+.announcement-container {
+  margin: 100px auto 25px;
+  width: 80%;
+  height: fit-content;
+  background-color: white;
+  border-radius: 20px;
+  padding: 25px;
+}
+
+.create-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#createBtn {
+  width: 130px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--celtic-200);
+  border: none;
+}
+
+hr.solid {
+  margin-top: 15px;
+  border-top: 1px solid #a39c9c;
+}
+
+.announcement {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup-container .popup {
+  visibility: hidden;
+  width: 160px;
+  background-color: #d9d9d9;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup-container .popup::after {
+  content: '';
+  position: absolute;
+  bottom: 95%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.popup-container .show {
+  visibility: visible;
+}
+
+hr.popup-solid {
+  border-top: 1px solid #a39c9c;
+}
+
+#alert {
+  display: none;
+  margin: 10px auto;
+  width: 80%;
+  text-align: center;
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  z-index: 100;
+}
+
+.icon-bg {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: var(--celtic-400);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-btn {
+  margin-top: 10px;
+  margin-left: 45px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600);
+  padding: 5px 20px;
+  background-color: var(--celtic-50);
+  color: var(--celtic-600);
+}
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

@@ -1,0 +1,120 @@
+body {
+  background-color: white;
+}
+
+.time-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 50px;
+  row-gap: 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  color: var(--gray-700, #374151);
+}
+
+.time-item {
+  display: flex;
+  width: 100%;
+  padding: 12px 16px;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid var(--gray-400, #9CA3AF);
+}
+
+.location-container {
+  margin: 12px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray-950, #030712);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.green {
+  color:  var(--celtic-500, #539458);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.red {
+  color:  var(--celtic-500, #539458);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.button-container {
+  margin-top: 35px;
+  display: flex;
+  gap: 10px;
+}
+
+#back {
+  width: 100%;
+  display: flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  background-color: var(--celtic-50);
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+}
+
+#back > a {
+  display: flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#next {
+  width: 100%;
+  display: flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #FFF);
+}
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

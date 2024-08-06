@@ -1,0 +1,127 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.location {
+  display: flex;
+  gap: 10px;
+}
+
+.status {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  border: 0.5px solid #000;
+}
+
+#alert-message {
+  display: none;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.header {
+  color: var(--gray-white, #FFF);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.title {
+  margin: 10px 0;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.trip-container {
+  margin-top: 10px;
+  background-color: var(--gray-white);
+  padding: 10px;
+}
+
+.information-container {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.location-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: var(--gray-600, #4B5563);
+  font-family: "Radio Canada";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.location {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+
+  color: var(--gray-600, #4B5563);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.confirmed {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  border: 0.5px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #FFF);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pending {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  border: 0.5px solid var(--celtic-600, #417845);
+  background: #FFF;
+  color: var(--celtic-600, #417845);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.rejected, .cancelled {
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  background: var(--Rose-700, #BE133C);
+  
+  color: var(--gray-white, #FFF);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;  
+}

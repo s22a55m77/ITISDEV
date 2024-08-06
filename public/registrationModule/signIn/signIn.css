@@ -1,0 +1,45 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  position: absolute;
+  width: 100%;
+  padding: 20px 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo-container {
+  margin: 0 auto;
+  margin-bottom: 40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 200px;
+}
+
+#error {
+  display: none;
+  margin: 20px 0;
+  padding: 5px 10px;
+  width: 100%;
+  background-color: #A70000;
+  color: white;
+  text-align: center;
+  border-radius: 20px;
+}

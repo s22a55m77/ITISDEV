@@ -1,0 +1,168 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  color: var(--gray-700, #374151);
+}
+
+.trip-type-container,
+.selected-dates-container,
+.departure-container,
+.return-container,
+.one-way-information {
+  border-radius: 10px;
+  background: var(--gray-white);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: var(--gray-700, #374151);
+  font-size: 16px;
+}
+
+#trip-type {
+  color: var(--gray-950, #030712);
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#selected-dates-container {
+  display: flex;
+  overflow: scroll;
+  gap: 5px
+}
+
+.month-display {  
+  color: var(--gray-700, #374151);
+  /* Body/Small */
+  font-family: "Radio Canada";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+#weekdays-container, #saturdays-container {
+  display: flex;
+  overflow: scroll;
+  gap: 5px
+}
+
+.day {
+  display: flex;
+  width: 50px;
+  padding: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1px solid var(--gray-400, #9CA3AF);
+  background: #FFF;
+}
+
+.date-display {
+  color: var(--gray-950, #030712);
+  text-align: center;
+  font-family: "Radio Canada";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.location-time-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#departure,
+#return {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: var(--gray-950, #030712);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#departure-time,
+#return-time {
+  color: var(--celtic-600, #417845);
+  text-align: right;
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.button-container {
+  margin-top: 35px;
+  display: flex;
+  gap: 10px;
+}
+
+#back {
+  width: 100%;
+  display: flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  background-color: var(--celtic-50);
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+}
+
+#reserve {
+  width: 100%;
+  display: flex;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+  color: var(--gray-white, #FFF);
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked + label.day {
+  color: white;
+  background-color: black;
+}

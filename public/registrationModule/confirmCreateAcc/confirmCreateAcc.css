@@ -1,0 +1,74 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.information-container {
+  margin: 0 auto;
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+#name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+#email {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+#next {
+  margin-top: 50px;
+  width: 100%;
+  padding: 16px 0px;
+  border: 1px solid #FFF;
+  background: var(--celtic-600, #417845);
+  color: #FFF;
+  font-size: 16px;
+}
+
+.footer-container {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#sign-on {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 13.5px;
+  border: 0.5px solid var(--celtic-600, #417845);
+  background: #FFF;
+  color: var(--celtic-600, #417845);
+  font-size: 14px;
+}

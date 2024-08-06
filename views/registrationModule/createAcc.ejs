@@ -1,0 +1,65 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/registrationModule/createAcc/createAcc.css" />
+<script defer src="/registrationModule/createAcc/createAcc.js"></script>
+
+<title>Create</title>
+
+<div class="header-container">
+  <div class="header-title">
+    Create your account
+  </div>
+  <div class="step-container">
+    <div class="step"></div>
+    <div class="step step-active"></div>
+  </div>
+</div>
+
+<div class="main-container">
+  <form method="post" action="/auth/create" enctype="multipart/form-data">
+    <input type="hidden" name="idToken" />
+    <label for="designation">DESIGNATION</label>
+    <select id="designation" name="designation">
+      <option value="student">Student</option>
+      <option value="teacher">Teacher</option>
+    </select>
+    <label for="idNumber">ID NUMBER</label>
+    <input id="idNumber" type="number" name="idNumber" required />
+    <label for="collegeOrDepartment">COLLEGE/DEPARTMENT</label>
+    <select id="collegeOrDepartment" name="collegeOrDepartment">
+      <option value="ccs">College of Computer Studies</option>
+      <option value="cos">College of Science</option>
+    </select>
+    <label for="campus">CAMPUS</label>
+    <select id="campus" name="campus">
+      <option value="College - Laguna Enrolled without Class/es in Manila">College - Laguna Enrolled without Class/es in Manila</option>
+      <option value="College - Laguna Enrolled with Class/es in Manila">College - Laguna Enrolled with Class/es in Manila</option>
+      <option value="College - Manila Enrolled without Class/es in Laguna">College - Manila Enrolled without Class/es in Laguna</option>
+      <option value="College - Manila Enrolled with Class/es in Laguna">College - Manila Enrolled with Class/es in Laguna</option>
+      <option value="Integrated School - Laguna Enrolled">Integrated School - Laguna Enrolled</option>
+      <option value="Integrated School - Manila Enrolled">Integrated School - Manila Enrolled</option>
+    </select>
+    <label for="eaf" style="margin-top: 20px; margin-bottom: 0px;">EAF</label>
+    <div class="file-upload-container">
+      <div id="eaf-filename">No file uploaded</div>
+      <label for="eaf" class="file-upload">Upload file</label>
+      <input id="eaf" type="file" name="eaf"/>
+    </div>
+    <label for="vaccinationRecord" style="margin-top: 20px; margin-bottom: 0px;">VACCINATION RECORD</label>
+    <div class="file-upload-container">
+      <div id="vaccination-filename">No file uploaded</div>
+      <label for="vaccinationRecord" class="file-upload">Upload file</label>
+      <input id="vaccinationRecord" type="file" name="vaccinationRecord" />
+    </div>
+    <div class="action-container">
+      <button id="back" type="button">← BACK</button>
+      <button id="register" type="submit">REGISTER</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+  <div id="toast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body">
+    </div>
+  </div>
+</div>

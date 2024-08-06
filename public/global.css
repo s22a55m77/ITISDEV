@@ -2,15 +2,113 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Radio Canada';
 }
 
 body {
   min-height: 100vh;
-  background-color: #EFECEC;
+  background-color: var(--celtic-50);
 }
 
 .bg-head {
   width: 100%;
   height: 82px;
-  background-color: #868F93;
+  background-color: var(--celtic-600);
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Radio Canada Big';
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 28px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+h5 {
+  font-size: 20px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+:root {
+  /* Color styles */
+  --celtic-600: #417845;
+  --celtic-500: #539458;
+  --celtic-400: #77b17b;
+  --celtic-200: #cde5ce;
+  --celtic-50: #f4f9f5;
+  --celtic-100: #e6f2e7;
+  --gray-white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-950: #030712;
+  --rose-800: #9f1239;
+  --rose-700: #be133c;
+
+  /* Text-size styles */
+  --body-base: 16px;
+  --body-small: 12px;
+  --body-strong: 17px;
+
+  /* Effect styles */
+  --shadow-small: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  --shadow-regular: 0px 4px 10px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0px 8px 35px rgba(0, 0, 0, 0.16);
+}
+
+.step-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.step {
+  width: 100%;
+  height: 8px;
+  background: var(--celtic-400);
+}
+
+.step-active {
+  background: var(--gray-white);
+}
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
 }

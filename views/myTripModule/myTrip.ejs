@@ -1,0 +1,29 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/myTripModule/myTrip/myTrip.css" />
+<script defer src="/myTripModule/myTrip/myTrip.js"></script>
+
+<title>My Trip</title>
+
+<div class="header-container">
+  <div class="header">My Trip</div>
+</div>
+
+<div class="main-container">
+  <div id="alert-message">
+  </div>
+  
+  
+  <div>
+    <div class="title">Recent</div>
+    <div id="recent-trip-container"></div>
+  </div>
+  
+  <div>
+    <div class="title">Past trips</div>
+    <div id="past-trip-container"></div>
+  </div>
+</div>
+
+<script>
+  const tripList = JSON.parse(`<%- JSON.stringify(tripList) %>`);
+</script>

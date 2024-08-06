@@ -1,0 +1,72 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/reservationModule/success/success.css" />
+<script defer src="/reservationModule/success/success.js"></script>
+
+<title>Success</title>
+
+<header class="header">
+  <h3 style="color: var(--gray-white)">Reserve Trip</h3>
+</header>
+<main>
+  <center class="main-container">
+    <div id="success">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="58"
+        height="58"
+        viewBox="0 0 58 58"
+        fill="none"
+      >
+        <path
+          d="M29 4.83325C15.66 4.83325 4.83331 15.6599 4.83331 28.9999C4.83331 42.3399 15.66 53.1666 29 53.1666C42.34 53.1666 53.1666 42.3399 53.1666 28.9999C53.1666 15.6599 42.34 4.83325 29 4.83325ZM24.1666 41.0833L12.0833 28.9999L15.4908 25.5924L24.1666 34.2441L42.5091 15.9016L45.9166 19.3333L24.1666 41.0833Z"
+          fill="#417845"
+        />
+      </svg>
+      <div style="max-width: 178px">
+        <h2>Reservation submitted.</h2>
+        <div style="margin-top: 25px">
+          See your trip details and status at
+          <a href="/trip"><strong>My Trips.</strong></a>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button onclick="window.location.href='/'">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="25"
+            height="24"
+            viewBox="0 0 25 24"
+            fill="none"
+          >
+            <path
+              d="M10.5 20.5V14.5H14.5V20.5H19.5V12.5H22.5L12.5 3.5L2.5 12.5H5.5V20.5H10.5Z"
+              fill="#417845"
+            />
+          </svg>
+          Home
+        </button>
+        <button onclick="window.location.href='/trip'">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M17 5H3C1.9 5 1 5.89 1 7V16H3C3 17.65 4.34 19 6 19C7.66 19 9 17.65 9 16H14.5C14.5 17.65 15.84 19 17.5 19C19.16 19 20.5 17.65 20.5 16H23V11L17 5ZM3 11V7H7V11H3ZM6 17.5C5.17 17.5 4.5 16.83 4.5 16C4.5 15.17 5.17 14.5 6 14.5C6.83 14.5 7.5 15.17 7.5 16C7.5 16.83 6.83 17.5 6 17.5ZM13 11H9V7H13V11ZM17.5 17.5C16.67 17.5 16 16.83 16 16C16 15.17 16.67 14.5 17.5 14.5C18.33 14.5 19 15.17 19 16C19 16.83 18.33 17.5 17.5 17.5ZM15 11V7H16L20 11H15Z"
+              fill="#417845"
+            />
+          </svg>
+          My Trips
+        </button>
+      </div>
+    </div>
+    <div id="failed">Failed</div>
+  </center>
+</main>
+
+<script>
+  const success = '<%- success %>'
+</script>

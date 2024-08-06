@@ -1,0 +1,60 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.upload-container {
+  margin-top: 10px;
+}
+
+.item-container {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  align-items: center;
+}
+
+.eaf-container>div{
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.item-container:nth-of-type(n+2) {
+  margin-top: 20px;
+}
+
+#alert {
+  margin: 20px auto;
+  display: none;
+  width: 80%;
+  padding: 5px 10px;
+  text-align: center;
+  color: white;
+  border-radius: 10px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #000;
+  background: var(--celtic-50, #F4F9F5);
+}

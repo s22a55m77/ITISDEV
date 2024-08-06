@@ -1,0 +1,252 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.header-container {
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  padding: 28px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.main-container {
+  padding: 20px 14px;
+}
+
+.trip-type-container, 
+.destination-container, 
+.select-dates-container,
+.purpose-container {
+  border-radius: 10px;
+  background: var(--gray-white);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.purpose-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#purpose {
+  height: 30px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--gray-400, #9CA3AF);
+}
+
+.trip-type-container > div {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.trip-type-container input[type="radio"] {
+  display: none;
+}
+
+.trip-type-container label {
+  width: 100%;
+  text-align: center;
+  padding: 9px 26px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  border: 1px solid var(--gray-400, #9CA3AF);
+  background: #FFF;
+  border-radius: 100px;
+  color: black;
+  cursor: pointer;
+}
+
+.trip-type-active {
+  border: 1px solid var(--celtic-600, #417845) !important;
+  background: var(--celtic-600, #417845) !important;
+  color: var(--gray-white) !important;
+}
+
+.destination-container > div {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.destination-container select {
+  padding: 9px 10px 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  align-self: stretch;
+  border-radius: 10px;
+  border: 1px solid var(--gray-400, #9CA3AF);
+  background: #FFF;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.trip-type-header,
+.destination-header,
+.select-dates-header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 16px;
+  color: var(--gray-700, #374151);
+}
+
+.weekday-saturday {
+  color: var(--gray-950, #030712);
+  font-family: "Radio Canada";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.month-display {
+  color: var(--gray-700, #374151);
+  /* Body/Small */
+  font-family: "Radio Canada";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+#weekdays-container, #saturdays-container {
+  display: flex;
+  overflow: scroll;
+  gap: 5px
+}
+
+.day {
+  display: flex;
+  width: 50px;
+  padding: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+  border: 1px solid var(--gray-400, #9CA3AF);
+  background: #FFF;
+}
+
+.date-display {
+  color: var(--gray-950, #030712);
+  text-align: center;
+  font-family: "Radio Canada";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked + label.day {
+  color: var(--gray-white);
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+}
+
+input[type="checkbox"]:checked + label.day > .date-display {
+  color: var(--gray-white);
+}
+
+.select-destination-container {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.from-container, .to-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#one-way-arrow {
+  display: none;
+}
+
+#from-show, #to-show {
+  color: var(--celtic-600, #417845);
+  text-align: center;
+  font-family: "Radio Canada";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+}
+
+#next {
+  margin-top: 70px;
+  display: flex;
+  width: 100%;
+  padding: 9px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  align-self: stretch;
+
+  color: var(--gray-white, #FFF);
+
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600, #417845);
+  background: var(--celtic-600, #417845);
+}
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 50% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.toast {
+  background-color: var(--gray-white);
+}
+
+.toast-body {
+  text-align: center;
+}

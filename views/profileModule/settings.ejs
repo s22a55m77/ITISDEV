@@ -1,0 +1,90 @@
+<%- include('../common/headers.ejs') %>
+<link rel="stylesheet" href="/profileModule/settings/settings.css" />
+<script defer src="/profileModule/settings/settings.js"></script>
+
+<title>Settings</title>
+
+<div class="header-container">
+  <div class="header">
+    Setting
+  </div>
+</div>
+
+
+<div class="main-container">
+  <div id="alert"></div>
+
+  <div class="upload-container">
+    <div class="item-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+        <g clip-path="url(#clip0_141_519)">
+        <path d="M8.45829 3.62467H4.83329V7.24967H2.41663V1.20801H8.45829V3.62467ZM26.5833 7.24967V1.20801H20.5416V3.62467H24.1666V7.24967H26.5833ZM8.45829 25.3747H4.83329V21.7497H2.41663V27.7913H8.45829V25.3747ZM24.1666 21.7497V25.3747H20.5416V27.7913H26.5833V21.7497H24.1666ZM22.9583 21.7497C22.9583 23.0788 21.8708 24.1663 20.5416 24.1663H8.45829C7.12913 24.1663 6.04163 23.0788 6.04163 21.7497V7.24967C6.04163 5.92051 7.12913 4.83301 8.45829 4.83301H20.5416C21.8708 4.83301 22.9583 5.92051 22.9583 7.24967V21.7497ZM18.125 9.66634H10.875V12.083H18.125V9.66634ZM18.125 13.2913H10.875V15.708H18.125V13.2913ZM18.125 16.9163H10.875V19.333H18.125V16.9163Z" fill="black"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_141_519">
+        <rect width="29" height="29" fill="white"/>
+        </clipPath>
+        </defs>
+      </svg>
+      <div>
+        <form id="eaf-upload-form" action="/profile/eaf" method="post" enctype="multipart/form-data">
+          <label for="eaf-upload">Update EAF</label>
+          <input id="eaf-upload" type="file" name="eaf" />
+        </form>
+        <span id="eaf-updated-time">Last updated</span>
+      </div>
+    </div>
+    
+    <div class="item-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <g clip-path="url(#clip0_141_522)">
+        <path d="M12.25 15.1663H9.33329V11.6663H12.25V8.74967H15.75V11.6663H18.6666V15.1663H15.75V18.083H12.25V15.1663ZM14 2.33301L4.66663 5.83301V12.938C4.66663 18.8297 8.64496 24.3247 14 25.6663C19.355 24.3247 23.3333 18.8297 23.3333 12.938V5.83301L14 2.33301Z" fill="black"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_141_522">
+        <rect width="28" height="28" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+      <div>
+        <form id="vaccination-upload-form" action="/profile/vaccination" method="post" enctype="multipart/form-data">
+          <label for="vaccination-upload">Update Vaccination Record</label>
+          <input id="vaccination-upload" type="file" name="vaccination" />
+        </form>
+        <span id="vaccination-updated-time">Last updated <%= vaccinationRecordUpdatedAt %> </span>
+      </div>
+    </div>
+    <div class="item-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+        <g clip-path="url(#clip0_141_519)">
+        <path d="M8.45829 3.62467H4.83329V7.24967H2.41663V1.20801H8.45829V3.62467ZM26.5833 7.24967V1.20801H20.5416V3.62467H24.1666V7.24967H26.5833ZM8.45829 25.3747H4.83329V21.7497H2.41663V27.7913H8.45829V25.3747ZM24.1666 21.7497V25.3747H20.5416V27.7913H26.5833V21.7497H24.1666ZM22.9583 21.7497C22.9583 23.0788 21.8708 24.1663 20.5416 24.1663H8.45829C7.12913 24.1663 6.04163 23.0788 6.04163 21.7497V7.24967C6.04163 5.92051 7.12913 4.83301 8.45829 4.83301H20.5416C21.8708 4.83301 22.9583 5.92051 22.9583 7.24967V21.7497ZM18.125 9.66634H10.875V12.083H18.125V9.66634ZM18.125 13.2913H10.875V15.708H18.125V13.2913ZM18.125 16.9163H10.875V19.333H18.125V16.9163Z" fill="black"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_141_519">
+        <rect width="29" height="29" fill="white"/>
+        </clipPath>
+        </defs>
+      </svg>
+      <div>
+        <form id="designation-form" action="/profile/designation" method="post">
+          <select id="designation" name="designation">
+            <option value="College - Laguna Enrolled without Class/es in Manila">College - Laguna Enrolled without Class/es in Manila</option>
+            <option value="College - Laguna Enrolled with Class/es in Manila">College - Laguna Enrolled with Class/es in Manila</option>
+            <option value="College - Manila Enrolled without Class/es in Laguna">College - Manila Enrolled without Class/es in Laguna</option>
+            <option value="College - Manila Enrolled with Class/es in Laguna">College - Manila Enrolled with Class/es in Laguna</option>
+            <option value="Integrated School - Laguna Enrolled">Integrated School - Laguna Enrolled</option>
+            <option value="Integrated School - Manila Enrolled">Integrated School - Manila Enrolled</option>
+          </select>
+        </form>
+        <span id="designation-updated-time">Last updated</span>
+      </div>
+    </div>
+    <script>
+      const eafTime = "<%= eafUpdatedAt %>";
+      const vaccinationTime = "<%= vaccinationRecordUpdatedAt %>"; 
+      const designation = "<%= designation %>";
+      const designationTime = "<%- designationUpdatedAt %>";
+    </script>
+  </div>
+</div>
+

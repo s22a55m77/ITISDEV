@@ -1,0 +1,103 @@
+<%- include('../common/headers.ejs') %>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<link rel="stylesheet" href="/adminScheduleModule/editSingle/editSingle.css" />
+<script defer src="/adminScheduleModule/editSingle/editSingle.js"></script>
+
+<title>Admin Edit Schedule</title>
+
+<header>Manage Shuttle Schedules</header>
+
+<div class="main-container">
+  <div id="back" onclick="back()">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M15.7049 16.59L11.1249 12L15.7049 7.41L14.2949 6L8.29492 12L14.2949 18L15.7049 16.59Z"
+        fill="#417845"
+      />
+    </svg>
+    BACK
+  </div>
+
+  <div>
+    <div class="toolbar">
+      <div class="instruction">
+        <b>Edit schedule</b>
+        for
+        <span><b id="date"></b></span>
+      </div>
+      <button id="save">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3ZM12 19C10.34 19 9 17.66 9 16C9 14.34 10.34 13 12 13C13.66 13 15 14.34 15 16C15 17.66 13.66 19 12 19ZM15 9H5V5H15V9Z"
+            fill="white"
+          />
+        </svg>
+        Save Edited Schedule
+      </button>
+      <select id="date-select">
+      </select>
+    </div>
+    <div class="schedule-container">
+      <div>
+        <div class="weekday-saturday-header">Weekdays</div>
+        <div class="time-container">
+          <div>
+            <div class="from location-title"></div>
+            <div id="weekdays-from-time-container"></div>
+            <button id="weekdays-from-time-add">ADD +</button>
+          </div>
+          <div>
+            <div class="to location-title"></div>
+            <div id="weekdays-to-time-container"></div>
+            <button id="weekdays-to-time-add">ADD +</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="weekday-saturday-header">Saturdays</div>
+        <div class="time-container">
+          <div>
+            <div class="from location-title"></div>
+            <div id="saturdays-from-time-container"></div>
+            <button id="saturdays-from-time-add">ADD +</button>
+          </div>
+          <div>
+            <div class="to location-title"></div>
+            <div id="saturdays-to-time-container"></div>
+            <button id="saturdays-to-time-add">ADD +</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const from = '<%= from %>'
+  const to = '<%= to %>'
+  const label = '<%= label %>'
+  const line = '<%= line %>'
+  const id = '<%= id %>'
+  let scheduleInformation = '<%= schedules %>'
+  const date = '<%= date %>'
+  const dates= <%- JSON.stringify(dates) %>;
+</script>

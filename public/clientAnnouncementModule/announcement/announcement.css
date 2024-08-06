@@ -1,0 +1,68 @@
+body {
+  background-color: var(--celtic-50);
+}
+
+.header {
+  padding: 30px;
+  background-color: var(--celtic-600);
+  color: var(--gray-white);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.announcement-container {
+  min-height: 574px;
+  padding: 30px 25px;
+  border-radius: 20px;
+  background-color: white;
+  margin: 25px 25px 25px 25px;
+}
+
+.announcement-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: top;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 10px;
+}
+
+.icon-bg {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: var(--celtic-400);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.announcement-info {
+  margin-left: 10px;
+  max-width: 80%;
+}
+
+.announcement-description {
+  color: #000;
+  text-align: justify;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.back-btn {
+  margin-top: 10px;
+  margin-left: 45px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--celtic-600);
+  padding: 5px 20px;
+  background-color: var(--celtic-50);
+  color: var(--celtic-600);
+}
